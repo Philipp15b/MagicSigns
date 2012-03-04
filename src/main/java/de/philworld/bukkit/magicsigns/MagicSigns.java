@@ -1,6 +1,5 @@
 package de.philworld.bukkit.magicsigns;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.philworld.bukkit.magicsigns.config.InvalidConfigException;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.signs.ClearSign;
 import de.philworld.bukkit.magicsigns.signs.CommandSign;
@@ -79,19 +77,11 @@ public class MagicSigns extends JavaPlugin {
 		for (MagicSignSerializationProxy proxy : list) {
 			try {
 				signHandler.registerSign(proxy.getMagicSign());
-			} catch (InvalidConfigException e) {
-				getLogger().log(Level.WARNING, e.getMessage());
-			} catch (InvocationTargetException e) {
-				if (e.getTargetException() instanceof InvalidSignException) {
-					getLogger().log(
-							Level.WARNING,
-							"Tried to load invalid sign: "
-									+ e.getTargetException().getMessage());
-				} else {
-					e.printStackTrace();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Throwable e) {
+				getLogger().log(
+						Level.WARNING,
+						"Error loading Magic Sign from config: "
+								+ e.getMessage(), e);
 			}
 		}
 	}

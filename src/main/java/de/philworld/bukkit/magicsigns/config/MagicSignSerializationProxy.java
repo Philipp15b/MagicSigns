@@ -56,12 +56,13 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	}
 
 	/**
-	 * TODO: Better exception handling
+	 * Get the Magic Sign behind this proxy.
 	 * 
-	 * @return
-	 * @throws Exception
+	 * @return MagicSign
+	 * @throws Throwable
+	 *             - Error when instantiating new Magic Sign of this type.
 	 */
-	public MagicSign getMagicSign() throws Exception {
+	public MagicSign getMagicSign() throws Throwable {
 		Location loc = new Location(this.world, this.x, this.y, this.z);
 		Block block = this.world.getBlockAt(loc);
 

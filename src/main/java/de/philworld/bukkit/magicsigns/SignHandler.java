@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -68,7 +69,7 @@ public class SignHandler implements Listener {
 		signTypes.add(signType);
 	}
 
-	public void registerSign(Block sign, String[] lines) throws Exception {
+	public void registerSign(Block sign, String[] lines) {
 		registerSign(sign, lines, null, null);
 	}
 
@@ -88,11 +89,9 @@ public class SignHandler implements Listener {
 	 *            Player for permission checks; can be null
 	 * @param event
 	 *            SignChangeEvent to call onCreate(); can be null
-	 * 
-	 * @throws Exception
 	 */
 	public void registerSign(Block sign, String[] lines, Player p,
-			SignChangeEvent event) throws Exception {
+			SignChangeEvent event) {
 		for (Class<? extends MagicSign> signType : signTypes) {
 
 			Method takeAction = null;
@@ -140,23 +139,32 @@ public class SignHandler implements Listener {
 					return;
 				}
 
-			} catch (NoSuchMethodException e) {
-				throw new IllegalArgumentException(
-						"Could not find constructor MagicSign(Block, String[])");
 			} catch (PermissionException e) {
 				MSMsg.NO_PERMISSION.send(p);
 			} catch (InvocationTargetException e) {
 				if (e.getTargetException() instanceof InvalidSignException) {
-					if (p != null)
+					if (p != null) {
 						p.sendMessage(ChatColor.RED
 								+ e.getTargetException().getMessage());
-					else
-						plugin.getLogger().log(
+					} else {
+						getLogger().log(
 								Level.WARNING,
 								"Invalid sign: "
-										+ e.getTargetException().getMessage());
+										+ e.getTargetException().getMessage(),
+										e.getTargetException());
+					}
 				} else
-					throw (Exception) e.getTargetException();
+					getLogger().log(
+							Level.WARNING,
+							"Error registering Magic sign of type "
+									+ signType.getCanonicalName() + ": "
+									+ e.getTargetException().getMessage(),
+									e.getTargetException());
+			} catch (Throwable e) {
+				getLogger().log(
+						Level.WARNING,
+						"Error registering sign of type "
+								+ signType.getCanonicalName(), e);
 			}
 
 		}
@@ -186,9 +194,8 @@ public class SignHandler implements Listener {
 			registerSign(event.getBlock(), event.getLines(), event.getPlayer(),
 					event);
 		} catch (Exception e) {
-			plugin.getLogger().log(Level.SEVERE,
-					"[MagicSigns] Could not add new sign to SignHandler");
-			e.printStackTrace();
+			getLogger().log(Level.SEVERE,
+					"Could not add new sign to SignHandler", e);
 		}
 	}
 
@@ -246,5 +253,9 @@ public class SignHandler implements Listener {
 			signs.remove(event.getBlock().getLocation());
 		}
 
+	}
+
+	private Logger getLogger() {
+		return plugin.getLogger();
 	}
 }
