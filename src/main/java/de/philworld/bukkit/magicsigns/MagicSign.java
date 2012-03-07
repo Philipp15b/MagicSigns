@@ -3,26 +3,57 @@ package de.philworld.bukkit.magicsigns;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.config.ConfigurationNode;
 
+import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
+import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 
 /**
  * Parent class for every magic sign. Uses the Behavior pattern.
  */
 public abstract class MagicSign {
 
-	public Block sign;
+	private static ConfigurationBase config = null;
 
 	/**
+	 * Returns if a new Magic Sign should be created of this sign.
+	 *
 	 * <i><b>Important:</b> Must be overridden!</i>
 	 */
 	public static boolean takeAction(Sign sign, String[] lines) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException(
+				"The static method takeAction() must be overridden!");
 	}
 
+	/**
+	 * Initializes the configuration.
+	 *
+	 * @param node
+	 *            {@link ConfigurationNode} the config.
+	 */
+	public static void loadConfig(ConfigurationSection section) {
+	}
+
+	public static void saveConfig(ConfigurationSection section) {
+		if (config != null) {
+			config.save(section);
+		}
+	}
+
+	public Block sign;
+
+	/**
+	 * Create a new instance of the MagicSign
+	 *
+	 * @param sign
+	 * @param lines
+	 * @throws InvalidSignException
+	 */
 	public MagicSign(Block sign, String[] lines) throws InvalidSignException {
 		this.sign = sign;
 	}
@@ -30,7 +61,7 @@ public abstract class MagicSign {
 	/**
 	 * Called every time the sign is created, but not when its loaded from
 	 * config.
-	 * 
+	 *
 	 * @param event
 	 */
 	public void onCreate(SignChangeEvent event) {
@@ -39,7 +70,7 @@ public abstract class MagicSign {
 
 	/**
 	 * Called on every right click on the sign.
-	 * 
+	 *
 	 * @param event
 	 * @throws PermissionException
 	 */
@@ -48,12 +79,39 @@ public abstract class MagicSign {
 		return;
 	}
 
+	/**
+	 * Return the serialization proxy.
+	 *
+	 * @return {@link MagicSignSerializationProxy}
+	 */
 	public MagicSignSerializationProxy serialize() {
 		return new MagicSignSerializationProxy(this);
 	}
 
+	/**
+	 * Get the location of this sign
+	 *
+	 * @return Location
+	 */
 	public Location getLocation() {
 		return sign.getLocation();
+	}
+
+	/**
+	 * Get the use permission for this {@link MagicSign}.
+	 *
+	 * @param sign
+	 *            the MagicSign
+	 * @return The use permission.
+	 */
+	public String getUsePermission() {
+		UsePermission usePerm = getClass().getAnnotation(UsePermission.class);
+
+		if (usePerm != null) {
+			return usePerm.value();
+		} else {
+			return null;
+		}
 	}
 
 }

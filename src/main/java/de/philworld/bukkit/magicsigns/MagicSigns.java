@@ -13,6 +13,7 @@ import de.philworld.bukkit.magicsigns.signs.ClearSign;
 import de.philworld.bukkit.magicsigns.signs.CommandSign;
 import de.philworld.bukkit.magicsigns.signs.ConsoleCommandSign;
 import de.philworld.bukkit.magicsigns.signs.CreativeModeSign;
+import de.philworld.bukkit.magicsigns.signs.DebugSign;
 import de.philworld.bukkit.magicsigns.signs.FeedSign;
 import de.philworld.bukkit.magicsigns.signs.HealSign;
 import de.philworld.bukkit.magicsigns.signs.HealthSign;
@@ -24,30 +25,38 @@ import de.philworld.bukkit.magicsigns.signs.TeleportSign;
 
 public class MagicSigns extends JavaPlugin {
 
-	public SignHandler signHandler = new SignHandler(this);
+	public SignManager signManager = new SignManager(this);
 	private FileConfiguration config;
+
+	private static MagicSigns instance;
+
+	public static MagicSigns inst() {
+		return instance;
+	}
 
 	@Override
 	public void onEnable() {
 
+		instance = this;
+
 		loadConfiguration();
 
-		signHandler.registerSignType(CommandSign.class);
-		signHandler.registerSignType(ConsoleCommandSign.class);
-		signHandler.registerSignType(SpeedSign.class);
-		signHandler.registerSignType(HealSign.class);
-		signHandler.registerSignType(HealthSign.class);
-		signHandler.registerSignType(ClearSign.class);
-		signHandler.registerSignType(TeleportSign.class);
-		signHandler.registerSignType(RocketSign.class);
-		signHandler.registerSignType(LevelSign.class);
-		signHandler.registerSignType(CreativeModeSign.class);
-		signHandler.registerSignType(SurvivalModeSign.class);
-		signHandler.registerSignType(FeedSign.class);
+		signManager.registerSignType(CommandSign.class);
+		signManager.registerSignType(ConsoleCommandSign.class);
+		signManager.registerSignType(SpeedSign.class);
+		signManager.registerSignType(HealSign.class);
+		signManager.registerSignType(HealthSign.class);
+		signManager.registerSignType(ClearSign.class);
+		signManager.registerSignType(TeleportSign.class);
+		signManager.registerSignType(RocketSign.class);
+		signManager.registerSignType(LevelSign.class);
+		signManager.registerSignType(CreativeModeSign.class);
+		signManager.registerSignType(SurvivalModeSign.class);
+		signManager.registerSignType(FeedSign.class);
 
 		loadSigns();
 
-		getServer().getPluginManager().registerEvents(signHandler, this);
+		getServer().getPluginManager().registerEvents(new MagicSignsListener(this), this);
 	}
 
 	@Override
@@ -68,6 +77,8 @@ public class MagicSigns extends JavaPlugin {
 
 	@SuppressWarnings("unchecked")
 	private void loadSigns() {
+		signManager.loadConfig(getConfig());
+
 		List<MagicSignSerializationProxy> list = (List<MagicSignSerializationProxy>) config
 				.get("magic-signs");
 
@@ -76,7 +87,7 @@ public class MagicSigns extends JavaPlugin {
 
 		for (MagicSignSerializationProxy proxy : list) {
 			try {
-				signHandler.registerSign(proxy.getMagicSign());
+				signManager.registerSign(proxy.getMagicSign());
 			} catch (Throwable e) {
 				getLogger().log(
 						Level.WARNING,
@@ -91,10 +102,13 @@ public class MagicSigns extends JavaPlugin {
 		config.set("magic-signs", null);
 
 		List<MagicSignSerializationProxy> signList = new LinkedList<MagicSignSerializationProxy>();
-		for (MagicSign sign : signHandler.getSigns()) {
+		for (MagicSign sign : signManager.getSigns()) {
 			signList.add(sign.serialize());
 		}
 		config.set("magic-signs", signList);
+
+		signManager.saveConfig(getConfig());
+
 		saveConfig();
 	}
 

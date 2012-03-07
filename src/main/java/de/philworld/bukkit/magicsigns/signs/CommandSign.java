@@ -11,9 +11,9 @@ import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 
 /**
  * A sign that executes commands on the sign in the player's context.
- * 
+ *
  * <code>%p</code> will be replaced with the player's name.
- * 
+ *
  */
 @BuildPermission("magicsigns.command.create")
 @UsePermission("magicsigns.command.use")

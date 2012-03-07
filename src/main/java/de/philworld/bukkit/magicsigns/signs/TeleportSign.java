@@ -12,9 +12,9 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * Sign that allows teleportation.
- * 
+ *
  * Line 2 must contain coordinates (comma-separated, e.g. <code>20,20,20</code>)
- * 
+ *
  */
 @BuildPermission("magicsigns.teleport.create")
 @UsePermission("magicsigns.teleport.use")
@@ -29,9 +29,8 @@ public class TeleportSign extends MagicSign {
 	public TeleportSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
 
-		if (lines[1].split(",").length == 3) {
-			String[] coords = lines[1].split(",");
-
+		String[] coords = lines[1].split(",");
+		if (coords.length == 3) {
 			destination = new Location(sign.getWorld(), new Integer(coords[0]),
 					new Integer(coords[1]), new Integer(coords[2]));
 		} else {

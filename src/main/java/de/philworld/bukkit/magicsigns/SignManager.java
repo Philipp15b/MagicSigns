@@ -13,15 +13,9 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
@@ -29,31 +23,36 @@ import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
- * Handles all signs and sign types.
- * 
+ * Manages all signs and sign types.
+ *
  * <h2>Usage</h2>
- * 
+ *
  * <pre>
  * <code>
- *   SignHandler handler = new SignHandler();
- *   handler.registerSignType(<? extends MagicSign> myMagicSignClass);
- *   handler.registerSign(Block mysign); // for every sign thats created or changed.
+ *   SignManager manager = new SignManager();
+ *   manager.registerSignType(<? extends MagicSign> myMagicSignClass);
+ *   manager.registerSign(Block mysign, String[] lines); // for every sign thats created or changed.
  * </code>
  * </pre>
- * 
- * The handler will automatically check all sign types and if some take action,
+ *
+ * The manager will automatically check all sign types and if some take action,
  * it will instantiate new objects of them.
  */
-public class SignHandler implements Listener {
+public class SignManager {
 
 	private Set<Class<? extends MagicSign>> signTypes = new HashSet<Class<? extends MagicSign>>();
 	private Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
 	private MagicSigns plugin;
 
-	public SignHandler(MagicSigns plugin) {
+	public SignManager(MagicSigns plugin) {
 		this.plugin = plugin;
 	}
 
+	/**
+	 * Get all {@link MagicSign}s in a collection
+	 *
+	 * @return Collection of {@link MagicSign}s
+	 */
 	public Collection<MagicSign> getSigns() {
 		return signs.values();
 	}
@@ -62,7 +61,7 @@ public class SignHandler implements Listener {
 	 * Adds a new sign type. It must extend MagicSign and override the static
 	 * method <code>takeAction()</code>. The class can also contain permission
 	 * annotations ({@link BuildPermission}, {@link UsePermission}).
-	 * 
+	 *
 	 * @param signType
 	 */
 	public void registerSignType(Class<? extends MagicSign> signType) {
@@ -80,7 +79,7 @@ public class SignHandler implements Listener {
 	 * <li>Add player if you want to check for permissions
 	 * <li>Add event if you want to call onCreate() on the new sign.
 	 * </ul>
-	 * 
+	 *
 	 * @param sign
 	 *            Sign Block
 	 * @param lines
@@ -151,7 +150,7 @@ public class SignHandler implements Listener {
 								Level.WARNING,
 								"Invalid sign: "
 										+ e.getTargetException().getMessage(),
-										e.getTargetException());
+								e.getTargetException());
 					}
 				} else
 					getLogger().log(
@@ -159,7 +158,7 @@ public class SignHandler implements Listener {
 							"Error registering Magic sign of type "
 									+ signType.getCanonicalName() + ": "
 									+ e.getTargetException().getMessage(),
-									e.getTargetException());
+							e.getTargetException());
 			} catch (Throwable e) {
 				getLogger().log(
 						Level.WARNING,
@@ -172,89 +171,97 @@ public class SignHandler implements Listener {
 
 	/**
 	 * Registers a MagicSign directly.
-	 * 
+	 *
 	 * @param sign
 	 */
 	public void registerSign(MagicSign sign) {
 		signs.put(sign.getLocation(), sign);
 	}
 
-	// ----------------
-	// EVENT HANDLERS
-	// ----------------
+	/**
+	 * Returns if a sign at the given location is registered.
+	 *
+	 * @param loc
+	 *            The location
+	 * @return true if it exists, else false
+	 */
+	public boolean containsSign(Location loc) {
+		return signs.containsKey(loc);
+	}
 
 	/**
-	 * Adds every created/changed sign to the plugin's signHandler.
-	 * 
-	 * @param event
+	 * Returns a {@link MagicSign} by a given location
+	 *
+	 * @param loc
+	 *            The location
+	 * @return the magic sign.
 	 */
-	@EventHandler
-	public void onSignChange(SignChangeEvent event) {
-		try {
-			registerSign(event.getBlock(), event.getLines(), event.getPlayer(),
-					event);
-		} catch (Exception e) {
-			getLogger().log(Level.SEVERE,
-					"Could not add new sign to SignHandler", e);
+	public MagicSign getSign(Location loc) {
+		if (containsSign(loc)) {
+			return signs.get(loc);
+		}
+		return null;
+	}
+
+	/**
+	 * Removes a sign by a given location.
+	 *
+	 * @param loc
+	 *            - The location of this sign.
+	 * @return true if the sign was found and deleted
+	 */
+	public boolean removeSign(Location loc) {
+		if (signs.containsKey(loc)) {
+			signs.remove(loc);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Load the configuration into all currently registered sign types.
+	 *
+	 * @param section
+	 */
+	public void loadConfig(ConfigurationSection section) {
+		for (Class<? extends MagicSign> type : signTypes) {
+			try {
+				type.getMethod("loadConfig", ConfigurationSection.class)
+						.invoke(null, section);
+			} catch (Throwable e) {
+				getLogger().log(Level.WARNING,
+						"Error loading config: " + e.getMessage(), e);
+			}
+
 		}
 	}
 
 	/**
-	 * Calls <code>playerInteract()</code> on the MagicSigns.
-	 * 
-	 * @param event
+	 * Save the configuration of all sign types to the given
+	 * {@link ConfigurationSection}
+	 *
+	 * @param section
+	 *            ConfigurationSection to save the data to.
+	 * @return The modified ConfigurationSection
 	 */
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (event.isCancelled()
-				|| !(event.hasBlock()
-						&& event.getAction() == Action.RIGHT_CLICK_BLOCK
-						&& event.getClickedBlock() != null && event
-						.getClickedBlock().getState() instanceof Sign)) {
-			return;
-		}
-
-		Location loc = event.getClickedBlock().getLocation();
-		if (signs.containsKey(loc)) {
-
-			MagicSign sign = signs.get(loc);
-
+	public ConfigurationSection saveConfig(ConfigurationSection section) {
+		for (Class<? extends MagicSign> type : signTypes) {
 			try {
-
-				// check for UsePermission annotation.
-				UsePermission perm = sign.getClass().getAnnotation(
-						UsePermission.class);
-
-				if (perm != null) {
-					if (!event.getPlayer().hasPermission(perm.value())) {
-						throw new PermissionException();
-					}
-				}
-
-				sign.onRightClick(event);
-
-			} catch (PermissionException e) {
-				MSMsg.NO_PERMISSION.send(event.getPlayer());
+				section = (ConfigurationSection) type.getMethod("saveConfig",
+						ConfigurationSection.class).invoke(null, section);
+			} catch (Throwable e) {
+				getLogger().log(Level.WARNING,
+						"Error saving config: " + e.getMessage(), e);
 			}
 		}
+		return section;
 	}
 
 	/**
-	 * Removes broken signs from the list.
-	 * 
-	 * @param event
+	 * Get the logger.
+	 *
+	 * @return the logger
 	 */
-	@EventHandler(priority = EventPriority.LOW)
-	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.isCancelled())
-			return;
-
-		if (signs.containsKey(event.getBlock().getLocation())) {
-			signs.remove(event.getBlock().getLocation());
-		}
-
-	}
-
 	private Logger getLogger() {
 		return plugin.getLogger();
 	}
