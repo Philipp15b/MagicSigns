@@ -13,7 +13,6 @@ import de.philworld.bukkit.magicsigns.signs.ClearSign;
 import de.philworld.bukkit.magicsigns.signs.CommandSign;
 import de.philworld.bukkit.magicsigns.signs.ConsoleCommandSign;
 import de.philworld.bukkit.magicsigns.signs.CreativeModeSign;
-import de.philworld.bukkit.magicsigns.signs.DebugSign;
 import de.philworld.bukkit.magicsigns.signs.FeedSign;
 import de.philworld.bukkit.magicsigns.signs.HealSign;
 import de.philworld.bukkit.magicsigns.signs.HealthSign;
