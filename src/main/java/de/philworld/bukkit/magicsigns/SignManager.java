@@ -116,7 +116,6 @@ public class SignManager {
 
 						if (buildPerm != null) {
 							if (!p.hasPermission(buildPerm.value())) {
-								sign.breakNaturally();
 								throw new PermissionException();
 							}
 						}
@@ -139,6 +138,7 @@ public class SignManager {
 				}
 
 			} catch (PermissionException e) {
+				sign.breakNaturally();
 				MSMsg.NO_PERMISSION.send(p);
 			} catch (InvocationTargetException e) {
 				if (e.getTargetException() instanceof InvalidSignException) {
