@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,6 +73,13 @@ public class MagicSigns extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(
 				new MagicSignsListener(this), this);
+
+		// start metrics
+		try {
+			new Metrics(this).start();
+		} catch (IOException e) {
+			getLogger().log(Level.WARNING, "Error enabling Metrics for MagicSigns:", e);
+		}
 	}
 
 	@Override
