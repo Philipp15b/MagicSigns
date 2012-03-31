@@ -6,7 +6,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.MagicSign;
 import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.Setting;
 import de.philworld.bukkit.magicsigns.config.SettingBase;
@@ -22,8 +21,8 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  *
  */
 @BuildPermission("magicsigns.rocket.create")
-@UsePermission("magicsings.rocket.use")
-public class RocketSign extends MagicSign {
+@UsePermission("magicsigns.rocket.use")
+public class RocketSign extends PurchasableMagicSign {
 
 	public static LocalConfiguration config;
 

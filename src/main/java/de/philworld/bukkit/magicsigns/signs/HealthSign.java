@@ -4,20 +4,19 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.MagicSign;
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that sets the health of a player to a specific value.
- * 
+ *
  * @see {@link HealSign} - Increases the player's health.
- * 
+ *
  */
 @BuildPermission("magicsigns.health.create")
 @UsePermission("magicsigns.health.use")
-public class HealthSign extends MagicSign {
+public class HealthSign extends PurchasableMagicSign {
 
 	private int healthNumber = 20;
 

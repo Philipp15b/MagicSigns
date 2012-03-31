@@ -5,7 +5,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.MagicSign;
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
@@ -18,7 +17,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  */
 @BuildPermission("magicsigns.teleport.create")
 @UsePermission("magicsigns.teleport.use")
-public class TeleportSign extends MagicSign {
+public class TeleportSign extends PurchasableMagicSign {
 
 	private final Location destination;
 

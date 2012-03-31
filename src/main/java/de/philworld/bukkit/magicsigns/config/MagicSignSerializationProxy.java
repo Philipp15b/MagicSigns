@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import de.philworld.bukkit.magicsigns.MagicSign;
+import de.philworld.bukkit.magicsigns.signs.MagicSign;
 
 /**
  * Proxy for serializing a MagicSign.

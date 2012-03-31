@@ -4,23 +4,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.signs.ClearSign;
-import de.philworld.bukkit.magicsigns.signs.CommandSign;
-import de.philworld.bukkit.magicsigns.signs.ConsoleCommandSign;
 import de.philworld.bukkit.magicsigns.signs.CreativeModeSign;
 import de.philworld.bukkit.magicsigns.signs.FeedSign;
 import de.philworld.bukkit.magicsigns.signs.HealSign;
 import de.philworld.bukkit.magicsigns.signs.HealthSign;
 import de.philworld.bukkit.magicsigns.signs.LevelSign;
+import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.signs.RocketSign;
 import de.philworld.bukkit.magicsigns.signs.SpeedSign;
 import de.philworld.bukkit.magicsigns.signs.SurvivalModeSign;
 import de.philworld.bukkit.magicsigns.signs.TeleportSign;
+import de.philworld.bukkit.magicsigns.signs.command.CommandSign;
+import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
 
 public class MagicSigns extends JavaPlugin {
 
@@ -28,6 +32,8 @@ public class MagicSigns extends JavaPlugin {
 	private FileConfiguration config;
 
 	private static MagicSigns instance;
+
+	public static Economy economy = null;
 
 	public static MagicSigns inst() {
 		return instance;
@@ -40,6 +46,7 @@ public class MagicSigns extends JavaPlugin {
 
 		loadConfiguration();
 
+		// register all sign types
 		signManager.registerSignType(CommandSign.class);
 		signManager.registerSignType(ConsoleCommandSign.class);
 		signManager.registerSignType(SpeedSign.class);
@@ -53,9 +60,18 @@ public class MagicSigns extends JavaPlugin {
 		signManager.registerSignType(SurvivalModeSign.class);
 		signManager.registerSignType(FeedSign.class);
 
+		// and then load them from the config
 		loadSigns();
 
-		getServer().getPluginManager().registerEvents(new MagicSignsListener(this), this);
+		if (setupEconomy()) {
+			getLogger().log(Level.INFO, "Using Vault for economy.");
+		} else {
+			getLogger().log(Level.INFO,
+					"Vault was not found, all signs will be free!");
+		}
+
+		getServer().getPluginManager().registerEvents(
+				new MagicSignsListener(this), this);
 	}
 
 	@Override
@@ -68,7 +84,7 @@ public class MagicSigns extends JavaPlugin {
 	 */
 	public void loadConfiguration() {
 		ConfigurationSerialization
-		.registerClass(MagicSignSerializationProxy.class);
+				.registerClass(MagicSignSerializationProxy.class);
 		config = getConfig();
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -109,6 +125,23 @@ public class MagicSigns extends JavaPlugin {
 		signManager.saveConfig(getConfig());
 
 		saveConfig();
+	}
+
+	private boolean setupEconomy() {
+		try {
+			RegisteredServiceProvider<Economy> economyProvider = getServer()
+					.getServicesManager().getRegistration(
+							net.milkbowl.vault.economy.Economy.class);
+
+			if (economyProvider == null)
+				return false;
+
+			economy = economyProvider.getProvider();
+
+			return true;
+		} catch (NoClassDefFoundError e) {
+			return false;
+		}
 	}
 
 }

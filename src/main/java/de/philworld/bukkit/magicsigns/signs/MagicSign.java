@@ -1,4 +1,4 @@
-package de.philworld.bukkit.magicsigns;
+package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -8,6 +8,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.config.ConfigurationNode;
 
+import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;

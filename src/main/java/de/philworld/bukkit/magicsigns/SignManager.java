@@ -20,6 +20,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**

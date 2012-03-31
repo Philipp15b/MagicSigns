@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.MagicSign;
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
@@ -15,7 +14,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  */
 @BuildPermission("magicsigns.feed.create")
 @UsePermission("magicsigns.feed.use")
-public class FeedSign extends MagicSign {
+public class FeedSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {
 		return lines[1].equalsIgnoreCase("[Feed]");

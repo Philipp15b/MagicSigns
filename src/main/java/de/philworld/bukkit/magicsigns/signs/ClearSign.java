@@ -8,21 +8,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.MagicSign;
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that clears player's inventory.
- * 
+ *
  * If <code>[all]</code> is on the second line, it will clear the whole
  * inventory, otherwise only the hot bar.
- * 
+ *
  */
 @BuildPermission("magicsigns.clear.create")
 @UsePermission("magicsigns.clear.use")
-public class ClearSign extends MagicSign {
+public class ClearSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {
 		return lines[0].equalsIgnoreCase("[Clear]");

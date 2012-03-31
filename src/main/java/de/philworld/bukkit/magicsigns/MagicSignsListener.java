@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -14,6 +13,8 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
+import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 public class MagicSignsListener implements Listener {
@@ -34,8 +35,8 @@ public class MagicSignsListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		try {
-			manager.registerSign(event.getBlock(), event.getLines(), event.getPlayer(),
-					event);
+			manager.registerSign(event.getBlock(), event.getLines(),
+					event.getPlayer(), event);
 		} catch (Exception e) {
 			getLogger().log(Level.SEVERE,
 					"Could not add new sign to SignHandler", e);
@@ -63,9 +64,21 @@ public class MagicSignsListener implements Listener {
 			MagicSign sign = manager.getSign(loc);
 			try {
 
-				if(sign.getUsePermission() != null) {
-					if(!event.getPlayer().hasPermission(sign.getUsePermission())) {
+				if (sign.getUsePermission() != null) {
+					if (!event.getPlayer().hasPermission(
+							sign.getUsePermission())) {
 						throw new PermissionException();
+					}
+				}
+
+				if (sign instanceof PurchasableMagicSign) {
+					PurchasableMagicSign pSign = (PurchasableMagicSign) sign;
+					if (!pSign.withdrawPlayer(event.getPlayer())) {
+						MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer());
+						return;
+					} else {
+						MSMsg.PAID_SIGN.send(event.getPlayer(),
+								Double.toString(pSign.getPrice()));
 					}
 				}
 
@@ -82,7 +95,7 @@ public class MagicSignsListener implements Listener {
 	 *
 	 * @param event
 	 */
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler()
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.isCancelled())
 			return;
