@@ -16,7 +16,7 @@ import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.UsePermission;
-import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 
 /**
  * A sign that executes commands on the sign in the player's context.
@@ -26,7 +26,7 @@ import de.philworld.bukkit.magicsigns.signs.MagicSign;
  */
 @BuildPermission("magicsigns.command.create")
 @UsePermission("magicsigns.command.use")
-public class CommandSign extends MagicSign {
+public class CommandSign extends PurchasableMagicSign {
 
 	public static final String COMMAND_DELIMITER = " && ";
 	public static final String MACRO_START = "$";
@@ -143,7 +143,7 @@ public class CommandSign extends MagicSign {
 
 	public CommandSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
-		commands.addAll(format(lines[1] + lines[2] + lines[3]));
+		commands.addAll(format(lines[1] + lines[2]));
 	}
 
 	@Override
