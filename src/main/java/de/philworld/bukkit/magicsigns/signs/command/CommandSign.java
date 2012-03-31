@@ -82,8 +82,6 @@ public class CommandSign extends MagicSign {
 
 	public static void loadConfig(ConfigurationSection section) {
 		config.load(section);
-		if (config.macros != null)
-			System.out.println(config.macros.toString());
 	}
 
 	/**
