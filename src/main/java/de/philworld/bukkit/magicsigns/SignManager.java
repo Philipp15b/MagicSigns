@@ -36,8 +36,16 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * </code>
  * </pre>
  *
+ * <p>
  * The manager will automatically check all sign types and if some take action,
  * it will instantiate new objects of them.
+ *
+ * <p>
+ * Note: Sign types don't have to be registered before using them. This means
+ * you can register a single MagicSign with
+ * {@link SignManager#registerSign(MagicSign)} but not automatically create
+ * other signs of this type. This allows loading MagicSigns from the config
+ * before another plugin has registered this sign type.
  */
 public class SignManager {
 
