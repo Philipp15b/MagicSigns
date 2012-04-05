@@ -77,8 +77,7 @@ public class MagicSignsListener implements Listener {
 						MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer());
 						return;
 					} else {
-						MSMsg.PAID_SIGN.send(event.getPlayer(),
-								Double.toString(pSign.getPrice()));
+						MSMsg.PAID_SIGN.send(event.getPlayer());
 					}
 				}
 

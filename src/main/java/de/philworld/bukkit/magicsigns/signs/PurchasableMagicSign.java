@@ -4,7 +4,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.MagicSigns;
+import de.philworld.bukkit.magicsigns.economy.Price;
 
 /**
  * This is a {@link MagicSign} that allows to be payed for usage. The price has
@@ -12,7 +12,7 @@ import de.philworld.bukkit.magicsigns.MagicSigns;
  */
 public abstract class PurchasableMagicSign extends MagicSign {
 
-	protected double price = 0;
+	protected final Price price;
 
 	/**
 	 * Creates a new purchasable magic sign by setting the price of this sign.
@@ -27,11 +27,13 @@ public abstract class PurchasableMagicSign extends MagicSign {
 		super(sign, lines);
 
 		if (!lines[3].isEmpty()) {
-			price = Double.parseDouble(lines[3]);
-			if (price < 0) {
-				throw new InvalidSignException(
-						"The sign price may not be lower than zero!");
+			try {
+				price = Price.valueOf(lines[3]);
+			} catch (IllegalArgumentException e) {
+				throw new InvalidSignException(e.getMessage());
 			}
+		} else {
+			price = null;
 		}
 	}
 
@@ -40,7 +42,7 @@ public abstract class PurchasableMagicSign extends MagicSign {
 	 *
 	 * @return The price.
 	 */
-	public double getPrice() {
+	public Price getPrice() {
 		return price;
 	}
 
@@ -53,16 +55,10 @@ public abstract class PurchasableMagicSign extends MagicSign {
 	 *         found, else false.
 	 */
 	public boolean withdrawPlayer(Player p) {
-		if (MagicSigns.economy != null) {
-			if (MagicSigns.economy.has(p.getName(), price)) {
-				if (MagicSigns.economy.withdrawPlayer(p.getName(), price)
-						.transactionSuccess()) {
-					return true;
-				}
-			}
-			return false;
-		}
-		return true;
+		if (price != null)
+			return price.withdrawPlayer(p);
+		else
+			return true;
 	}
 
 }

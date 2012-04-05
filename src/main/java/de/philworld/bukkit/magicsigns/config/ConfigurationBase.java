@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.util.config.ConfigurationNode;
 
 import de.philworld.bukkit.magicsigns.MagicSigns;
 
