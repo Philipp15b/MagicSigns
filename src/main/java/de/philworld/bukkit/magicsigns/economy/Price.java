@@ -9,8 +9,7 @@ import de.philworld.bukkit.magicsigns.util.InventoryUtil;
 
 public abstract class Price {
 
-	public static Price valueOf(String text) throws IllegalArgumentException,
-			NumberFormatException {
+	public static Price valueOf(String text) throws IllegalArgumentException {
 		// the price is an item
 		if (text.startsWith("i:")) {
 			String[] result = text.split("i:");
@@ -54,8 +53,14 @@ public abstract class Price {
 	public static class VaultEconomy extends Price {
 
 		public static VaultEconomy valueOf(String text)
-				throws IllegalArgumentException, NumberFormatException {
-			double money = Double.parseDouble(text);
+				throws IllegalArgumentException {
+			double money;
+			try {
+				money = Double.parseDouble(text);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(
+						"Make sure to insert a real price! Example: 23.5");
+			}
 			if (money < 0)
 				throw new IllegalArgumentException(
 						"The price may not be lower than zero!");
@@ -99,14 +104,20 @@ public abstract class Price {
 	 */
 	public static class Item extends Price {
 
-		public static Item valueOf(String text) throws NumberFormatException {
+		public static Item valueOf(String text) throws IllegalArgumentException {
 			String[] result = text.split(":");
 			Material material = Material.getMaterial(result[0]);
 			int amount;
-			if (result.length == 1)
+			if (result.length == 1) {
 				amount = 1;
-			else
-				amount = Integer.parseInt(result[1]);
+			} else {
+				try {
+					amount = Integer.parseInt(result[1]);
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException(
+							"The amount is not a number! Please insert a valid number.");
+				}
+			}
 			return new Item(material, amount);
 		}
 
@@ -142,8 +153,14 @@ public abstract class Price {
 
 	public static class Level extends Price {
 
-		public static Level valueOf(String text) throws NumberFormatException {
-			return new Level(Integer.valueOf(text));
+		public static Level valueOf(String text)
+				throws IllegalArgumentException {
+			try {
+				return new Level(Integer.valueOf(text));
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(
+						"Make sure the level is a real number!");
+			}
 		}
 
 		private final int level;
