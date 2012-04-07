@@ -9,6 +9,9 @@ public class InventoryUtil {
 	/**
 	 * Removes a specific amount of items from an inventory.
 	 *
+	 * Thanks to bergerkiller:
+	 * http://forums.bukkit.org/threads/remove-items-from-an-inventory.27853/
+	 *
 	 * @param inv
 	 *            The inventory
 	 * @param type
@@ -16,8 +19,7 @@ public class InventoryUtil {
 	 * @param amount
 	 *            The amount
 	 */
-	public static void removeItems(Inventory inv, Material type,
-			int amount) {
+	public static void removeItems(Inventory inv, Material type, int amount) {
 		for (ItemStack is : inv.getContents()) {
 			if (is != null && is.getType() == type) {
 				int newamount = is.getAmount() - amount;

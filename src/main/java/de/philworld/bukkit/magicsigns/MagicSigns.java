@@ -29,11 +29,7 @@ import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
 
 public class MagicSigns extends JavaPlugin {
 
-	public SignManager signManager = new SignManager(getLogger());
-	private FileConfiguration config;
-
 	private static MagicSigns instance;
-
 	public static Economy economy = null;
 
 	/**
@@ -44,6 +40,9 @@ public class MagicSigns extends JavaPlugin {
 	public static MagicSigns inst() {
 		return instance;
 	}
+
+	public SignManager signManager = new SignManager(getLogger());
+	private FileConfiguration config;
 
 	@Override
 	public void onEnable() {
