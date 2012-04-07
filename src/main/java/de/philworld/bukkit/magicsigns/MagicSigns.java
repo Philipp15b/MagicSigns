@@ -29,7 +29,7 @@ import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
 
 public class MagicSigns extends JavaPlugin {
 
-	public SignManager signManager = new SignManager(this);
+	public SignManager signManager = new SignManager(getLogger());
 	private FileConfiguration config;
 
 	private static MagicSigns instance;

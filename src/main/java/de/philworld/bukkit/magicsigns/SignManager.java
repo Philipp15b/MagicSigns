@@ -51,10 +51,10 @@ public class SignManager {
 
 	private Set<Class<? extends MagicSign>> signTypes = new HashSet<Class<? extends MagicSign>>();
 	private Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
-	private MagicSigns plugin;
+	private Logger logger;
 
-	public SignManager(MagicSigns plugin) {
-		this.plugin = plugin;
+	public SignManager(Logger logger) {
+		this.logger = logger;
 	}
 
 	/**
@@ -82,8 +82,9 @@ public class SignManager {
 	}
 
 	/**
-	 * Generates a MagicSign from a block if some MagicSign takesAction (
-	 * <code>takeAction()</code>) and registers it.
+	 * Generates a MagicSign from a block if some registered MagicSign
+	 * takesAction (<code>takeAction()</code>) and registers it.
+	 *
 	 * <ul>
 	 * <li>Add player if you want to check for permissions
 	 * <li>Add event if you want to call onCreate() on the new sign.
@@ -272,6 +273,6 @@ public class SignManager {
 	 * @return the logger
 	 */
 	private Logger getLogger() {
-		return plugin.getLogger();
+		return logger;
 	}
 }
