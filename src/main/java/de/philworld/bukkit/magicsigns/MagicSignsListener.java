@@ -35,6 +35,8 @@ public class MagicSignsListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		try {
+			if (manager.containsSign(event.getBlock().getLocation()))
+				manager.removeSign(event.getBlock().getLocation());
 			manager.registerSign(event.getBlock(), event.getLines(),
 					event.getPlayer(), event);
 		} catch (Exception e) {
@@ -73,11 +75,13 @@ public class MagicSignsListener implements Listener {
 
 				if (sign instanceof PurchasableMagicSign) {
 					PurchasableMagicSign pSign = (PurchasableMagicSign) sign;
-					if (!pSign.withdrawPlayer(event.getPlayer())) {
-						MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer());
-						return;
-					} else {
-						MSMsg.PAID_SIGN.send(event.getPlayer());
+					if (!pSign.isFree()) {
+						if (!pSign.withdrawPlayer(event.getPlayer())) {
+							MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer());
+							return;
+						} else {
+							MSMsg.PAID_SIGN.send(event.getPlayer());
+						}
 					}
 				}
 

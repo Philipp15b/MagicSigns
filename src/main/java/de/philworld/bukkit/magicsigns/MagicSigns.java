@@ -12,6 +12,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.philworld.bukkit.magicsigns.commands.MagicSignsCommandExecutor;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.signs.ClearSign;
 import de.philworld.bukkit.magicsigns.signs.CreativeModeSign;
@@ -41,7 +42,7 @@ public class MagicSigns extends JavaPlugin {
 		return instance;
 	}
 
-	public SignManager signManager = new SignManager(getLogger());
+	public SignManager signManager = new SignManager(this);
 	private FileConfiguration config;
 
 	@Override
@@ -74,6 +75,8 @@ public class MagicSigns extends JavaPlugin {
 			getLogger().log(Level.INFO,
 					"Vault was not found, all signs will be free!");
 		}
+
+		getCommand("ms").setExecutor(new MagicSignsCommandExecutor(this));
 
 		getServer().getPluginManager().registerEvents(
 				new MagicSignsListener(this), this);

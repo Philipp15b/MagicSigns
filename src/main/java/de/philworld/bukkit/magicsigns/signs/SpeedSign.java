@@ -6,8 +6,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
 /**
  * A sign that applies the speed potion effect to players.
@@ -16,8 +15,11 @@ import de.philworld.bukkit.magicsigns.permissions.UsePermission;
  * amplifier.
  *
  */
-@BuildPermission("magicsigns.speed.create")
-@UsePermission("magicsigns.speed.use")
+@MagicSignInfo(
+		friendlyName = "Speed sign",
+		description = "A sign that applies the speed potion effect to players.",
+		buildPerm = "magicsigns.speed.create",
+		usePerm = "magicsigns.speed.use")
 public class SpeedSign extends PurchasableMagicSign {
 
 	private final int duration;

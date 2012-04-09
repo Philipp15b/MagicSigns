@@ -5,8 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -15,8 +14,11 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * Line 2 must contain coordinates (comma-separated, e.g. <code>20,20,20</code>)
  *
  */
-@BuildPermission("magicsigns.teleport.create")
-@UsePermission("magicsigns.teleport.use")
+@MagicSignInfo(
+		friendlyName = "Teleport sign",
+		description = "Sign that allows teleportation.",
+		buildPerm = "magicsigns.teleport.create",
+		usePerm = "magicsigns.teleport.use")
 public class TeleportSign extends PurchasableMagicSign {
 
 	private final Location destination;

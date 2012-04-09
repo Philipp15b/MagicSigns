@@ -5,15 +5,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that increases the food level of a player by a certain amount.
  */
-@BuildPermission("magicsigns.feed.create")
-@UsePermission("magicsigns.feed.use")
+@MagicSignInfo(
+		friendlyName = "Feed sign",
+		description = "A sign that increases the food level of a player by a certain amount.",
+		buildPerm = "magicsigns.feed.create",
+		usePerm = "magicsigns.feed.use")
 public class FeedSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {

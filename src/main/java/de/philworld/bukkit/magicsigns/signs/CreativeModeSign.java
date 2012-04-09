@@ -5,11 +5,13 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
-@BuildPermission("magicsigns.creative.create")
-@UsePermission("magicsigns.creative.use")
+@MagicSignInfo(
+		friendlyName = "Creative Mode sign",
+		description = "Sets the player's game mode to Creative Mode.",
+		buildPerm = "magicsigns.creative.create",
+		usePerm = "magicsigns.creative.use")
 public class CreativeModeSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {

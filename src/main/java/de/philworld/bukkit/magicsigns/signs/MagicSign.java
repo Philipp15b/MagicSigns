@@ -8,10 +8,10 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 
 /**
  * Parent class for every magic sign. Uses the Behavior pattern.
@@ -46,6 +46,7 @@ public abstract class MagicSign {
 	}
 
 	public Block sign;
+	public String[] lines;
 
 	/**
 	 * Create a new instance of the MagicSign
@@ -56,6 +57,7 @@ public abstract class MagicSign {
 	 */
 	public MagicSign(Block sign, String[] lines) throws InvalidSignException {
 		this.sign = sign;
+		this.lines = lines;
 	}
 
 	/**
@@ -105,10 +107,30 @@ public abstract class MagicSign {
 	 * @return The use permission.
 	 */
 	public String getUsePermission() {
-		UsePermission usePerm = getClass().getAnnotation(UsePermission.class);
+		MagicSignInfo signInfo = getClass().getAnnotation(MagicSignInfo.class);
 
-		if (usePerm != null) {
-			return usePerm.value();
+		if (signInfo != null) {
+			return signInfo.usePerm();
+		} else {
+			return null;
+		}
+	}
+
+	public String getFriendlyName() {
+		MagicSignInfo signInfo = getClass().getAnnotation(MagicSignInfo.class);
+
+		if (signInfo != null) {
+			return signInfo.friendlyName();
+		} else {
+			return null;
+		}
+	}
+
+	public String getDescription() {
+		MagicSignInfo signInfo = getClass().getAnnotation(MagicSignInfo.class);
+
+		if (signInfo != null) {
+			return signInfo.description();
 		} else {
 			return null;
 		}

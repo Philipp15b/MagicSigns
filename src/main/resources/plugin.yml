@@ -2,3 +2,6 @@ name: MagicSigns
 main: de.philworld.bukkit.magicsigns.MagicSigns
 version: $MAVEN-VERSION-NUMBER$
 softdepend: [Vault]
+commands:
+  ms:
+    description: Base MagicSigns command.

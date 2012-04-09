@@ -12,10 +12,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 
 /**
@@ -24,8 +23,11 @@ import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
  * <code>%p</code> will be replaced with the player's name.
  *
  */
-@BuildPermission("magicsigns.command.create")
-@UsePermission("magicsigns.command.use")
+@MagicSignInfo(
+		friendlyName = "Command sign",
+		description = "A sign that executes commands on the sign in the player's context.",
+		buildPerm = "magicsigns.command.create",
+		usePerm = "magicsigns.command.use")
 public class CommandSign extends PurchasableMagicSign {
 
 	public static final String COMMAND_DELIMITER = " && ";
@@ -74,7 +76,7 @@ public class CommandSign extends PurchasableMagicSign {
 
 		@Override
 		public ConfigurationSection save(ConfigurationSection section) {
-			return section; // nothing to save, just read
+			return section; // nothing changes at runtime
 		}
 	}
 
@@ -88,7 +90,8 @@ public class CommandSign extends PurchasableMagicSign {
 	 * Splits the text by the backslash and replaces macros. Returns a list
 	 * representing all the commands.
 	 *
-	 * <p>TODO Catch endless loops of self-recalling macros.
+	 * <p>
+	 * TODO Catch endless loops of self-recalling macros.
 	 *
 	 * @param text
 	 *            - The text to format

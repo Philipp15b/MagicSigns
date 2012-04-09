@@ -5,8 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
 /**
  * A sign that executes commands in the server's context. Caution!
@@ -16,8 +15,11 @@ import de.philworld.bukkit.magicsigns.permissions.UsePermission;
  * <code>%p</code> will be replaced with the player's name.
  *
  */
-@BuildPermission("magicsigns.consolecommand.create")
-@UsePermission("magicsigns.consolecommand.use")
+@MagicSignInfo(
+		friendlyName = "Console Command sign",
+		description = "A sign that executes commands in the server's context. Caution!",
+		buildPerm = "magicsigns.consolecommand.create",
+		usePerm = "magicsigns.consolecommand.use")
 public class ConsoleCommandSign extends CommandSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {

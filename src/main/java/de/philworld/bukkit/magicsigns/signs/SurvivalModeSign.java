@@ -5,11 +5,13 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
-@BuildPermission("magicsigns.survival.create")
-@UsePermission("magicsigns.survival.use")
+@MagicSignInfo(
+		friendlyName = "Survival Mode sign",
+		description = "A sign that sets the player's game mode to Creative Mode.",
+		buildPerm = "magicsigns.survival.create",
+		usePerm = "magicsigns.survival.use")
 public class SurvivalModeSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {

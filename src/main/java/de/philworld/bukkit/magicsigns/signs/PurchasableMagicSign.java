@@ -46,6 +46,12 @@ public abstract class PurchasableMagicSign extends MagicSign {
 		return price;
 	}
 
+	public boolean isFree() {
+		if(price == null)
+			return true;
+		return price.isFree();
+	}
+
 	/**
 	 * Withdraws the price of this sign from the bank account of the player.
 	 *

@@ -5,16 +5,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * Adds a specific amount of levels to a player.
  *
  */
-@BuildPermission("magicsigns.level.create")
-@UsePermission("magicsigns.level.use")
+@MagicSignInfo(
+		friendlyName = "Level sign",
+		description = "Adds a specific amount of levels to a player.",
+		buildPerm = "magicsigns.level.create",
+		usePerm = "magicsigns.level.use")
 public class LevelSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {

@@ -4,8 +4,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -14,8 +13,11 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * @see {@link HealSign} - Increases the player's health.
  *
  */
-@BuildPermission("magicsigns.health.create")
-@UsePermission("magicsigns.health.use")
+@MagicSignInfo(
+		friendlyName = "Health sign",
+		description = "A sign that sets the health of a player to a specific value.",
+		buildPerm = "magicsigns.health.create",
+		usePerm = "magicsigns.health.use")
 public class HealthSign extends PurchasableMagicSign {
 
 	private int healthNumber = 20;
@@ -38,6 +40,5 @@ public class HealthSign extends PurchasableMagicSign {
 		event.getPlayer().setHealth(healthNumber);
 		MSMsg.HEAL_SUCCESS.send(event.getPlayer());
 	}
-
 
 }

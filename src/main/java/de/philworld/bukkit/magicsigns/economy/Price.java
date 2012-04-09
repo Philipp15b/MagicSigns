@@ -29,6 +29,13 @@ public abstract class Price {
 	}
 
 	/**
+	 * Returns if the sign is free.
+	 *
+	 * @return True if the sign is free, else false
+	 */
+	public abstract boolean isFree();
+
+	/**
 	 * Returns if the player can pay this price.
 	 *
 	 * @param p
@@ -75,6 +82,11 @@ public abstract class Price {
 
 		public double getPrice() {
 			return price;
+		}
+
+		@Override
+		public boolean isFree() {
+			return price == 0;
 		}
 
 		@Override
@@ -134,6 +146,11 @@ public abstract class Price {
 		}
 
 		@Override
+		public boolean isFree() {
+			return amount == 0;
+		}
+
+		@Override
 		public boolean has(Player p) {
 			return p.getInventory().contains(material, amount);
 		}
@@ -167,6 +184,11 @@ public abstract class Price {
 
 		public Level(int level) {
 			this.level = level;
+		}
+
+		@Override
+		public boolean isFree() {
+			return level == 0;
 		}
 
 		@Override

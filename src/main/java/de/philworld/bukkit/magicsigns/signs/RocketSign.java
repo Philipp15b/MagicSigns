@@ -6,11 +6,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
+import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.Setting;
 import de.philworld.bukkit.magicsigns.config.SettingBase;
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -20,8 +19,11 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * For example: <code>0,300,0</code> to make a huge jump in the air.
  *
  */
-@BuildPermission("magicsigns.rocket.create")
-@UsePermission("magicsigns.rocket.use")
+@MagicSignInfo(
+		friendlyName = "Rocket sign",
+		description = "A sign that can modify player's velocity.",
+		buildPerm = "magicsigns.rocket.create",
+		usePerm = "magicsigns.rocket.use")
 public class RocketSign extends PurchasableMagicSign {
 
 	public static LocalConfiguration config;

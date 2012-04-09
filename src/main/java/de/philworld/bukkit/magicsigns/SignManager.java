@@ -17,9 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 
-import de.philworld.bukkit.magicsigns.permissions.BuildPermission;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
-import de.philworld.bukkit.magicsigns.permissions.UsePermission;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
@@ -51,10 +49,10 @@ public class SignManager {
 
 	private Set<Class<? extends MagicSign>> signTypes = new HashSet<Class<? extends MagicSign>>();
 	private Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
-	private Logger logger;
+	private MagicSigns plugin;
 
-	public SignManager(Logger logger) {
-		this.logger = logger;
+	public SignManager(MagicSigns plugin) {
+		this.plugin = plugin;
 	}
 
 	/**
@@ -121,11 +119,11 @@ public class SignManager {
 
 					// check for build permissions
 					if (p != null) {
-						BuildPermission buildPerm = signType
-								.getAnnotation(BuildPermission.class);
+						MagicSignInfo signInfo = signType
+								.getAnnotation(MagicSignInfo.class);
 
-						if (buildPerm != null) {
-							if (!p.hasPermission(buildPerm.value())) {
+						if (signInfo != null) {
+							if (!p.hasPermission(signInfo.buildPerm())) {
 								throw new PermissionException();
 							}
 						}
@@ -273,6 +271,6 @@ public class SignManager {
 	 * @return the logger
 	 */
 	private Logger getLogger() {
-		return logger;
+		return plugin.getLogger();
 	}
 }
