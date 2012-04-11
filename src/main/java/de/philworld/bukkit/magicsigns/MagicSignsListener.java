@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -32,11 +33,12 @@ public class MagicSignsListener implements Listener {
 	 *
 	 * @param event
 	 */
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onSignChange(SignChangeEvent event) {
+		if (plugin.signEdit.isTempSign(event.getBlock()))
+			return;
+
 		try {
-			if (manager.containsSign(event.getBlock().getLocation()))
-				manager.removeSign(event.getBlock().getLocation());
 			manager.registerSign(event.getBlock(), event.getLines(),
 					event.getPlayer(), event);
 		} catch (Exception e) {
@@ -63,6 +65,11 @@ public class MagicSignsListener implements Listener {
 		Location loc = event.getClickedBlock().getLocation();
 
 		if (manager.containsSign(loc)) {
+
+			// if the plugin will edit this sign, don't allow interaction.
+			if (plugin.signEdit.listener.willEditMagicSign(event))
+				return;
+
 			MagicSign sign = manager.getSign(loc);
 			try {
 
@@ -87,6 +94,8 @@ public class MagicSignsListener implements Listener {
 
 				sign.onRightClick(event);
 
+				event.setCancelled(true);
+
 			} catch (PermissionException e) {
 				MSMsg.NO_PERMISSION.send(event.getPlayer());
 			}
@@ -98,15 +107,11 @@ public class MagicSignsListener implements Listener {
 	 *
 	 * @param event
 	 */
-	@EventHandler()
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.isCancelled())
-			return;
-
 		if (manager.containsSign(event.getBlock().getLocation())) {
 			manager.removeSign(event.getBlock().getLocation());
 		}
-
 	}
 
 	private Logger getLogger() {

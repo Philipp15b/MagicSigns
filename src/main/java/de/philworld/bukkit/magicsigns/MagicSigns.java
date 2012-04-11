@@ -7,13 +7,14 @@ import java.util.logging.Level;
 
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.philworld.bukkit.magicsigns.commands.MagicSignsCommandExecutor;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
+import de.philworld.bukkit.magicsigns.signedit.SignEdit;
 import de.philworld.bukkit.magicsigns.signs.ClearSign;
 import de.philworld.bukkit.magicsigns.signs.CreativeModeSign;
 import de.philworld.bukkit.magicsigns.signs.FeedSign;
@@ -42,13 +43,17 @@ public class MagicSigns extends JavaPlugin {
 		return instance;
 	}
 
-	public SignManager signManager = new SignManager(this);
+	public SignManager signManager;
+	public SignEdit signEdit;
 	private FileConfiguration config;
 
 	@Override
 	public void onEnable() {
 
 		instance = this;
+
+		signManager = new SignManager(this);
+		signEdit = new SignEdit(this);
 
 		loadConfiguration();
 
@@ -85,7 +90,8 @@ public class MagicSigns extends JavaPlugin {
 		try {
 			new Metrics(this).start();
 		} catch (IOException e) {
-			getLogger().log(Level.WARNING, "Error enabling Metrics for MagicSigns:", e);
+			getLogger().log(Level.WARNING,
+					"Error enabling Metrics for MagicSigns:", e);
 		}
 	}
 
@@ -96,11 +102,22 @@ public class MagicSigns extends JavaPlugin {
 
 	/**
 	 * Public alias for {@link SignManager#registerSignType(Class)}
+	 *
 	 * @see SignManager#registerSignType(Class)
 	 * @param signType
 	 */
 	public void registerSignType(Class<? extends MagicSign> signType) {
 		signManager.registerSignType(signType);
+	}
+
+	/**
+	 * Checks if the block at the given Location is a MagicSign.
+	 *
+	 * @param loc
+	 * @return True if its a MagicSign, else false
+	 */
+	public boolean isMagicSign(Location loc) {
+		return signManager.containsSign(loc);
 	}
 
 	/**

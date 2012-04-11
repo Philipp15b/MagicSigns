@@ -66,8 +66,8 @@ public class SignManager {
 
 	/**
 	 * Adds a new sign type. It must extend MagicSign and override the static
-	 * method <code>takeAction()</code>. The class can also contain permission
-	 * annotations ({@link BuildPermission}, {@link UsePermission}).
+	 * method <code>takeAction()</code>. The class must have a
+	 * {@link MagicSignInfo} annotation.
 	 *
 	 * @param signType
 	 */

@@ -1,5 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import java.util.Arrays;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -45,8 +47,8 @@ public abstract class MagicSign {
 		}
 	}
 
-	public Block sign;
-	public String[] lines;
+	public final Block sign;
+	public final String[] lines;
 
 	/**
 	 * Create a new instance of the MagicSign
@@ -97,6 +99,18 @@ public abstract class MagicSign {
 	 */
 	public Location getLocation() {
 		return sign.getLocation();
+	}
+
+	/**
+	 * Returns if this sign is masked (the sign shows a different text than this
+	 * MagicSign uses for its work).
+	 *
+	 * @return True if its masked, else false.
+	 */
+	public boolean isMasked() {
+		Sign sign = (Sign) this.sign.getState();
+		String[] currentLines = sign.getLines();
+		return !Arrays.equals(currentLines, lines);
 	}
 
 	/**
