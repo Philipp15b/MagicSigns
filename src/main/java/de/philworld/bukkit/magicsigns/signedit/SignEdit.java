@@ -98,7 +98,7 @@ public class SignEdit {
 	 * @throws PermissionException
 	 */
 	public void setEditMode(Player p, EditMode mode) throws PermissionException {
-		if (mode == DEFAULT_EDIT_MODE && editMode.containsKey(p.getName())) {
+		if (mode == EditMode.NONE && editMode.containsKey(p.getName())) {
 			editMode.remove(p.getName());
 			return;
 		}
