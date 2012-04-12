@@ -119,6 +119,8 @@ public abstract class Price {
 		public static Item valueOf(String text) throws IllegalArgumentException {
 			String[] result = text.split(":");
 			Material material = Material.getMaterial(result[0]);
+			if (material == null)
+				throw new IllegalArgumentException("Could not find material!");
 			int amount;
 			if (result.length == 1) {
 				amount = 1;
