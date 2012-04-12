@@ -188,7 +188,7 @@ public class MagicSigns extends JavaPlugin {
 		try {
 			signsDb.save(signsDbFile);
 		} catch (IOException e) {
-			getLogger().log(Level.WARNING, "Error saving MagicSigns", e);
+			getLogger().log(Level.WARNING, "Error saving MagicSigns:", e);
 		}
 	}
 
