@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +10,7 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,7 +47,8 @@ public class MagicSigns extends JavaPlugin {
 
 	public SignManager signManager;
 	public SignEdit signEdit;
-	private FileConfiguration config;
+	private File signsDbFile;
+	private FileConfiguration signsDb;
 
 	@Override
 	public void onEnable() {
@@ -97,6 +100,7 @@ public class MagicSigns extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		saveConfiguration();
 		saveSigns();
 	}
 
@@ -120,23 +124,41 @@ public class MagicSigns extends JavaPlugin {
 		return signManager.containsSign(loc);
 	}
 
-	/**
-	 * Loads the configuration and inserts the defaults.
-	 */
 	private void loadConfiguration() {
 		ConfigurationSerialization
 				.registerClass(MagicSignSerializationProxy.class);
-		config = getConfig();
-		config.options().copyDefaults(true);
+		getConfig().options().copyDefaults(true);
+		signManager.loadConfig(getConfig());
+
+		saveConfig();
+	}
+
+	private void saveConfiguration() {
+		signManager.saveConfig(getConfig());
 		saveConfig();
 	}
 
 	@SuppressWarnings("unchecked")
 	private void loadSigns() {
-		signManager.loadConfig(getConfig());
+		signsDbFile = new File(getDataFolder(), "signs.db.yml");
+		signsDb = YamlConfiguration.loadConfiguration(signsDbFile);
 
-		List<MagicSignSerializationProxy> list = (List<MagicSignSerializationProxy>) config
+		List<MagicSignSerializationProxy> list = (List<MagicSignSerializationProxy>) signsDb
 				.get("magic-signs");
+
+		if (list == null) {
+			list = new LinkedList<MagicSignSerializationProxy>();
+		}
+
+		// migrate from old config file.
+		if (getConfig().get("magic-signs") != null) {
+			getLogger()
+					.log(Level.INFO,
+							"Found list of signs in main config file. MagicSigns are now saved in signs.db.yml! Copying...");
+			list.addAll((List<? extends MagicSignSerializationProxy>) getConfig()
+					.get("magic-signs"));
+			getConfig().set("magic-signs", null);
+		}
 
 		if (list == null || list.isEmpty())
 			return;
@@ -155,17 +177,19 @@ public class MagicSigns extends JavaPlugin {
 
 	private void saveSigns() {
 		// reset list first
-		config.set("magic-signs", null);
+		signsDb.set("magic-signs", null);
 
 		List<MagicSignSerializationProxy> signList = new LinkedList<MagicSignSerializationProxy>();
 		for (MagicSign sign : signManager.getSigns()) {
 			signList.add(sign.serialize());
 		}
-		config.set("magic-signs", signList);
 
-		signManager.saveConfig(getConfig());
-
-		saveConfig();
+		signsDb.set("magic-signs", signList);
+		try {
+			signsDb.save(signsDbFile);
+		} catch (IOException e) {
+			getLogger().log(Level.WARNING, "Error saving MagicSigns", e);
+		}
 	}
 
 	private boolean setupEconomy() {
