@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signedit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -32,6 +33,7 @@ public class SignEditListener implements Listener {
 		if (mode == EditMode.NONE)
 			return;
 
+		// only allow MagicSigns if mode is mask.
 		if (mode == EditMode.MASK_MAGIC_SIGNS
 				&& !signEdit.plugin.isMagicSign(event.getBlockAgainst()
 						.getLocation()))
@@ -44,6 +46,7 @@ public class SignEditListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.LOW)
 	public void onSignChange(SignChangeEvent event) {
+		// only temporary edit signs
 		if (!signEdit.isTempSign(event.getBlock()))
 			return;
 
@@ -51,17 +54,39 @@ public class SignEditListener implements Listener {
 		Sign targetSign = (Sign) signEdit.getTargetBlock(event.getBlock())
 				.getState();
 
-		// copy from the tempSign to targetSign
-		for (int i = 0; i < event.getLines().length; i++) {
-			targetSign.setLine(i, event.getLines()[i]);
+		EditMode playerEditMode = signEdit.getEditMode(event.getPlayer());
+
+		// whether to mask a MagicSign. If true, don't call SignChangeEvent.
+		boolean maskMagicSign = ((playerEditMode == EditMode.MASK_MAGIC_SIGNS || playerEditMode == EditMode.AUTO) && signEdit.plugin
+				.isMagicSign(targetSign.getLocation()));
+
+		SignChangeEvent signChange = null;
+		String[] newLines = event.getLines();
+		System.out.println(newLines.length);
+		if (!maskMagicSign) {
+			// delete the old MagicSign if the EditMode is modify.
+			if (playerEditMode == EditMode.MODIFY
+					&& signEdit.plugin.isMagicSign(targetSign.getLocation())) {
+				signEdit.plugin.signManager
+						.removeSign(targetSign.getLocation());
+			}
+
+			// call a new SignChangeEvent to inform other plugins
+			signChange = new SignChangeEvent(targetSign.getLocation()
+					.getBlock(), event.getPlayer(), newLines);
+
+			Bukkit.getServer().getPluginManager().callEvent(signChange);
+
+			newLines = signChange.getLines();
 		}
 
-		targetSign.update();
+		if (maskMagicSign || (signChange != null && !signChange.isCancelled())) {
+			// copy from the tempSign to targetSign
+			for (int i = 0; i < newLines.length; i++) {
+				targetSign.setLine(i, newLines[i]);
+			}
 
-		// if the EditMode is modify, delete the old MagicSign
-		if (signEdit.getEditMode(event.getPlayer()) == EditMode.MODIFY
-				&& signEdit.plugin.isMagicSign(targetSign.getLocation())) {
-			signEdit.plugin.signManager.removeSign(targetSign.getLocation());
+			targetSign.update();
 		}
 
 		// remove the temporary sign
@@ -74,8 +99,6 @@ public class SignEditListener implements Listener {
 		event.getPlayer().updateInventory();
 
 		event.setCancelled(true);
-
-		// TODO: call SignChangeEvent to register modified MagicSigns etc.
 	}
 
 	/**

@@ -128,8 +128,6 @@ public class MagicSigns extends JavaPlugin {
 		ConfigurationSerialization
 				.registerClass(MagicSignSerializationProxy.class);
 		getConfig().options().copyDefaults(true);
-		signManager.loadConfig(getConfig());
-
 		saveConfig();
 	}
 
@@ -173,6 +171,9 @@ public class MagicSigns extends JavaPlugin {
 								+ e.getMessage(), e);
 			}
 		}
+
+		signManager.loadConfig(getConfig());
+		saveConfig();
 	}
 
 	private void saveSigns() {
