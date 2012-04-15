@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,7 +35,8 @@ import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
 public class MagicSigns extends JavaPlugin {
 
 	private static MagicSigns instance;
-	public static Economy economy = null;
+	private static Economy economy = null;
+	private static Permission permission = null;
 
 	/**
 	 * Get the current instance.
@@ -82,6 +84,13 @@ public class MagicSigns extends JavaPlugin {
 		} else {
 			getLogger().log(Level.INFO,
 					"Vault was not found, all signs will be free!");
+		}
+
+		if (setupPermissions()) {
+			getLogger().log(Level.INFO, "Using Vault for permissions.");
+		} else {
+			getLogger().log(Level.INFO,
+					"Vault was not found, permission signs will not work (Permissions in general will work though!)");
 		}
 
 		getCommand("ms").setExecutor(new MagicSignsCommandExecutor(this));
@@ -213,6 +222,37 @@ public class MagicSigns extends JavaPlugin {
 		} catch (NoClassDefFoundError e) {
 			return false;
 		}
+	}
+
+	private boolean setupPermissions() {
+		try {
+			RegisteredServiceProvider<Permission> economyProvider = getServer()
+					.getServicesManager().getRegistration(
+							net.milkbowl.vault.permission.Permission.class);
+
+			if (economyProvider == null)
+				return false;
+
+			permission = economyProvider.getProvider();
+
+			return true;
+		} catch (NoClassDefFoundError e) {
+			return false;
+		}
+	}
+
+	/**
+	 * @return the Vault economy
+	 */
+	public static Economy getEconomy() {
+		return economy;
+	}
+
+	/**
+	 * @return the Vault permission
+	 */
+	public static Permission getPermission() {
+		return permission;
 	}
 
 }

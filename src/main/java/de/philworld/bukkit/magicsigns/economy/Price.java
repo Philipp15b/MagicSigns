@@ -91,14 +91,14 @@ public abstract class Price {
 
 		@Override
 		public boolean has(Player p) {
-			return MagicSigns.economy.has(p.getName(), price);
+			return MagicSigns.getEconomy().has(p.getName(), price);
 		}
 
 		@Override
 		public boolean withdrawPlayer(Player p) {
-			if (MagicSigns.economy != null) {
+			if (MagicSigns.getEconomy() != null) {
 				if (has(p)) {
-					if (MagicSigns.economy.withdrawPlayer(p.getName(), price)
+					if (MagicSigns.getEconomy().withdrawPlayer(p.getName(), price)
 							.transactionSuccess()) {
 						return true;
 					}
