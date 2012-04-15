@@ -1,5 +1,7 @@
 package de.philworld.bukkit.magicsigns.signedit;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,7 +24,7 @@ public class SignEdit {
 	 */
 	private Map<Location, Location> editSigns = new HashMap<Location, Location>();
 
-	private Map<String, EditMode> editMode = new HashMap<String, EditMode>();
+	private PlayerEditMode editMode;
 
 	public final SignEditListener listener = new SignEditListener(this);
 	final MagicSigns plugin;
@@ -32,6 +34,12 @@ public class SignEdit {
 	public SignEdit(MagicSigns plugin) {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+
+		editMode = new PlayerEditMode(new File(plugin.getDataFolder(), "edit-modes.db.yml"));
+	}
+
+	public void save() throws IOException {
+		editMode.save();
 	}
 
 	/**
@@ -98,12 +106,8 @@ public class SignEdit {
 	 * @throws PermissionException
 	 */
 	public void setEditMode(Player p, EditMode mode) throws PermissionException {
-		if (mode == EditMode.NONE && editMode.containsKey(p.getName())) {
-			editMode.remove(p.getName());
-			return;
-		}
 		if (mode.hasPermission(p)) {
-			editMode.put(p.getName(), mode);
+			editMode.setEditMode(p, mode);
 		} else {
 			throw new PermissionException();
 		}
@@ -117,8 +121,8 @@ public class SignEdit {
 	 * @return The {@link EditMode} for this player.
 	 */
 	public EditMode getEditMode(Player p) {
-		if (editMode.containsKey(p.getName())) {
-			return editMode.get(p.getName());
+		if (editMode.getEditMode(p) != null) {
+			return editMode.getEditMode(p);
 		} else {
 			if(EditMode.AUTO.hasPermission(p)) {
 				return EditMode.AUTO;

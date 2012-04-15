@@ -101,6 +101,11 @@ public class MagicSigns extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		saveConfiguration();
+		try {
+			signEdit.save();
+		} catch (IOException e) {
+			getLogger().log(Level.WARNING, "Error saving EditModes:", e);
+		}
 		saveSigns();
 	}
 
