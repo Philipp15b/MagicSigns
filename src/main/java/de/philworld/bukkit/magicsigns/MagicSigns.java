@@ -31,6 +31,7 @@ import de.philworld.bukkit.magicsigns.signs.SurvivalModeSign;
 import de.philworld.bukkit.magicsigns.signs.TeleportSign;
 import de.philworld.bukkit.magicsigns.signs.command.CommandSign;
 import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
+import de.philworld.bukkit.magicsigns.signs.permission.PermissionSign;
 
 public class MagicSigns extends JavaPlugin {
 
@@ -75,6 +76,7 @@ public class MagicSigns extends JavaPlugin {
 		signManager.registerSignType(CreativeModeSign.class);
 		signManager.registerSignType(SurvivalModeSign.class);
 		signManager.registerSignType(FeedSign.class);
+		signManager.registerSignType(PermissionSign.class);
 
 		// and then load them from the config
 		loadSigns();
