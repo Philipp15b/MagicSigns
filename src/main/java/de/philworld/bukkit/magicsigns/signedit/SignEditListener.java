@@ -109,15 +109,13 @@ public class SignEditListener implements Listener {
 	 * @return
 	 */
 	public boolean willEditMagicSign(PlayerInteractEvent event) {
+		if (signEdit.getEditMode(event.getPlayer()) == EditMode.NONE)
+			return false;
 		if (isSign(event.getClickedBlock().getType())
 				&& event.getItem() != null && isSign(event.getItem().getType())) {
-			if (signEdit.getEditMode(event.getPlayer()) == EditMode.NONE)
-				return false;
-			else
-				return true;
-		} else {
-			return false;
+			return true;
 		}
+		return false;
 	}
 
 	private boolean isSign(Material material) {
