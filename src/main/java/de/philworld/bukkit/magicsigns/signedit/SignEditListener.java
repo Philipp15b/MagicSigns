@@ -1,5 +1,7 @@
 package de.philworld.bukkit.magicsigns.signedit;
 
+import static de.philworld.bukkit.magicsigns.util.MaterialUtil.isSign;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -116,11 +118,6 @@ public class SignEditListener implements Listener {
 			return true;
 		}
 		return false;
-	}
-
-	private boolean isSign(Material material) {
-		return material == Material.SIGN || material == Material.SIGN_POST
-				|| material == Material.WALL_SIGN;
 	}
 
 }
