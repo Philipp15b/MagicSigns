@@ -69,9 +69,18 @@ public class SignManager {
 	 * method <code>takeAction()</code>. The class must have a
 	 * {@link MagicSignInfo} annotation.
 	 *
+	 * @throws IllegalArgumentException
+	 *             if the sign type doesnt have a {@link MagicSignInfo}
+	 *             annotation.
 	 * @param signType
 	 */
 	public void registerSignType(Class<? extends MagicSign> signType) {
+		MagicSignInfo annotation = signType.getAnnotation(MagicSignInfo.class);
+		if (annotation == null)
+			throw new IllegalArgumentException("The sign type '"
+					+ signType.getName()
+					+ "' must have a MagicSignInfo annotation!");
+
 		signTypes.add(signType);
 	}
 
