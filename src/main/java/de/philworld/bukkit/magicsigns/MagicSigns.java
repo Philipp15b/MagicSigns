@@ -91,8 +91,9 @@ public class MagicSigns extends JavaPlugin {
 		if (setupPermissions()) {
 			getLogger().log(Level.INFO, "Using Vault for permissions.");
 		} else {
-			getLogger().log(Level.INFO,
-					"Vault was not found, permission signs will not work (Permissions in general will work though!)");
+			getLogger()
+					.log(Level.INFO,
+							"Vault was not found, permission signs will not work (Permissions in general will work though!)");
 		}
 
 		getCommand("ms").setExecutor(new MagicSignsCommandExecutor(this));
@@ -111,7 +112,10 @@ public class MagicSigns extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		saveConfiguration();
+		// Disable saving configuration because no sign is currently modifying
+		// the config and user's modified config is overwritten every server
+		// shutdown.
+		// saveConfiguration();
 		try {
 			signEdit.save();
 		} catch (IOException e) {
@@ -147,6 +151,7 @@ public class MagicSigns extends JavaPlugin {
 		saveConfig();
 	}
 
+	@SuppressWarnings("unused")
 	private void saveConfiguration() {
 		signManager.saveConfig(getConfig());
 		saveConfig();
