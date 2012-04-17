@@ -16,6 +16,12 @@
 			<id>Bukkit Official</id>
 			<url>http://repo.bukkit.org/content/repositories/public</url>
 		</repository>
+
+		<repository>
+			<id>zml-repo</id>
+			<url>http://files.zachsthings.com/repo</url>
+		</repository>
+		
 	</repositories>
 
 	<!-- Dependencies -->
@@ -26,6 +32,12 @@
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
 			<version>1.2.5-R0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldedit</artifactId>
+			<version>5.3</version>
 		</dependency>
 
 		<dependency>
@@ -86,6 +98,50 @@
 					</archive>
 				</configuration>
 			</plugin>
+
+			<!-- Shade Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>com.sk89q:worldedit:jar:*</include>
+								</includes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>com.sk89q:worldedit:jar:*</artifact>
+									<includes>
+										<include>com/sk89q/worldedit/blocks/ItemType.*</include>
+										<include>com/sk89q/worldedit/blocks/BlockID.*</include>
+										<include>com/sk89q/worldedit/blocks/ItemID.*</include>
+										<include>com/sk89q/util/StringUtil.*</include>
+									</includes>
+								</filter>
+							</filters>
+							<relocations>
+								<relocation>
+									<pattern>com.sk89q.worldedit.blocks</pattern>
+									<shadedPattern>de.philworld.bukkit.magicsigns.sk89q.worldedit.blocks</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.sk89q.util</pattern>
+									<shadedPattern>de.philworld.bukkit.magicsigns.sk89q.util</shadedPattern>
+								</relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.sk89q.worldedit.blocks.ItemType;
+
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.util.InventoryUtil;
 
@@ -118,9 +120,10 @@ public abstract class Price {
 
 		public static Item valueOf(String text) throws IllegalArgumentException {
 			String[] result = text.split(":");
-			Material material = Material.getMaterial(result[0]);
-			if (material == null)
+			ItemType itemType = ItemType.lookup(result[0]);
+			if (itemType == null)
 				throw new IllegalArgumentException("Could not find material!");
+			Material material = Material.getMaterial(itemType.getID());
 			int amount;
 			if (result.length == 1) {
 				amount = 1;
