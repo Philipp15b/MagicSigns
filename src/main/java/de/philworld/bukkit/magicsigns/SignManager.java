@@ -155,10 +155,19 @@ public class SignManager {
 				}
 
 			} catch (PermissionException e) {
-				sign.breakNaturally();
+				if (event != null) {
+					event.setCancelled(true);
+				} else {
+					sign.breakNaturally();
+				}
 				MSMsg.NO_PERMISSION.send(p);
 			} catch (InvocationTargetException e) {
 				if (e.getTargetException() instanceof InvalidSignException) {
+					if (event != null) {
+						event.setCancelled(true);
+					} else {
+						sign.breakNaturally();
+					}
 					if (p != null) {
 						p.sendMessage(ChatColor.RED
 								+ e.getTargetException().getMessage());
