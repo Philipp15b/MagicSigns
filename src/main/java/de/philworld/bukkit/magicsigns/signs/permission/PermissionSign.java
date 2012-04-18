@@ -43,7 +43,7 @@ public class PermissionSign extends PurchasableMagicSign {
 	public PermissionSign(Block sign, String[] lines)
 			throws InvalidSignException {
 		super(sign, lines);
-		permissions = MacroUtil.format(lines[1] + lines[2], config.macros);
+		permissions = MacroUtil.format(lines[1] + lines[2], config.getMacros());
 		if (permissions.size() == 0)
 			throw new InvalidSignException("No permissions found!");
 	}

@@ -15,7 +15,7 @@ import de.philworld.bukkit.magicsigns.MagicSigns;
 public class MacroConfiguration extends ConfigurationBase {
 
 	private final String configKey;
-	public final Map<String, List<String>> macros = new HashMap<String, List<String>>();
+	private final Map<String, List<String>> macros = new HashMap<String, List<String>>();
 
 	public MacroConfiguration(String configKey) {
 		this.configKey = configKey;
@@ -34,7 +34,7 @@ public class MacroConfiguration extends ConfigurationBase {
 					@SuppressWarnings("unchecked")
 					List<String> commands = (List<String>) entry.getValue();
 
-					macros.put(key, commands);
+					getMacros().put(key, commands);
 				} catch (ClassCastException e) {
 					MagicSigns
 							.inst()
@@ -55,6 +55,13 @@ public class MacroConfiguration extends ConfigurationBase {
 	@Override
 	public ConfigurationSection save(ConfigurationSection section) {
 		return section; // nothing changes at runtime
+	}
+
+	/**
+	 * @return the macros
+	 */
+	public Map<String, List<String>> getMacros() {
+		return macros;
 	}
 
 }

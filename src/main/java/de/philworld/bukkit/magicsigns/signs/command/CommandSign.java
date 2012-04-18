@@ -49,7 +49,7 @@ public class CommandSign extends PurchasableMagicSign {
 
 	public CommandSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
-		commands.addAll(MacroUtil.format(lines[1] + lines[2], config.macros));
+		commands.addAll(MacroUtil.format(lines[1] + lines[2], config.getMacros()));
 	}
 
 	@Override
