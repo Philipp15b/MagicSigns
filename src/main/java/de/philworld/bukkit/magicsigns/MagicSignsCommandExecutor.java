@@ -68,7 +68,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 				p.sendMessage(ChatColor.GOLD + "MagicSigns Sign Info");
 				p.sendMessage(ChatColor.GOLD + "--------------------");
 
-				MagicSign sign = plugin.signManager.getSign(target
+				MagicSign sign = plugin.getSignManager().getSign(target
 						.getLocation());
 				if (sign == null) {
 					p.sendMessage(ChatColor.GREEN
@@ -89,11 +89,11 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 
 				p.sendMessage("");
 
-				plugin.signEdit.cmdExecutor.sendEditNote(p, label);
+				plugin.getSignEdit().cmdExecutor.sendEditNote(p, label);
 			}
 
 			else if (base.equalsIgnoreCase("edit")) {
-				return plugin.signEdit.cmdExecutor.edit(p, label, args);
+				return plugin.getSignEdit().cmdExecutor.edit(p, label, args);
 			}
 
 			else if (base.equalsIgnoreCase("unmask")) {
@@ -111,7 +111,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 					return true;
 				}
 
-				MagicSign magicSign = plugin.signManager.getSign(target.getLocation());
+				MagicSign magicSign = plugin.getSignManager().getSign(target.getLocation());
 				if(magicSign == null) {
 					p.sendMessage(ChatColor.RED + "This is not a MagicSign hence it can not be unmasked!");
 					return true;

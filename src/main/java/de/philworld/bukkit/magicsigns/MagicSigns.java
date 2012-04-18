@@ -48,8 +48,8 @@ public class MagicSigns extends JavaPlugin {
 		return instance;
 	}
 
-	public SignManager signManager;
-	public SignEdit signEdit;
+	private SignManager signManager;
+	private SignEdit signEdit;
 	private File signsDbFile;
 	private FileConfiguration signsDb;
 
@@ -64,19 +64,19 @@ public class MagicSigns extends JavaPlugin {
 		loadConfiguration();
 
 		// register all sign types
-		signManager.registerSignType(CommandSign.class);
-		signManager.registerSignType(ConsoleCommandSign.class);
-		signManager.registerSignType(SpeedSign.class);
-		signManager.registerSignType(HealSign.class);
-		signManager.registerSignType(HealthSign.class);
-		signManager.registerSignType(ClearSign.class);
-		signManager.registerSignType(TeleportSign.class);
-		signManager.registerSignType(RocketSign.class);
-		signManager.registerSignType(LevelSign.class);
-		signManager.registerSignType(CreativeModeSign.class);
-		signManager.registerSignType(SurvivalModeSign.class);
-		signManager.registerSignType(FeedSign.class);
-		signManager.registerSignType(PermissionSign.class);
+		getSignManager().registerSignType(CommandSign.class);
+		getSignManager().registerSignType(ConsoleCommandSign.class);
+		getSignManager().registerSignType(SpeedSign.class);
+		getSignManager().registerSignType(HealSign.class);
+		getSignManager().registerSignType(HealthSign.class);
+		getSignManager().registerSignType(ClearSign.class);
+		getSignManager().registerSignType(TeleportSign.class);
+		getSignManager().registerSignType(RocketSign.class);
+		getSignManager().registerSignType(LevelSign.class);
+		getSignManager().registerSignType(CreativeModeSign.class);
+		getSignManager().registerSignType(SurvivalModeSign.class);
+		getSignManager().registerSignType(FeedSign.class);
+		getSignManager().registerSignType(PermissionSign.class);
 
 		// and then load them from the config
 		loadSigns();
@@ -117,7 +117,7 @@ public class MagicSigns extends JavaPlugin {
 		// shutdown.
 		// saveConfiguration();
 		try {
-			signEdit.save();
+			getSignEdit().save();
 		} catch (IOException e) {
 			getLogger().log(Level.WARNING, "Error saving EditModes:", e);
 		}
@@ -131,7 +131,7 @@ public class MagicSigns extends JavaPlugin {
 	 * @param signType
 	 */
 	public void registerSignType(Class<? extends MagicSign> signType) {
-		signManager.registerSignType(signType);
+		getSignManager().registerSignType(signType);
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class MagicSigns extends JavaPlugin {
 	 * @return True if its a MagicSign, else false
 	 */
 	public boolean isMagicSign(Location loc) {
-		return signManager.containsSign(loc);
+		return getSignManager().containsSign(loc);
 	}
 
 	private void loadConfiguration() {
@@ -153,7 +153,7 @@ public class MagicSigns extends JavaPlugin {
 
 	@SuppressWarnings("unused")
 	private void saveConfiguration() {
-		signManager.saveConfig(getConfig());
+		getSignManager().saveConfig(getConfig());
 		saveConfig();
 	}
 
@@ -184,7 +184,7 @@ public class MagicSigns extends JavaPlugin {
 
 		for (MagicSignSerializationProxy proxy : list) {
 			try {
-				signManager.registerSign(proxy.getMagicSign());
+				getSignManager().registerSign(proxy.getMagicSign());
 			} catch (Throwable e) {
 				getLogger().log(
 						Level.WARNING,
@@ -193,7 +193,7 @@ public class MagicSigns extends JavaPlugin {
 			}
 		}
 
-		signManager.loadConfig(getConfig());
+		getSignManager().loadConfig(getConfig());
 		saveConfig();
 	}
 
@@ -202,7 +202,7 @@ public class MagicSigns extends JavaPlugin {
 		signsDb.set("magic-signs", null);
 
 		List<MagicSignSerializationProxy> signList = new LinkedList<MagicSignSerializationProxy>();
-		for (MagicSign sign : signManager.getSigns()) {
+		for (MagicSign sign : getSignManager().getSigns()) {
 			signList.add(sign.serialize());
 		}
 
@@ -260,6 +260,20 @@ public class MagicSigns extends JavaPlugin {
 	 */
 	public static Permission getPermission() {
 		return permission;
+	}
+
+	/**
+	 * @return the signEdit
+	 */
+	public SignEdit getSignEdit() {
+		return signEdit;
+	}
+
+	/**
+	 * @return the signManager
+	 */
+	public SignManager getSignManager() {
+		return signManager;
 	}
 
 }

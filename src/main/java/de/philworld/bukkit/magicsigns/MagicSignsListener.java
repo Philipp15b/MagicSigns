@@ -25,7 +25,7 @@ public class MagicSignsListener implements Listener {
 
 	public MagicSignsListener(MagicSigns plugin) {
 		this.plugin = plugin;
-		this.manager = plugin.signManager;
+		this.manager = plugin.getSignManager();
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class MagicSignsListener implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void onSignChange(SignChangeEvent event) {
-		if (plugin.signEdit.isTempSign(event.getBlock()))
+		if (plugin.getSignEdit().isTempSign(event.getBlock()))
 			return;
 
 		try {
@@ -67,7 +67,7 @@ public class MagicSignsListener implements Listener {
 		if (manager.containsSign(loc)) {
 
 			// if the plugin will edit this sign, don't allow interaction.
-			if (plugin.signEdit.listener.willEditMagicSign(event))
+			if (plugin.getSignEdit().listener.willEditMagicSign(event))
 				return;
 
 			MagicSign sign = manager.getSign(loc);
