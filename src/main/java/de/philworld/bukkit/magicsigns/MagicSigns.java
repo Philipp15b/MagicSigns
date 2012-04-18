@@ -39,15 +39,6 @@ public class MagicSigns extends JavaPlugin {
 	private static Economy economy = null;
 	private static Permission permission = null;
 
-	/**
-	 * Get the current instance.
-	 *
-	 * @return Current MagicSigns instance.
-	 */
-	public static MagicSigns inst() {
-		return instance;
-	}
-
 	private SignManager signManager;
 	private SignEdit signEdit;
 	private File signsDbFile;
@@ -246,6 +237,15 @@ public class MagicSigns extends JavaPlugin {
 		} catch (NoClassDefFoundError e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Get the current instance.
+	 *
+	 * @return Current MagicSigns instance.
+	 */
+	public static MagicSigns inst() {
+		return instance;
 	}
 
 	/**
