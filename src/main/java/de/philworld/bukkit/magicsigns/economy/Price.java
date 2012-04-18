@@ -114,7 +114,6 @@ public abstract class Price {
 
 	/**
 	 * A price that uses items.
-	 *
 	 */
 	public static class Item extends Price {
 

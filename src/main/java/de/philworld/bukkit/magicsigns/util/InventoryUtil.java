@@ -9,8 +9,9 @@ public class InventoryUtil {
 	/**
 	 * Removes a specific amount of items from an inventory.
 	 *
+	 * <p>
 	 * Thanks to bergerkiller:
-	 * http://forums.bukkit.org/threads/remove-items-from-an-inventory.27853/
+	 * {@code http://forums.bukkit.org/threads/remove-items-from-an-inventory.27853/}
 	 *
 	 * @param inv
 	 *            The inventory
