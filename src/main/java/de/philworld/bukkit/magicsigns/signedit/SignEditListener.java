@@ -17,7 +17,7 @@ import de.philworld.bukkit.magicsigns.MagicSignsListener;
 
 public class SignEditListener implements Listener {
 
-	public final SignEdit signEdit;
+	private final SignEdit signEdit;
 
 	public SignEditListener(SignEdit signEdit) {
 		this.signEdit = signEdit;
