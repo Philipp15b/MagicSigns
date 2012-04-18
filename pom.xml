@@ -18,10 +18,15 @@
 		</repository>
 
 		<repository>
+			<id>milkbowl-repo</id>
+			<url>http://ci.milkbowl.net/plugin/repository/everything/</url>
+		</repository>
+
+		<repository>
 			<id>zml-repo</id>
 			<url>http://files.zachsthings.com/repo</url>
 		</repository>
-		
+
 	</repositories>
 
 	<!-- Dependencies -->
@@ -43,7 +48,7 @@
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>Vault</artifactId>
-			<version>1.2.13</version>
+			<version>1.2.16-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
