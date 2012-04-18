@@ -67,7 +67,7 @@ public class MagicSignsListener implements Listener {
 		if (manager.containsSign(loc)) {
 
 			// if the plugin will edit this sign, don't allow interaction.
-			if (plugin.getSignEdit().listener.willEditMagicSign(event))
+			if (plugin.getSignEdit().getListener().willEditMagicSign(event))
 				return;
 
 			MagicSign sign = manager.getSign(loc);

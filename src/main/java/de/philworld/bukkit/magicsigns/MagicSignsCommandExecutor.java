@@ -89,11 +89,11 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 
 				p.sendMessage("");
 
-				plugin.getSignEdit().cmdExecutor.sendEditNote(p, label);
+				plugin.getSignEdit().getCmdExecutor().sendEditNote(p, label);
 			}
 
 			else if (base.equalsIgnoreCase("edit")) {
-				return plugin.getSignEdit().cmdExecutor.edit(p, label, args);
+				return plugin.getSignEdit().getCmdExecutor().edit(p, label, args);
 			}
 
 			else if (base.equalsIgnoreCase("unmask")) {

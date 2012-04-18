@@ -15,6 +15,8 @@ import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 
 public class SignEdit {
 
+	final MagicSigns plugin;
+
 	/**
 	 * This Map saves the location of the sign that contains the new content as
 	 * the key. The target sign's location is the value.
@@ -25,15 +27,13 @@ public class SignEdit {
 	private Map<Location, Location> editSigns = new HashMap<Location, Location>();
 
 	private PlayerEditMode editMode;
-
-	public final SignEditListener listener = new SignEditListener(this);
-	final MagicSigns plugin;
-	public final SignEditCommandExecutor cmdExecutor = new SignEditCommandExecutor(
+	private final SignEditListener listener = new SignEditListener(this);
+	private final SignEditCommandExecutor cmdExecutor = new SignEditCommandExecutor(
 			this);
 
 	public SignEdit(MagicSigns plugin) {
 		this.plugin = plugin;
-		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+		plugin.getServer().getPluginManager().registerEvents(getListener(), plugin);
 
 		editMode = new PlayerEditMode(new File(plugin.getDataFolder(), "edit-modes.db.yml"));
 	}
@@ -156,6 +156,20 @@ public class SignEdit {
 	 */
 	void unregisterEditSign(Location loc) {
 		editSigns.remove(loc);
+	}
+
+	/**
+	 * @return the listener
+	 */
+	public SignEditListener getListener() {
+		return listener;
+	}
+
+	/**
+	 * @return the cmdExecutor
+	 */
+	public SignEditCommandExecutor getCmdExecutor() {
+		return cmdExecutor;
 	}
 
 }
