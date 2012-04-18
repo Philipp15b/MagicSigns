@@ -135,11 +135,11 @@
 							<relocations>
 								<relocation>
 									<pattern>com.sk89q.worldedit.blocks</pattern>
-									<shadedPattern>de.philworld.bukkit.magicsigns.sk89q.worldedit.blocks</shadedPattern>
+									<shadedPattern>de.philworld.bukkit.magicsigns.com.sk89q.worldedit.blocks</shadedPattern>
 								</relocation>
 								<relocation>
 									<pattern>com.sk89q.util</pattern>
-									<shadedPattern>de.philworld.bukkit.magicsigns.sk89q.util</shadedPattern>
+									<shadedPattern>de.philworld.bukkit.magicsigns.com.sk89q.util</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
