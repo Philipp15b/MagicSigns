@@ -20,7 +20,7 @@ public abstract class Price {
 						"Invalid price format for an item! Format: `i:ITEMNAME`");
 			return Price.Item.valueOf(result[1]);
 		} else if (text.startsWith("lvl:")) {
-			String[] result = text.split("i:");
+			String[] result = text.split("lvl:");
 			if (result.length != 2)
 				throw new IllegalArgumentException(
 						"Invalid price format for levels! Format: `lvl:10`");
