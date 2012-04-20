@@ -64,7 +64,7 @@ public class SignEditListener implements Listener {
 
 		SignChangeEvent signChange = null;
 		String[] newLines = event.getLines();
-		System.out.println(newLines.length);
+
 		if (!maskMagicSign) {
 			// delete the old MagicSign if the EditMode is modify.
 			if (playerEditMode == EditMode.MODIFY
