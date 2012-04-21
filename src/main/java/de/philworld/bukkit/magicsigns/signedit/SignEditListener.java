@@ -69,8 +69,8 @@ public class SignEditListener implements Listener {
 			// delete the old MagicSign if the EditMode is modify.
 			if (playerEditMode == EditMode.MODIFY
 					&& signEdit.plugin.isMagicSign(targetSign.getLocation())) {
-				signEdit.plugin.getSignManager()
-						.removeSign(targetSign.getLocation());
+				signEdit.plugin.getSignManager().removeSign(
+						targetSign.getLocation());
 			}
 
 			// call a new SignChangeEvent to inform other plugins

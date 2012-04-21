@@ -16,6 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.philworld.bukkit.magicsigns.coloredsigns.ColoredSigns;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.signedit.SignEdit;
 import de.philworld.bukkit.magicsigns.signs.ClearSign;
@@ -41,6 +42,7 @@ public class MagicSigns extends JavaPlugin {
 
 	private SignManager signManager;
 	private SignEdit signEdit;
+	private ColoredSigns coloredSigns;
 	private File signsDbFile;
 	private FileConfiguration signsDb;
 
@@ -51,6 +53,7 @@ public class MagicSigns extends JavaPlugin {
 
 		signManager = new SignManager(this);
 		signEdit = new SignEdit(this);
+		coloredSigns = new ColoredSigns(this);
 
 		loadConfiguration();
 
@@ -150,6 +153,9 @@ public class MagicSigns extends JavaPlugin {
 
 	@SuppressWarnings("unchecked")
 	private void loadSigns() {
+		getSignManager().loadConfig(getConfig());
+		saveConfig();
+
 		signsDbFile = new File(getDataFolder(), "signs.db.yml");
 		signsDb = YamlConfiguration.loadConfiguration(signsDbFile);
 
@@ -183,9 +189,6 @@ public class MagicSigns extends JavaPlugin {
 								+ e.getMessage(), e);
 			}
 		}
-
-		getSignManager().loadConfig(getConfig());
-		saveConfig();
 	}
 
 	private void saveSigns() {
@@ -274,6 +277,13 @@ public class MagicSigns extends JavaPlugin {
 	 */
 	public SignManager getSignManager() {
 		return signManager;
+	}
+
+	/**
+	 * @return the coloredSigns
+	 */
+	public ColoredSigns getColoredSigns() {
+		return coloredSigns;
 	}
 
 }
