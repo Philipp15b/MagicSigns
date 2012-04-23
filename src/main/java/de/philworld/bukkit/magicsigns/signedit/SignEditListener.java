@@ -3,6 +3,7 @@ package de.philworld.bukkit.magicsigns.signedit;
 import static de.philworld.bukkit.magicsigns.util.MaterialUtil.isSign;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -96,9 +97,11 @@ public class SignEditListener implements Listener {
 		signEdit.unregisterEditSign(tempSign.getLocation());
 
 		// and give it back
-		event.getPlayer().getInventory()
-				.addItem(new ItemStack(Material.SIGN, 1));
-		event.getPlayer().updateInventory();
+		if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+			event.getPlayer().getInventory()
+					.addItem(new ItemStack(Material.SIGN, 1));
+			event.getPlayer().updateInventory();
+		}
 
 		event.setCancelled(true);
 	}
