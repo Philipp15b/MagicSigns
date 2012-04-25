@@ -2,8 +2,10 @@ package de.philworld.bukkit.magicsigns;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import net.milkbowl.vault.economy.Economy;
@@ -39,6 +41,23 @@ public class MagicSigns extends JavaPlugin {
 	private static MagicSigns instance;
 	private static Economy economy = null;
 	private static Permission permission = null;
+	private static Set<Class<? extends MagicSign>> registeredSignTypes = new HashSet<Class<? extends MagicSign>>();
+
+	static {
+		registeredSignTypes.add(CommandSign.class);
+		registeredSignTypes.add(ConsoleCommandSign.class);
+		registeredSignTypes.add(SpeedSign.class);
+		registeredSignTypes.add(HealSign.class);
+		registeredSignTypes.add(HealthSign.class);
+		registeredSignTypes.add(ClearSign.class);
+		registeredSignTypes.add(TeleportSign.class);
+		registeredSignTypes.add(RocketSign.class);
+		registeredSignTypes.add(LevelSign.class);
+		registeredSignTypes.add(CreativeModeSign.class);
+		registeredSignTypes.add(SurvivalModeSign.class);
+		registeredSignTypes.add(FeedSign.class);
+		registeredSignTypes.add(PermissionSign.class);
+	}
 
 	private SignManager signManager;
 	private SignEdit signEdit;
@@ -58,19 +77,9 @@ public class MagicSigns extends JavaPlugin {
 		loadConfiguration();
 
 		// register all sign types
-		getSignManager().registerSignType(CommandSign.class);
-		getSignManager().registerSignType(ConsoleCommandSign.class);
-		getSignManager().registerSignType(SpeedSign.class);
-		getSignManager().registerSignType(HealSign.class);
-		getSignManager().registerSignType(HealthSign.class);
-		getSignManager().registerSignType(ClearSign.class);
-		getSignManager().registerSignType(TeleportSign.class);
-		getSignManager().registerSignType(RocketSign.class);
-		getSignManager().registerSignType(LevelSign.class);
-		getSignManager().registerSignType(CreativeModeSign.class);
-		getSignManager().registerSignType(SurvivalModeSign.class);
-		getSignManager().registerSignType(FeedSign.class);
-		getSignManager().registerSignType(PermissionSign.class);
+		for (Class<? extends MagicSign> signType : registeredSignTypes) {
+			getSignManager().registerSignType(signType);
+		}
 
 		// and then load them from the config
 		loadSigns();
@@ -284,6 +293,10 @@ public class MagicSigns extends JavaPlugin {
 	 */
 	public ColoredSigns getColoredSigns() {
 		return coloredSigns;
+	}
+
+	public static Set<Class<? extends MagicSign>> getRegisteredSignTypes() {
+		return registeredSignTypes;
 	}
 
 }
