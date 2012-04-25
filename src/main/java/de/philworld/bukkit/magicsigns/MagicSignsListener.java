@@ -84,10 +84,12 @@ public class MagicSignsListener implements Listener {
 					PurchasableMagicSign pSign = (PurchasableMagicSign) sign;
 					if (!pSign.isFree()) {
 						if (!pSign.withdrawPlayer(event.getPlayer())) {
-							MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer());
+							MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer(),
+									pSign.getPrice().toString());
 							return;
 						} else {
-							MSMsg.PAID_SIGN.send(event.getPlayer());
+							MSMsg.PAID_SIGN.send(event.getPlayer(), pSign
+									.getPrice().toString());
 						}
 					}
 				}

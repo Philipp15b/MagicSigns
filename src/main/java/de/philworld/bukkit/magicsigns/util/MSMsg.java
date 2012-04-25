@@ -14,8 +14,8 @@ public enum MSMsg {
 	LEVEL_ADDED(ChatColor.GREEN + "You have been taught % levels."),
 	TELEPORT_SUCCESS(ChatColor.GREEN + "You have been teleported."),
 	INVENTORY_CLEARED(ChatColor.GREEN + "Your inventory has been cleared."),
-	NOT_ENOUGH_MONEY("You can't pay this sign. Make sure you have enough money, items or levels."),
-	PAID_SIGN("You paid this sign.");
+	NOT_ENOUGH_MONEY("You can't pay this sign. Make sure you have %."),
+	PAID_SIGN("You paid % to use this sign.");
 
 	private String msg;
 
@@ -37,6 +37,11 @@ public enum MSMsg {
 
 	public void send(Player p, String s) {
 		p.sendMessage(get(s));
+	}
+
+	@Override
+	public String toString() {
+		return get();
 	}
 
 }

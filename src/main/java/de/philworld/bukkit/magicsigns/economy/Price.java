@@ -56,6 +56,13 @@ public abstract class Price {
 	public abstract boolean withdrawPlayer(Player p);
 
 	/**
+	 * Returns the String representation of this Price. If the price is free, it
+	 * may return null.
+	 */
+	@Override
+	public abstract String toString();
+
+	/**
 	 * A price that uses Vault's economy.
 	 *
 	 */
@@ -100,7 +107,8 @@ public abstract class Price {
 		public boolean withdrawPlayer(Player p) {
 			if (MagicSigns.getEconomy() != null) {
 				if (has(p)) {
-					if (MagicSigns.getEconomy().withdrawPlayer(p.getName(), price)
+					if (MagicSigns.getEconomy()
+							.withdrawPlayer(p.getName(), price)
 							.transactionSuccess()) {
 						return true;
 					}
@@ -108,6 +116,14 @@ public abstract class Price {
 				return false;
 			}
 			return true;
+		}
+
+		@Override
+		public String toString() {
+			if (MagicSigns.getEconomy() != null) {
+				return MagicSigns.getEconomy().format(price);
+			}
+			return null;
 		}
 
 	}
@@ -135,14 +151,16 @@ public abstract class Price {
 							"The amount is not a number! Please insert a valid number.");
 				}
 			}
-			return new Item(material, amount);
+			return new Item(material, itemType.getName(), amount);
 		}
 
+		private final String materialName;
 		private final Material material;
 		private final int amount;
 
-		public Item(Material material, int amount) {
+		public Item(Material material, String materialName, int amount) {
 			this.material = material;
+			this.materialName = materialName;
 			this.amount = amount;
 		}
 
@@ -169,6 +187,11 @@ public abstract class Price {
 				return true;
 			}
 			return false;
+		}
+
+		@Override
+		public String toString() {
+			return amount + " " + materialName;
 		}
 
 	}
@@ -208,6 +231,11 @@ public abstract class Price {
 				return true;
 			}
 			return false;
+		}
+
+		@Override
+		public String toString() {
+			return level + " Levels";
 		}
 
 	}
