@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -38,8 +37,8 @@ import de.philworld.bukkit.magicsigns.signs.permission.PermissionSign;
 
 public class MagicSigns extends JavaPlugin {
 
-	private static MagicSigns instance;
 	private static Economy economy = null;
+	private static MagicSigns instance;
 	private static Permission permission = null;
 	private static Set<Class<? extends MagicSign>> registeredSignTypes = new HashSet<Class<? extends MagicSign>>();
 
@@ -59,11 +58,72 @@ public class MagicSigns extends JavaPlugin {
 		registeredSignTypes.add(PermissionSign.class);
 	}
 
-	private SignManager signManager;
-	private SignEdit signEdit;
+	/**
+	 * @return the Vault economy; can be null
+	 */
+	public static Economy getEconomy() {
+		return economy;
+	}
+
+	/**
+	 * @return the Vault permission; can be null
+	 */
+	public static Permission getPermission() {
+		return permission;
+	}
+
+	public static Set<Class<? extends MagicSign>> getRegisteredSignTypes() {
+		return registeredSignTypes;
+	}
+
+	/**
+	 * @return the current running instance of MagicSigns. Can be null if the
+	 *         plugin hasn't started yet.
+	 */
+	public static MagicSigns inst() {
+		return instance;
+	}
+
 	private ColoredSigns coloredSigns;
-	private File signsDbFile;
+	private SignEdit signEdit;
+	private SignManager signManager;
 	private FileConfiguration signsDb;
+	private File signsDbFile;
+
+	/**
+	 * @return the currently running {@link ColoredSigns} of this plugin.
+	 */
+	public ColoredSigns getColoredSigns() {
+		return coloredSigns;
+	}
+
+	/**
+	 * @return the currently running {@link SignEdit} of this plugin.
+	 */
+	public SignEdit getSignEdit() {
+		return signEdit;
+	}
+
+	/**
+	 * @return the currently running {@link SignManager} of this plugin.
+	 */
+	public SignManager getSignManager() {
+		return signManager;
+	}
+
+	@Override
+	public void onDisable() {
+		// Disable saving configuration because no sign is currently modifying
+		// the config and user's modified config is overwritten every server
+		// shutdown.
+		// saveConfiguration();
+		try {
+			getSignEdit().save();
+		} catch (IOException e) {
+			getLogger().log(Level.WARNING, "Error saving EditModes:", e);
+		}
+		saveSigns();
+	}
 
 	@Override
 	public void onEnable() {
@@ -113,50 +173,10 @@ public class MagicSigns extends JavaPlugin {
 		}
 	}
 
-	@Override
-	public void onDisable() {
-		// Disable saving configuration because no sign is currently modifying
-		// the config and user's modified config is overwritten every server
-		// shutdown.
-		// saveConfiguration();
-		try {
-			getSignEdit().save();
-		} catch (IOException e) {
-			getLogger().log(Level.WARNING, "Error saving EditModes:", e);
-		}
-		saveSigns();
-	}
-
-	/**
-	 * Public alias for {@link SignManager#registerSignType(Class)}
-	 *
-	 * @see SignManager#registerSignType(Class)
-	 * @param signType
-	 */
-	public void registerSignType(Class<? extends MagicSign> signType) {
-		getSignManager().registerSignType(signType);
-	}
-
-	/**
-	 * Checks if the block at the given Location is a MagicSign.
-	 *
-	 * @param loc
-	 * @return True if its a MagicSign, else false
-	 */
-	public boolean isMagicSign(Location loc) {
-		return getSignManager().containsSign(loc);
-	}
-
 	private void loadConfiguration() {
 		ConfigurationSerialization
 				.registerClass(MagicSignSerializationProxy.class);
 		getConfig().options().copyDefaults(true);
-		saveConfig();
-	}
-
-	@SuppressWarnings("unused")
-	private void saveConfiguration() {
-		getSignManager().saveConfig(getConfig());
 		saveConfig();
 	}
 
@@ -198,6 +218,12 @@ public class MagicSigns extends JavaPlugin {
 								+ e.getMessage(), e);
 			}
 		}
+	}
+
+	@SuppressWarnings("unused")
+	private void saveConfiguration() {
+		getSignManager().saveConfig(getConfig());
+		saveConfig();
 	}
 
 	private void saveSigns() {
@@ -249,54 +275,6 @@ public class MagicSigns extends JavaPlugin {
 		} catch (NoClassDefFoundError e) {
 			return false;
 		}
-	}
-
-	/**
-	 * Get the current instance.
-	 *
-	 * @return Current MagicSigns instance.
-	 */
-	public static MagicSigns inst() {
-		return instance;
-	}
-
-	/**
-	 * @return the Vault economy
-	 */
-	public static Economy getEconomy() {
-		return economy;
-	}
-
-	/**
-	 * @return the Vault permission
-	 */
-	public static Permission getPermission() {
-		return permission;
-	}
-
-	/**
-	 * @return the signEdit
-	 */
-	public SignEdit getSignEdit() {
-		return signEdit;
-	}
-
-	/**
-	 * @return the signManager
-	 */
-	public SignManager getSignManager() {
-		return signManager;
-	}
-
-	/**
-	 * @return the coloredSigns
-	 */
-	public ColoredSigns getColoredSigns() {
-		return coloredSigns;
-	}
-
-	public static Set<Class<? extends MagicSign>> getRegisteredSignTypes() {
-		return registeredSignTypes;
 	}
 
 }

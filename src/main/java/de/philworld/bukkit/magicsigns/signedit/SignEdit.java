@@ -25,7 +25,6 @@ public class SignEdit {
 	 * TempSign => TargetSign
 	 */
 	private Map<Location, Location> editSigns = new HashMap<Location, Location>();
-
 	private PlayerEditMode editMode;
 	private final SignEditListener listener = new SignEditListener(this);
 	private final SignEditCommandExecutor cmdExecutor = new SignEditCommandExecutor(
@@ -33,9 +32,11 @@ public class SignEdit {
 
 	public SignEdit(MagicSigns plugin) {
 		this.plugin = plugin;
-		plugin.getServer().getPluginManager().registerEvents(getListener(), plugin);
+		plugin.getServer().getPluginManager()
+				.registerEvents(getListener(), plugin);
 
-		editMode = new PlayerEditMode(new File(plugin.getDataFolder(), "edit-modes.db.yml"));
+		editMode = new PlayerEditMode(new File(plugin.getDataFolder(),
+				"edit-modes.db.yml"));
 	}
 
 	public void save() throws IOException {
@@ -104,8 +105,27 @@ public class SignEdit {
 	 * @param mode
 	 *            The {@link EditMode}
 	 * @throws PermissionException
+	 *             if the player has not enough permissions.
 	 */
 	public void setEditMode(Player p, EditMode mode) throws PermissionException {
+		setEditMode(p, mode, true);
+	}
+
+	/**
+	 * Sets the {@link EditMode} for this player.
+	 *
+	 * @param p
+	 *            The player
+	 * @param mode
+	 *            The {@link EditMode}
+	 * @param checkPermissions
+	 *            Whether to check if the player has enough permissions.
+	 * @throws PermissionException
+	 *             If the player has not enough permissions and
+	 *             {@code checkPermissions} is set to true.
+	 */
+	public void setEditMode(Player p, EditMode mode, boolean checkPermissions)
+			throws PermissionException {
 		if (mode.hasPermission(p)) {
 			editMode.setEditMode(p, mode);
 		} else {
@@ -124,11 +144,11 @@ public class SignEdit {
 		if (editMode.getEditMode(p) != null) {
 			return editMode.getEditMode(p);
 		} else {
-			if(EditMode.AUTO.hasPermission(p)) {
+			if (EditMode.AUTO.hasPermission(p)) {
 				return EditMode.AUTO;
-			} else if(EditMode.MASK_MAGIC_SIGNS.hasPermission(p)) {
+			} else if (EditMode.MASK_MAGIC_SIGNS.hasPermission(p)) {
 				return EditMode.MASK_MAGIC_SIGNS;
-			} else if(EditMode.MODIFY.hasPermission(p)) {
+			} else if (EditMode.MODIFY.hasPermission(p)) {
 				return EditMode.MODIFY;
 			} else {
 				return EditMode.NONE;

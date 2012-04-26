@@ -38,8 +38,8 @@ public class SignEditListener implements Listener {
 
 		// only allow MagicSigns if mode is mask.
 		if (mode == EditMode.MASK_MAGIC_SIGNS
-				&& !signEdit.plugin.isMagicSign(event.getBlockAgainst()
-						.getLocation()))
+				&& !signEdit.plugin.getSignManager().containsSign(
+						event.getBlockAgainst().getLocation()))
 			return;
 
 		signEdit.registerEditSign(event.getBlockPlaced().getLocation(), event
@@ -61,7 +61,7 @@ public class SignEditListener implements Listener {
 
 		// whether to mask a MagicSign. If true, don't call SignChangeEvent.
 		boolean maskMagicSign = ((playerEditMode == EditMode.MASK_MAGIC_SIGNS || playerEditMode == EditMode.AUTO) && signEdit.plugin
-				.isMagicSign(targetSign.getLocation()));
+				.getSignManager().containsSign(targetSign.getLocation()));
 
 		SignChangeEvent signChange = null;
 		String[] newLines = event.getLines();
@@ -69,7 +69,8 @@ public class SignEditListener implements Listener {
 		if (!maskMagicSign) {
 			// delete the old MagicSign if the EditMode is modify.
 			if (playerEditMode == EditMode.MODIFY
-					&& signEdit.plugin.isMagicSign(targetSign.getLocation())) {
+					&& signEdit.plugin.getSignManager().containsSign(
+							targetSign.getLocation())) {
 				signEdit.plugin.getSignManager().removeSign(
 						targetSign.getLocation());
 			}

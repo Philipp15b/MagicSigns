@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
@@ -61,7 +62,7 @@ public class SignManager {
 	 * @return Collection of {@link MagicSign}s
 	 */
 	public Collection<MagicSign> getSigns() {
-		return signs.values();
+		return new HashSet<MagicSign>(signs.values());
 	}
 
 	/**
@@ -71,7 +72,8 @@ public class SignManager {
 	 *
 	 * @throws IllegalArgumentException
 	 *             if the sign type doesnt have a {@link MagicSignInfo}
-	 *             annotation.
+	 *             annotation or no {@link MagicSign#takeAction(Sign, String[])}
+	 *             method.
 	 * @param signType
 	 */
 	public void registerSignType(Class<? extends MagicSign> signType) {
@@ -81,11 +83,20 @@ public class SignManager {
 					+ signType.getName()
 					+ "' must have a MagicSignInfo annotation!");
 
-		signTypes.add(signType);
-	}
+		// check for takeAction method
+		try {
+			signType.getMethod("takeAction", Sign.class, String[].class);
+		} catch (NoSuchMethodException e) {
+			throw new IllegalArgumentException("The sign type '"
+					+ signType.getName()
+					+ "' must have a static takeAction(Sign, String[]) method!");
+		} catch (SecurityException e) {
+			throw new IllegalArgumentException("The sign type '"
+					+ signType.getName()
+					+ "' must have a static takeAction(Sign, String[]) method!");
+		}
 
-	public void registerSign(Block sign, String[] lines) {
-		registerSign(sign, lines, null, null);
+		signTypes.add(signType);
 	}
 
 	/**

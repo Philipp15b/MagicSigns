@@ -9,6 +9,9 @@ import com.sk89q.worldedit.blocks.ItemType;
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.util.InventoryUtil;
 
+/**
+ * Represents a price that a player has to pay.
+ */
 public abstract class Price {
 
 	public static Price valueOf(String text) throws IllegalArgumentException {

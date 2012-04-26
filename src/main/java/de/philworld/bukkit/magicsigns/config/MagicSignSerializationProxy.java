@@ -32,7 +32,12 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 		this.y = magicSign.getLocation().getBlockY();
 		this.z = magicSign.getLocation().getBlockZ();
 		this.type = magicSign.getClass().getName();
-		this.lines = magicSign.lines;
+
+		if (magicSign.isMasked()) {
+			this.lines = magicSign.lines;
+		} else {
+			this.lines = null;
+		}
 	}
 
 	public MagicSignSerializationProxy(Map<String, Object> map) {
@@ -46,7 +51,8 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			@SuppressWarnings("unchecked")
 			List<String> linesList = (List<String>) map.get("lines");
 			Object[] linesAsObj = linesList.toArray();
-			this.lines = Arrays.copyOf(linesAsObj, linesAsObj.length, String[].class);
+			this.lines = Arrays.copyOf(linesAsObj, linesAsObj.length,
+					String[].class);
 		} else {
 			this.lines = null;
 		}
