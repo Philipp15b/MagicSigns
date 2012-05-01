@@ -3,6 +3,7 @@ package de.philworld.bukkit.magicsigns;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
@@ -25,7 +27,7 @@ public class MagicSignsListener implements Listener {
 
 	public MagicSignsListener(MagicSigns plugin) {
 		this.plugin = plugin;
-		this.manager = plugin.getSignManager();
+		manager = plugin.getSignManager();
 	}
 
 	/**
@@ -80,6 +82,18 @@ public class MagicSignsListener implements Listener {
 					}
 				}
 
+				if (sign.getLock() != null
+						&& sign.getPlayerLock(event.getPlayer()) != null) {
+					PlayerLock pLock = sign.getPlayerLock(event.getPlayer());
+					long time = System.currentTimeMillis() / 1000;
+					if (pLock.isUsable(time)) {
+						pLock.touch(time);
+					} else {
+						throw new PermissionException(ChatColor.RED
+								+ pLock.getErrorMessage(time));
+					}
+				}
+
 				if (sign instanceof PurchasableMagicSign) {
 					PurchasableMagicSign pSign = (PurchasableMagicSign) sign;
 					if (!pSign.isFree()) {
@@ -99,7 +113,10 @@ public class MagicSignsListener implements Listener {
 				event.setCancelled(true);
 
 			} catch (PermissionException e) {
-				MSMsg.NO_PERMISSION.send(event.getPlayer());
+				if (e.getMessage() == null)
+					MSMsg.NO_PERMISSION.send(event.getPlayer());
+				else
+					event.getPlayer().sendMessage(e.getMessage());
 			}
 		}
 	}

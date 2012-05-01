@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.philworld.bukkit.magicsigns.coloredsigns.ColoredSigns;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
+import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.signedit.SignEdit;
 import de.philworld.bukkit.magicsigns.signs.ClearSign;
 import de.philworld.bukkit.magicsigns.signs.CreativeModeSign;
@@ -176,6 +177,7 @@ public class MagicSigns extends JavaPlugin {
 	private void loadConfiguration() {
 		ConfigurationSerialization
 				.registerClass(MagicSignSerializationProxy.class);
+		ConfigurationSerialization.registerClass(Lock.class);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}

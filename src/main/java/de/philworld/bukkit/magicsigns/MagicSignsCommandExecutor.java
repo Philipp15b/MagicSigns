@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import de.philworld.bukkit.magicsigns.locks.MagicSignsLockCommandExecutor;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
@@ -15,6 +16,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 public class MagicSignsCommandExecutor implements CommandExecutor {
 
 	private MagicSigns plugin;
+	private MagicSignsLockCommandExecutor magicSignsLockCommandExecutor = new MagicSignsLockCommandExecutor();
 
 	public MagicSignsCommandExecutor(MagicSigns plugin) {
 		this.plugin = plugin;
@@ -55,12 +57,12 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 
 				Block target = p.getTargetBlock(null, 100);
 				if (target == null) {
-					p.sendMessage(ChatColor.RED + "Please point at a sign!");
+					MSMsg.POINT_AT_SIGN.send(p);
 					return true;
 				}
 
 				if (!(target.getState() instanceof Sign)) {
-					p.sendMessage(ChatColor.RED + "Please point at a sign!");
+					MSMsg.POINT_AT_SIGN.send(p);
 					return true;
 				}
 
@@ -68,11 +70,10 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 				p.sendMessage(ChatColor.GOLD + "MagicSigns Sign Info");
 				p.sendMessage(ChatColor.GOLD + "--------------------");
 
-				MagicSign sign = plugin.getSignManager().getSign(target
-						.getLocation());
+				MagicSign sign = plugin.getSignManager().getSign(
+						target.getLocation());
 				if (sign == null) {
-					p.sendMessage(ChatColor.GREEN
-							+ "This is just a normal sign.");
+					MSMsg.NOT_MAGIC_SIGN.send(p);
 					return true;
 				}
 
@@ -93,7 +94,8 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 			}
 
 			else if (base.equalsIgnoreCase("edit")) {
-				return plugin.getSignEdit().getCmdExecutor().edit(p, label, args);
+				return plugin.getSignEdit().getCmdExecutor()
+						.edit(p, label, args);
 			}
 
 			else if (base.equalsIgnoreCase("unmask")) {
@@ -102,31 +104,41 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 
 				Block target = p.getTargetBlock(null, 100);
 				if (target == null) {
-					p.sendMessage(ChatColor.RED + "Please point at a sign!");
+					MSMsg.POINT_AT_SIGN.send(p);
 					return true;
 				}
 
 				if (!(target.getState() instanceof Sign)) {
-					p.sendMessage(ChatColor.RED + "Please point at a sign!");
+					MSMsg.POINT_AT_SIGN.send(p);
 					return true;
 				}
 
-				MagicSign magicSign = plugin.getSignManager().getSign(target.getLocation());
-				if(magicSign == null) {
-					p.sendMessage(ChatColor.RED + "This is not a MagicSign hence it can not be unmasked!");
+				MagicSign magicSign = plugin.getSignManager().getSign(
+						target.getLocation());
+				if (magicSign == null) {
+					p.sendMessage(ChatColor.RED
+							+ "This is not a MagicSign hence it can not be unmasked!");
 					return true;
 				}
 
 				Sign targetSign = (Sign) target.getState();
 
-				for(int i = 0; i < magicSign.lines.length; i++) {
-					targetSign.setLine(i, magicSign.lines[i]);
+				for (int i = 0; i < magicSign.getLines().length; i++) {
+					targetSign.setLine(i, magicSign.getLines()[i]);
 				}
 				targetSign.update();
 
 				p.sendMessage("The sign has been unmasked!");
 
 				return true;
+			}
+
+			else if (base.equalsIgnoreCase("lock")) {
+				return magicSignsLockCommandExecutor.lock(p, label, args);
+			}
+
+			else if (base.equalsIgnoreCase("unlock")) {
+				return magicSignsLockCommandExecutor.unlock(p, label);
 			}
 
 		} catch (PermissionException e) {
