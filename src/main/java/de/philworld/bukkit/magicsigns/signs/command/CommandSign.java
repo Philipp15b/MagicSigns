@@ -1,6 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs.command;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -45,16 +46,35 @@ public class CommandSign extends PurchasableMagicSign {
 		return lines[0].equalsIgnoreCase("[Command]");
 	}
 
+	private static List<String> removeSlashes(List<String> list)
+			throws IllegalArgumentException {
+		List<String> result = new LinkedList<String>();
+		for (String cmd : list) {
+			if (cmd.charAt(0) == '/') {
+				result.add(cmd.substring(1));
+			} else {
+				throw new IllegalArgumentException(
+						"All commands must begin with a slash!");
+			}
+		}
+		return result;
+	}
+
 	protected LinkedList<String> commands = new LinkedList<String>();
 
 	public CommandSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
-		commands.addAll(MacroUtil.format(lines[1] + lines[2], config.getMacros()));
+		try {
+			commands.addAll(removeSlashes(MacroUtil.format(lines[1] + lines[2],
+					config.getMacros())));
+		} catch (IllegalArgumentException e) {
+			throw new InvalidSignException(e.getMessage());
+		}
 	}
 
 	@Override
 	public void onRightClick(PlayerInteractEvent event) {
-		for (String cmd : this.commands) {
+		for (String cmd : commands) {
 			Bukkit.getServer().dispatchCommand(event.getPlayer(),
 					cmd.replace("%p", event.getPlayer().getName()));
 		}
