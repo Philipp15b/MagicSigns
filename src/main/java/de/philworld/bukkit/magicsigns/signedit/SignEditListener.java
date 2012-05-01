@@ -14,8 +14,6 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import de.philworld.bukkit.magicsigns.MagicSignsListener;
-
 public class SignEditListener implements Listener {
 
 	private final SignEdit signEdit;
@@ -108,8 +106,8 @@ public class SignEditListener implements Listener {
 	}
 
 	/**
-	 * Helper method for {@link MagicSignsListener} for not to handle the
-	 * interaction when this plugin would edit it.
+	 * If this listener would handle a interaction with a sign. This should be
+	 * used not to react to a {@link PlayerInteractEvent}.
 	 *
 	 * @param event
 	 * @return

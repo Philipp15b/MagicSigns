@@ -69,19 +69,19 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			lines = null;
 		}
 
-		lock = map.get("lock") != null ? (Lock) map.get("lock") : null;
+		lock = map.containsKey("lock") ? (Lock) map.get("lock") : null;
 
 		if (map.get("playerLocks") != null) {
 			@SuppressWarnings("unchecked")
-			Map<String, Map<String, Object>> playerLocks = (Map<String, Map<String, Object>>) map
+			Map<String, Map<String, Object>> playerLocksObj = (Map<String, Map<String, Object>>) map
 					.get("playerLocks");
-			this.playerLocks = new HashMap<String, PlayerLock>();
 
-			for (Entry<String, Map<String, Object>> entry : playerLocks
+			playerLocks = new HashMap<String, PlayerLock>();
+			for (Entry<String, Map<String, Object>> entry : playerLocksObj
 					.entrySet()) {
-				Map<String, Object> playerLockData = entry.getValue();
 				String playername = entry.getKey();
-				this.playerLocks.put(playername,
+				Map<String, Object> playerLockData = entry.getValue();
+				playerLocks.put(playername,
 						PlayerLock.valueOf(playerLockData, lock));
 			}
 		} else {
@@ -101,9 +101,8 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 		if (lines != null)
 			map.put("lines", Arrays.asList(lines));
 
-		if (lock != null) {
+		if (lock != null)
 			map.put("lock", lock);
-		}
 
 		if (playerLocks != null) {
 			Map<String, Object> serialized = new HashMap<String, Object>();
@@ -138,16 +137,14 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			}
 
 			MagicSign magicSign = (MagicSign) Class.forName(type)
-					.getConstructor(Block.class, lines.getClass())
+					.getConstructor(Block.class, String[].class)
 					.newInstance(block, lines);
 
-			if (lock != null) {
+			if (lock != null)
 				magicSign.setLock(lock, false);
-			}
 
-			if (playerLocks != null) {
+			if (playerLocks != null)
 				magicSign.setPlayerLocks(playerLocks);
-			}
 
 			return magicSign;
 		} else {

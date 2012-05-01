@@ -31,10 +31,11 @@ public class MacroConfiguration extends ConfigurationBase {
 			for (Map.Entry<String, Object> entry : values.entrySet()) {
 				String key = entry.getKey();
 				try {
-					@SuppressWarnings("unchecked")
-					List<String> commands = (List<String>) entry.getValue();
 
-					getMacros().put(key, commands);
+					@SuppressWarnings("unchecked")
+					List<String> macroValue = (List<String>) entry.getValue();
+					getMacros().put(key, macroValue);
+
 				} catch (ClassCastException e) {
 					MagicSigns
 							.inst()
