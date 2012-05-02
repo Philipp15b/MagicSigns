@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.locks.MagicSignsLockCommandExecutor;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
-import de.philworld.bukkit.magicsigns.signedit.SignEdit;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
@@ -54,7 +53,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 			}
 
 			else if (base.equalsIgnoreCase("unmask")) {
-				return unmask(p, label);
+				return plugin.getSignEdit().getCmdExecutor().unmask(p, label);
 			}
 
 			else if (base.equalsIgnoreCase("lock")) {
@@ -118,38 +117,5 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 		return true;
 	}
 
-	public boolean unmask(Player p, String label) throws PermissionException {
-		if (!p.hasPermission(SignEdit.UNMASK_PERMISSION))
-			throw new PermissionException();
 
-		Block target = p.getTargetBlock(null, 100);
-		if (target == null) {
-			MSMsg.POINT_AT_SIGN.send(p);
-			return true;
-		}
-
-		if (!(target.getState() instanceof Sign)) {
-			MSMsg.POINT_AT_SIGN.send(p);
-			return true;
-		}
-
-		MagicSign magicSign = plugin.getSignManager().getSign(
-				target.getLocation());
-		if (magicSign == null) {
-			p.sendMessage(ChatColor.RED
-					+ "This is not a MagicSign hence it can not be unmasked!");
-			return true;
-		}
-
-		Sign targetSign = (Sign) target.getState();
-
-		for (int i = 0; i < magicSign.getLines().length; i++) {
-			targetSign.setLine(i, magicSign.getLines()[i]);
-		}
-		targetSign.update();
-
-		p.sendMessage("The sign has been unmasked!");
-
-		return true;
-	}
 }
