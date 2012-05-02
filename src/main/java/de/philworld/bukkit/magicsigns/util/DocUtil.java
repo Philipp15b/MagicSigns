@@ -10,7 +10,7 @@ public class DocUtil {
 		StringBuilder builder = new StringBuilder();
 		builder.append("# -----------------------\n# MagicSigns Permissions\n# -----------------------\n");
 		for (Class<? extends MagicSign> clazz : MagicSigns
-				.getRegisteredSignTypes()) {
+				.getIncludedSignTypes()) {
 			MagicSignInfo annotation = clazz.getAnnotation(MagicSignInfo.class);
 			if (annotation != null) {
 				builder.append("# ").append(annotation.friendlyName())

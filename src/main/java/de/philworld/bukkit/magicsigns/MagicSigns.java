@@ -41,22 +41,22 @@ public class MagicSigns extends JavaPlugin {
 	private static Economy economy = null;
 	private static MagicSigns instance;
 	private static Permission permission = null;
-	private static Set<Class<? extends MagicSign>> registeredSignTypes = new HashSet<Class<? extends MagicSign>>();
+	private static Set<Class<? extends MagicSign>> includedSignTypes = new HashSet<Class<? extends MagicSign>>();
 
 	static {
-		registeredSignTypes.add(CommandSign.class);
-		registeredSignTypes.add(ConsoleCommandSign.class);
-		registeredSignTypes.add(SpeedSign.class);
-		registeredSignTypes.add(HealSign.class);
-		registeredSignTypes.add(HealthSign.class);
-		registeredSignTypes.add(ClearSign.class);
-		registeredSignTypes.add(TeleportSign.class);
-		registeredSignTypes.add(RocketSign.class);
-		registeredSignTypes.add(LevelSign.class);
-		registeredSignTypes.add(CreativeModeSign.class);
-		registeredSignTypes.add(SurvivalModeSign.class);
-		registeredSignTypes.add(FeedSign.class);
-		registeredSignTypes.add(PermissionSign.class);
+		includedSignTypes.add(CommandSign.class);
+		includedSignTypes.add(ConsoleCommandSign.class);
+		includedSignTypes.add(SpeedSign.class);
+		includedSignTypes.add(HealSign.class);
+		includedSignTypes.add(HealthSign.class);
+		includedSignTypes.add(ClearSign.class);
+		includedSignTypes.add(TeleportSign.class);
+		includedSignTypes.add(RocketSign.class);
+		includedSignTypes.add(LevelSign.class);
+		includedSignTypes.add(CreativeModeSign.class);
+		includedSignTypes.add(SurvivalModeSign.class);
+		includedSignTypes.add(FeedSign.class);
+		includedSignTypes.add(PermissionSign.class);
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class MagicSigns extends JavaPlugin {
 		return permission;
 	}
 
-	public static Set<Class<? extends MagicSign>> getRegisteredSignTypes() {
-		return registeredSignTypes;
+	public static Set<Class<? extends MagicSign>> getIncludedSignTypes() {
+		return includedSignTypes;
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class MagicSigns extends JavaPlugin {
 		loadConfiguration();
 
 		// register all sign types
-		for (Class<? extends MagicSign> signType : registeredSignTypes) {
+		for (Class<? extends MagicSign> signType : includedSignTypes) {
 			getSignManager().registerSignType(signType);
 		}
 
