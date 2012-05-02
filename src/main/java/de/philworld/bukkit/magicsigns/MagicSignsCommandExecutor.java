@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.locks.MagicSignsLockCommandExecutor;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
+import de.philworld.bukkit.magicsigns.signedit.SignEdit;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
@@ -118,7 +119,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 	}
 
 	public boolean unmask(Player p, String label) throws PermissionException {
-		if (!p.hasPermission("magicsigns.edit.unmask"))
+		if (!p.hasPermission(SignEdit.UNMASK_PERMISSION))
 			throw new PermissionException();
 
 		Block target = p.getTargetBlock(null, 100);

@@ -15,6 +15,8 @@ import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 
 public class SignEdit {
 
+	public static final String UNMASK_PERMISSION = "magicsigns.edit.unmask";
+
 	final MagicSigns plugin;
 
 	/**
