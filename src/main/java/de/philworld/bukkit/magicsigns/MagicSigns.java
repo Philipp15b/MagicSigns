@@ -128,14 +128,13 @@ public class MagicSigns extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-
 		instance = this;
 
-		signManager = new SignManager(this);
+		loadConfiguration();
+
+		signManager = new SignManager(this, getConfig());
 		signEdit = new SignEdit(this);
 		coloredSigns = new ColoredSigns(this);
-
-		loadConfiguration();
 
 		// register all sign types
 		for (Class<? extends MagicSign> signType : includedSignTypes) {
@@ -184,9 +183,6 @@ public class MagicSigns extends JavaPlugin {
 
 	@SuppressWarnings("unchecked")
 	private void loadSigns() {
-		getSignManager().loadConfig(getConfig());
-		saveConfig();
-
 		signsDbFile = new File(getDataFolder(), "signs.db.yml");
 		signsDb = YamlConfiguration.loadConfiguration(signsDbFile);
 

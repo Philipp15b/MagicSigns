@@ -23,10 +23,20 @@ import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 
 /**
- * Parent class for every magic sign.
+ * This is the parent class for every magic sign. Subclasses of MagicSign must
+ * override the static {@link #takeAction(Sign, String[])} method (which
+ * throws an {@link Exception} in the default implementation) and should
+ * override {@link #onRightClick(PlayerInteractEvent)}. For magic signs that
+ * require configuration, they can override
+ * {@link #loadConfig(ConfigurationSection)}.
+ *
+ * @see ConfigurationBase ConfigurationBase for a simple base configuration class.
  */
 public abstract class MagicSign {
 
+	/**
+	 * Contains the configuration of this magic sign.
+	 */
 	private static ConfigurationBase config = null;
 
 	/**

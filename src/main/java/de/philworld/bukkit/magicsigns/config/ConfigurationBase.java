@@ -5,12 +5,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.spout.api.util.config.ConfigurationNode;
 
 import de.philworld.bukkit.magicsigns.MagicSigns;
+import de.philworld.bukkit.magicsigns.signs.RocketSign;
 
 /**
- * Base class for the configurations.
+ * Base class for the configurations that uses attributes to save the
+ * configuration.
  *
+ * @see RocketSign RocketSign#LocalConfiguration for example usage.
  */
 public abstract class ConfigurationBase {
 

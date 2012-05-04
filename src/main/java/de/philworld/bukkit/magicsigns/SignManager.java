@@ -51,13 +51,15 @@ public class SignManager {
 	private Set<Class<? extends MagicSign>> signTypes = new HashSet<Class<? extends MagicSign>>();
 	private Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
 	private MagicSigns plugin;
+	private ConfigurationSection config;
 
-	public SignManager(MagicSigns plugin) {
+	public SignManager(MagicSigns plugin, ConfigurationSection config) {
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	/**
-	 * Get all {@link MagicSign}s in a collection
+	 * Get all registered {@link MagicSign}s in a collection.
 	 *
 	 * @return Collection of {@link MagicSign}s
 	 */
@@ -77,6 +79,10 @@ public class SignManager {
 	 * @param signType
 	 */
 	public void registerSignType(Class<? extends MagicSign> signType) {
+		if (signTypes.contains(signType))
+			return;
+
+		// check for annotation
 		MagicSignInfo annotation = signType.getAnnotation(MagicSignInfo.class);
 		if (annotation == null)
 			throw new IllegalArgumentException("The sign type '"
@@ -96,12 +102,24 @@ public class SignManager {
 					+ "' must have a static takeAction(Sign, String[]) method!");
 		}
 
+		// load the config into this sign type
+		try {
+			signType.getMethod("loadConfig", ConfigurationSection.class)
+					.invoke(null, config);
+		} catch (Throwable e) {
+			getLogger().log(
+					Level.WARNING,
+					"Error loading config into sign type " + signType.getName()
+							+ "!", e);
+		}
+
 		signTypes.add(signType);
 	}
 
 	/**
-	 * Generates a MagicSign from a block if some registered MagicSign
-	 * takesAction (<code>takeAction()</code>) and registers it.
+	 * Checks all registered sign types with the static method
+	 * {@link MagicSign#takeAction(Sign, String[])} if a new MagicSign of the
+	 * type should be created.
 	 *
 	 * <ul>
 	 * <li>Add player if you want to check for permissions
@@ -120,10 +138,8 @@ public class SignManager {
 	public void registerSign(Block sign, String[] lines, Player p,
 			SignChangeEvent event) {
 		for (Class<? extends MagicSign> signType : signTypes) {
-
-			Method takeAction = null;
-
 			// get takeAction static method
+			Method takeAction;
 			try {
 				takeAction = signType.getMethod("takeAction", Block.class,
 						lines.getClass());
@@ -256,21 +272,16 @@ public class SignManager {
 	}
 
 	/**
-	 * Load the configuration into all currently registered sign types.
+	 * Set the configuration used by all signs in this sign manager.
 	 *
 	 * @param section
 	 */
-	public void loadConfig(ConfigurationSection section) {
-		for (Class<? extends MagicSign> type : signTypes) {
-			try {
-				type.getMethod("loadConfig", ConfigurationSection.class)
-						.invoke(null, section);
-			} catch (Throwable e) {
-				getLogger().log(Level.WARNING,
-						"Error loading config: " + e.getMessage(), e);
-			}
+	public void setConfig(ConfigurationSection config) {
+		this.config = config;
+	}
 
-		}
+	public ConfigurationSection getConfig() {
+		return config;
 	}
 
 	/**
