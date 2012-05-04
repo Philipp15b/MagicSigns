@@ -50,7 +50,7 @@ public class CommandSign extends PurchasableMagicSign {
 			throws IllegalArgumentException {
 		List<String> result = new LinkedList<String>();
 		for (String cmd : list) {
-			if (cmd.charAt(0) == '/') {
+			if (cmd.length() > 1 && cmd.charAt(0) == '/') {
 				result.add(cmd.substring(1));
 			} else {
 				throw new IllegalArgumentException(

@@ -19,7 +19,7 @@ public class MacroUtil {
 	 *            The text to format
 	 * @param macros
 	 *            The macros
-	 * @return The list of formatted elements
+	 * @return The list of formatted elements; can be empty if there are only spaces.
 	 */
 	public static List<String> format(String text,
 			Map<String, List<String>> macros) {
@@ -28,6 +28,9 @@ public class MacroUtil {
 		List<String> resultList = new LinkedList<String>();
 
 		for (String element : elements) {
+
+			if(element.replaceAll(" ", "").isEmpty())
+				continue;
 
 			// insert macros
 			boolean hasFoundMacro = false;
