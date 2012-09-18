@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.spout.api.util.config.ConfigurationNode;
 
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.signs.RocketSign;
@@ -20,7 +19,7 @@ public abstract class ConfigurationBase {
 
 	/**
 	 * Set all properties annotated with {@link Setting} to the value in the
-	 * {@link ConfigurationNode}.
+	 * {@link Setting}.
 	 *
 	 * If the field does not exist in the node, it will be set to the current
 	 * value in the field.
