@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 import de.philworld.bukkit.magicsigns.coloredsigns.ColoredSigns;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;

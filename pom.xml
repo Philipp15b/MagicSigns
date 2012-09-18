@@ -16,7 +16,7 @@
 			<id>Bukkit Official</id>
 			<url>http://repo.bukkit.org/content/repositories/public</url>
 		</repository>
-		
+
 		<repository>
 			<id>zml-repo</id>
 			<url>http://maven.sk89q.com/repo/</url>
@@ -25,6 +25,11 @@
 		<repository>
 			<id>herocraftonline-repo</id>
 			<url>http://ci.herocraftonline.com/plugin/repository/everything/</url>
+		</repository>
+
+		<repository>
+			<id>mcstats-repo</id>
+			<url>http://repo.mcstats.org/content/repositories/releases/</url>
 		</repository>
 
 	</repositories>
@@ -49,6 +54,12 @@
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>Vault</artifactId>
 			<version>1.2.18-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mcstats</groupId>
+			<artifactId>metrics</artifactId>
+			<version>1.1</version>
 		</dependency>
 	</dependencies>
 
@@ -87,7 +98,6 @@
 					<regex>false</regex>
 					<token>$MAVEN-VERSION-NUMBER$</token>
 					<value>${project.version}</value>
-
 				</configuration>
 			</plugin>
 
@@ -119,9 +129,11 @@
 							<artifactSet>
 								<includes>
 									<include>com.sk89q:worldedit:jar:*</include>
+									<include>org.mcstats:metrics:jar:*</include>
 								</includes>
 							</artifactSet>
 							<filters>
+								<!-- WorldEdit -->
 								<filter>
 									<artifact>com.sk89q:worldedit:jar:*</artifact>
 									<includes>
@@ -131,8 +143,17 @@
 										<include>com/sk89q/util/StringUtil.*</include>
 									</includes>
 								</filter>
+								
+								<!-- Metrics -->
+								<filter>
+									<artifact>org.mcstats:metrics:jar:*</artifact>
+									<includes>
+										<include>org/mcstats/*</include>
+									</includes>
+								</filter>
 							</filters>
 							<relocations>
+								<!--  WorldEdit -->
 								<relocation>
 									<pattern>com.sk89q.worldedit.blocks</pattern>
 									<shadedPattern>de.philworld.bukkit.magicsigns.com.sk89q.worldedit.blocks</shadedPattern>
@@ -140,6 +161,12 @@
 								<relocation>
 									<pattern>com.sk89q.util</pattern>
 									<shadedPattern>de.philworld.bukkit.magicsigns.com.sk89q.util</shadedPattern>
+								</relocation>
+								
+								<!-- Metrics -->
+								<relocation>
+									<pattern>org.mcstats</pattern>
+									<shadedPattern>de.philworld.bukkit.magicsigns.org.mcstats</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
