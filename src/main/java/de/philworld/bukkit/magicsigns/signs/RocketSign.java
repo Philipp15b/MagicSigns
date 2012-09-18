@@ -52,6 +52,9 @@ public class RocketSign extends PurchasableMagicSign {
 				: lines[1];
 
 		String[] parts = vector.split(",");
+		
+		if (parts.length != 3)
+			throw new InvalidSignException("Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
 
 		velocity = new Vector(new Integer(parts[0]), new Integer(parts[1]),
 				new Integer(parts[2]));
