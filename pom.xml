@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.philworld.bukkit.magicsigns</groupId>
 	<artifactId>MagicSigns</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<name>MagicSigns</name>
 	<description>	</description>
 
@@ -31,7 +31,6 @@
 			<id>mcstats-repo</id>
 			<url>http://repo.mcstats.org/content/repositories/releases/</url>
 		</repository>
-
 	</repositories>
 
 	<!-- Dependencies -->
@@ -143,7 +142,7 @@
 										<include>com/sk89q/util/StringUtil.*</include>
 									</includes>
 								</filter>
-								
+
 								<!-- Metrics -->
 								<filter>
 									<artifact>org.mcstats:metrics:jar:*</artifact>
@@ -153,7 +152,7 @@
 								</filter>
 							</filters>
 							<relocations>
-								<!--  WorldEdit -->
+								<!-- WorldEdit -->
 								<relocation>
 									<pattern>com.sk89q.worldedit.blocks</pattern>
 									<shadedPattern>de.philworld.bukkit.magicsigns.com.sk89q.worldedit.blocks</shadedPattern>
@@ -162,7 +161,7 @@
 									<pattern>com.sk89q.util</pattern>
 									<shadedPattern>de.philworld.bukkit.magicsigns.com.sk89q.util</shadedPattern>
 								</relocation>
-								
+
 								<!-- Metrics -->
 								<relocation>
 									<pattern>org.mcstats</pattern>

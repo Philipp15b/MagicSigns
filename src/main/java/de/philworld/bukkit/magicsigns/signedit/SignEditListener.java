@@ -80,6 +80,10 @@ public class SignEditListener implements Listener {
 			Bukkit.getServer().getPluginManager().callEvent(signChange);
 
 			newLines = signChange.getLines();
+		} else {
+			// when masking, make sure signs are colored
+			signEdit.plugin.getColoredSigns().getListener().onSignChange(event);
+			newLines = event.getLines();
 		}
 
 		if (maskMagicSign || (signChange != null && !signChange.isCancelled())) {

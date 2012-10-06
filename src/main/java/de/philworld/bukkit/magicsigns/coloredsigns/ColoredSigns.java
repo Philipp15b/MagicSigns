@@ -11,5 +11,9 @@ public class ColoredSigns {
 		this.listener = new ColoredSignsListener();
 		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
 	}
+	
+	public ColoredSignsListener getListener() {
+		return listener;
+	}
 
 }
