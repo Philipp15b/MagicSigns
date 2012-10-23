@@ -1,5 +1,8 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -21,6 +24,19 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 		buildPerm = "magicsigns.teleport.create",
 		usePerm = "magicsigns.teleport.use")
 public class TeleportSign extends PurchasableMagicSign {
+	
+	@SuppressWarnings("serial")
+	private static final Map<String, Integer> YAW_SHORTHANDS = new HashMap<String, Integer>() {
+		{
+			put("N", 180);
+			put("NE", 225);
+			put("E", 270);
+			put("SE", 315);
+			put("S", 0);
+			put("SW", 45);
+			put("W", 90);
+		}
+	};
 
 	private final Location destination;
 
@@ -45,7 +61,12 @@ public class TeleportSign extends PurchasableMagicSign {
 				throw new InvalidSignException("Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
 			}
 			if (direction.length > 0) {
-				destination.setYaw(new Integer(direction[0]));
+				String yaw = direction[0].trim();
+				if (YAW_SHORTHANDS.containsKey(yaw)) {
+					destination.setYaw(YAW_SHORTHANDS.get(yaw));
+				} else {
+					destination.setYaw(new Integer(yaw));
+				}
 			}
 			if (direction.length > 1) {
 				destination.setPitch(new Integer(direction[1]));
