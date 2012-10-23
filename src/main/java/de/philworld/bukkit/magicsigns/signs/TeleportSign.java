@@ -30,12 +30,16 @@ public class TeleportSign extends PurchasableMagicSign {
 	public TeleportSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
 
-		String[] coords = lines[1].split(",");
-		if (coords.length == 3) {
-			destination = new Location(sign.getWorld(), new Integer(coords[0]),
-					new Integer(coords[1]), new Integer(coords[2]));
-		} else {
-			throw new InvalidSignException("Line 2 must contain coordinates!");
+		try {
+			String[] coords = lines[1].split(",");
+			if (coords.length == 3) {
+				destination = new Location(sign.getWorld(), new Integer(coords[0]),
+						new Integer(coords[1]), new Integer(coords[2]));
+			} else {
+				throw new InvalidSignException("Line 2 must contain coordinates!");
+			}
+		} catch (NumberFormatException e) {
+			throw new InvalidSignException("Invalid number(s) given!");
 		}
 	}
 
