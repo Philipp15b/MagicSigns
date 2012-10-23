@@ -35,6 +35,7 @@ public class TeleportSign extends PurchasableMagicSign {
 			put("S", 0);
 			put("SW", 45);
 			put("W", 90);
+			put("NW", 135);
 		}
 	};
 
