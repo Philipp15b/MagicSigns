@@ -11,7 +11,8 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 /**
  * Sign that allows teleportation.
  *
- * Line 2 must contain coordinates (comma-separated, e.g. <code>20,20,20</code>)
+ * Line 2 must contain coordinates (comma-separated, e.g. <code>20,20,20</code>),
+ * line 3 can contain yaw and pitch (comma-seperated, as above) where pitch is optional.
  *
  */
 @MagicSignInfo(
@@ -37,6 +38,17 @@ public class TeleportSign extends PurchasableMagicSign {
 						new Integer(coords[1]), new Integer(coords[2]));
 			} else {
 				throw new InvalidSignException("Line 2 must contain coordinates!");
+			}
+		
+			String[] direction = lines[2].split(",");
+			if (direction.length > 2) {
+				throw new InvalidSignException("Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
+			}
+			if (direction.length > 0) {
+				destination.setYaw(new Integer(direction[0]));
+			}
+			if (direction.length > 1) {
+				destination.setPitch(new Integer(direction[1]));
 			}
 		} catch (NumberFormatException e) {
 			throw new InvalidSignException("Invalid number(s) given!");
