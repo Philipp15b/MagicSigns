@@ -1,12 +1,12 @@
 package de.philworld.bukkit.magicsigns;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +18,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 
-import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
@@ -48,7 +47,24 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  */
 public class SignManager {
 
-	private Set<Class<? extends MagicSign>> signTypes = new HashSet<Class<? extends MagicSign>>();
+	private static class SignType {
+		public final Class<? extends MagicSign> clazz;
+		public final Method takeAction;
+		public final Constructor<? extends MagicSign> constructor;
+		public final String buildPermission;
+		@SuppressWarnings("unused") // TODO
+		public final String usePermission;
+		
+		private SignType(Class<? extends MagicSign> clazz, Method takeAction, Constructor<? extends MagicSign> constructor, String buildPermission, String usePermission) {
+			this.clazz = clazz;
+			this.takeAction = takeAction;
+			this.constructor = constructor;
+			this.buildPermission = buildPermission;
+			this.usePermission = usePermission;
+		}
+	}
+	
+	private List<SignType> signTypes = new ArrayList<SignType>(MagicSigns.getIncludedSignTypes().size());
 	private Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
 	private MagicSigns plugin;
 	private ConfigurationSection config;
@@ -59,12 +75,12 @@ public class SignManager {
 	}
 
 	/**
-	 * Get all registered {@link MagicSign}s in a collection.
+	 * Get all registered {@link MagicSign}s in a list.
 	 *
-	 * @return Collection of {@link MagicSign}s
+	 * @return List of {@link MagicSign}s
 	 */
-	public Collection<MagicSign> getSigns() {
-		return new HashSet<MagicSign>(signs.values());
+	public List<MagicSign> getSigns() {
+		return new ArrayList<MagicSign>(signs.values());
 	}
 
 	/**
@@ -76,44 +92,59 @@ public class SignManager {
 	 *             if the sign type doesnt have a {@link MagicSignInfo}
 	 *             annotation or no {@link MagicSign#takeAction(Sign, String[])}
 	 *             method.
-	 * @param signType
+	 * @param clazz
 	 */
-	public void registerSignType(Class<? extends MagicSign> signType) {
-		if (signTypes.contains(signType))
-			return;
-
-		// check for annotation
-		MagicSignInfo annotation = signType.getAnnotation(MagicSignInfo.class);
-		if (annotation == null)
-			throw new IllegalArgumentException("The sign type '"
-					+ signType.getName()
-					+ "' must have a MagicSignInfo annotation!");
-
-		// check for takeAction method
+	public void registerSignType(Class<? extends MagicSign> clazz) {
+		// get takeAction method
+		Method takeAction;
 		try {
-			signType.getMethod("takeAction", Sign.class, String[].class);
+			takeAction = clazz.getMethod("takeAction", Block.class, String[].class);
 		} catch (NoSuchMethodException e) {
 			throw new IllegalArgumentException("The sign type '"
-					+ signType.getName()
+					+ clazz.getName()
 					+ "' must have a static takeAction(Sign, String[]) method!");
 		} catch (SecurityException e) {
 			throw new IllegalArgumentException("The sign type '"
-					+ signType.getName()
+					+ clazz.getName()
 					+ "' must have a static takeAction(Sign, String[]) method!");
 		}
+		
+		// get constructor
+		Constructor<? extends MagicSign> constructor;
+		try {
+			constructor = clazz.getConstructor(Block.class, String[].class);
+		} catch (NoSuchMethodException e) {
+			throw new IllegalArgumentException("The sign type '"
+					+ clazz.getName()
+					+ "' must have a constructor with arguments Block and String[]!");
+		} catch (SecurityException e) {
+			throw new IllegalArgumentException("The sign type '"
+					+ clazz.getName()
+					+ "' must have a constructor with arguments Block and String[]!");
+		}
+		
+		// get permissions
+		MagicSignInfo annotation = clazz.getAnnotation(MagicSignInfo.class);
+		if (annotation == null)
+			throw new IllegalArgumentException("The sign type '"
+					+ clazz.getName()
+					+ "' must have a MagicSignInfo annotation!");
+		String buildPerm = annotation.buildPerm();
+		String usePerm = annotation.usePerm();
+		
 
 		// load the config into this sign type
 		try {
-			signType.getMethod("loadConfig", ConfigurationSection.class)
+			clazz.getMethod("loadConfig", ConfigurationSection.class)
 					.invoke(null, config);
 		} catch (Throwable e) {
 			getLogger().log(
 					Level.WARNING,
-					"Error loading config into sign type " + signType.getName()
+					"Error loading config into sign type " + clazz.getName()
 							+ "!", e);
 		}
 
-		signTypes.add(signType);
+		signTypes.add(new SignType(clazz, takeAction, constructor, buildPerm, usePerm));
 	}
 
 	/**
@@ -137,57 +168,34 @@ public class SignManager {
 	 */
 	public void registerSign(Block sign, String[] lines, Player p,
 			SignChangeEvent event) {
-		for (Class<? extends MagicSign> signType : signTypes) {
-			// get takeAction static method
-			Method takeAction;
-			try {
-				takeAction = signType.getMethod("takeAction", Block.class,
-						lines.getClass());
-			} catch (NoSuchMethodException e) {
-				throw new IllegalArgumentException(
-						"Could not find static method takeAction(Block, String[])");
-			}
-
+		for (SignType signType : signTypes) {
 			// invoke takeAction
 			try {
+				if (!(Boolean) signType.takeAction.invoke(null, sign, lines))
+					continue;
 
-				if ((Boolean) takeAction.invoke(null, sign, lines)) {
-
-					// check for build permissions
-					if (p != null) {
-						MagicSignInfo signInfo = signType
-								.getAnnotation(MagicSignInfo.class);
-
-						if (signInfo != null) {
-							if (!p.hasPermission(signInfo.buildPerm())) {
-								throw new PermissionException();
-							}
-						}
+				// check for build permissions
+				if (p != null && !p.hasPermission(signType.buildPermission)) {
+					if (event != null) {
+						event.setCancelled(true);
+					} else {
+						sign.breakNaturally();
 					}
-
-					MagicSign magicSign = signType.getConstructor(Block.class,
-							lines.getClass()).newInstance(sign, lines);
-
-					// call onCreate()
-					if (event != null)
-						magicSign.onCreate(event);
-
-					// add the sign to the list
-					registerSign(magicSign);
-
-					if (p != null)
-						MSMsg.SIGN_CREATED.send(p);
-
+					MSMsg.NO_PERMISSION.send(p);
 					return;
 				}
 
-			} catch (PermissionException e) {
-				if (event != null) {
-					event.setCancelled(true);
-				} else {
-					sign.breakNaturally();
-				}
-				MSMsg.NO_PERMISSION.send(p);
+				MagicSign magicSign = signType.constructor.newInstance(sign, lines);
+
+				if (event != null)
+					magicSign.onCreate(event);
+
+				registerSign(magicSign);
+
+				if (p != null)
+					MSMsg.SIGN_CREATED.send(p);
+
+				return;
 			} catch (InvocationTargetException e) {
 				if (e.getTargetException() instanceof InvalidSignException) {
 					if (event != null) {
@@ -195,6 +203,7 @@ public class SignManager {
 					} else {
 						sign.breakNaturally();
 					}
+					
 					if (p != null) {
 						p.sendMessage(ChatColor.RED
 								+ e.getTargetException().getMessage());
@@ -209,14 +218,14 @@ public class SignManager {
 					getLogger().log(
 							Level.WARNING,
 							"Error registering Magic sign of type "
-									+ signType.getCanonicalName() + ": "
+									+ signType.clazz.getCanonicalName() + ": "
 									+ e.getTargetException().getMessage(),
 							e.getTargetException());
 			} catch (Throwable e) {
 				getLogger().log(
 						Level.WARNING,
 						"Error registering sign of type "
-								+ signType.getCanonicalName(), e);
+								+ signType.clazz.getCanonicalName(), e);
 			}
 
 		}
@@ -234,8 +243,7 @@ public class SignManager {
 	/**
 	 * Returns if a sign at the given location is registered.
 	 *
-	 * @param loc
-	 *            The location
+	 * @param loc The location
 	 * @return true if it exists, else false
 	 */
 	public boolean containsSign(Location loc) {
@@ -245,30 +253,21 @@ public class SignManager {
 	/**
 	 * Returns a {@link MagicSign} by a given location
 	 *
-	 * @param loc
-	 *            The location
+	 * @param loc The location
 	 * @return the magic sign.
 	 */
 	public MagicSign getSign(Location loc) {
-		if (containsSign(loc)) {
-			return signs.get(loc);
-		}
-		return null;
+		return signs.get(loc);
 	}
 
 	/**
 	 * Removes a sign by a given location.
 	 *
-	 * @param loc
-	 *            - The location of this sign.
+	 * @param loc The location of this sign.
 	 * @return true if the sign was found and deleted
 	 */
 	public boolean removeSign(Location loc) {
-		if (signs.containsKey(loc)) {
-			signs.remove(loc);
-			return true;
-		}
-		return false;
+		return signs.remove(loc) != null;
 	}
 
 	/**
@@ -293,9 +292,9 @@ public class SignManager {
 	 * @return The modified ConfigurationSection
 	 */
 	public ConfigurationSection saveConfig(ConfigurationSection section) {
-		for (Class<? extends MagicSign> type : signTypes) {
+		for (SignType type : signTypes) {
 			try {
-				section = (ConfigurationSection) type.getMethod("saveConfig",
+				section = (ConfigurationSection) type.clazz.getMethod("saveConfig",
 						ConfigurationSection.class).invoke(null, section);
 			} catch (Throwable e) {
 				getLogger().log(Level.WARNING,
