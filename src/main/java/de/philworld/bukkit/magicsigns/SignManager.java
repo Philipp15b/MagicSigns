@@ -52,15 +52,12 @@ public class SignManager {
 		public final Method takeAction;
 		public final Constructor<? extends MagicSign> constructor;
 		public final String buildPermission;
-		@SuppressWarnings("unused") // TODO
-		public final String usePermission;
 		
-		private SignType(Class<? extends MagicSign> clazz, Method takeAction, Constructor<? extends MagicSign> constructor, String buildPermission, String usePermission) {
+		private SignType(Class<? extends MagicSign> clazz, Method takeAction, Constructor<? extends MagicSign> constructor, String buildPermission) {
 			this.clazz = clazz;
 			this.takeAction = takeAction;
 			this.constructor = constructor;
 			this.buildPermission = buildPermission;
-			this.usePermission = usePermission;
 		}
 	}
 	
@@ -130,7 +127,6 @@ public class SignManager {
 					+ clazz.getName()
 					+ "' must have a MagicSignInfo annotation!");
 		String buildPerm = annotation.buildPerm();
-		String usePerm = annotation.usePerm();
 		
 
 		// load the config into this sign type
@@ -144,7 +140,7 @@ public class SignManager {
 							+ "!", e);
 		}
 
-		signTypes.add(new SignType(clazz, takeAction, constructor, buildPerm, usePerm));
+		signTypes.add(new SignType(clazz, takeAction, constructor, buildPerm));
 	}
 
 	/**
