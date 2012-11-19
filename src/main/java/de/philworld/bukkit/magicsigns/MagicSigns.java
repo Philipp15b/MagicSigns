@@ -2,10 +2,9 @@ package de.philworld.bukkit.magicsigns;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 
 import net.milkbowl.vault.economy.Economy;
@@ -42,7 +41,7 @@ public class MagicSigns extends JavaPlugin {
 	private static Economy economy = null;
 	private static MagicSigns instance;
 	private static Permission permission = null;
-	private static Set<Class<? extends MagicSign>> includedSignTypes = new HashSet<Class<? extends MagicSign>>();
+	private static List<Class<? extends MagicSign>> includedSignTypes = new ArrayList<Class<? extends MagicSign>>();
 
 	static {
 		includedSignTypes.add(CommandSign.class);
@@ -74,7 +73,7 @@ public class MagicSigns extends JavaPlugin {
 		return permission;
 	}
 
-	public static Set<Class<? extends MagicSign>> getIncludedSignTypes() {
+	public static List<Class<? extends MagicSign>> getIncludedSignTypes() {
 		return includedSignTypes;
 	}
 
@@ -191,7 +190,7 @@ public class MagicSigns extends JavaPlugin {
 				.get("magic-signs");
 
 		if (list == null) {
-			list = new LinkedList<MagicSignSerializationProxy>();
+			list = new ArrayList<MagicSignSerializationProxy>();
 		}
 
 		// migrate from old config file.
