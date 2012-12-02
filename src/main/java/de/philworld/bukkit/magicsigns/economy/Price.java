@@ -235,6 +235,10 @@ public abstract class Price {
 			}
 			return false;
 		}
+		
+		public int getLevel() {
+			return level;
+		}
 
 		@Override
 		public String toString() {
