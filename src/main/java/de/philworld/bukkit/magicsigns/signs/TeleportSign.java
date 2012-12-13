@@ -13,20 +13,17 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * Sign that allows teleportation.
- *
- * Line 2 must contain coordinates (comma-separated, e.g. <code>20,20,20</code>),
- * line 3 can contain yaw and pitch (comma-seperated, as above) where pitch is optional.
- *
+ * 
+ * Line 2 must contain coordinates (comma-separated, e.g. <code>20,20,20</code>
+ * ), line 3 can contain yaw and pitch (comma-seperated, as above) where pitch
+ * is optional.
+ * 
  */
-@MagicSignInfo(
-		friendlyName = "Teleport sign",
-		description = "Sign that allows teleportation.",
-		buildPerm = "magicsigns.teleport.create",
-		usePerm = "magicsigns.teleport.use")
+@MagicSignInfo(friendlyName = "Teleport sign", description = "Sign that allows teleportation.", buildPerm = "magicsigns.teleport.create", usePerm = "magicsigns.teleport.use")
 public class TeleportSign extends PurchasableMagicSign {
-	
+
 	@SuppressWarnings("serial")
-	private static final Map<String, Integer> YAW_SHORTHANDS = new HashMap<String, Integer>() {
+	private static final Map<String, Integer> YAW_SHORTHANDS = new HashMap<String, Integer>(8) {
 		{
 			put("N", 180);
 			put("NE", 225);
@@ -48,32 +45,44 @@ public class TeleportSign extends PurchasableMagicSign {
 	public TeleportSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
 
-		try {
-			String[] coords = lines[1].split(",");
-			if (coords.length == 3) {
-				destination = new Location(sign.getWorld(), new Integer(coords[0]),
-						new Integer(coords[1]), new Integer(coords[2]));
+		String[] coords = lines[1].split(",");
+		if (coords.length == 3) {
+			try {
+				destination = new Location(sign.getWorld(), new Integer(
+						coords[0]), new Integer(coords[1]), new Integer(
+						coords[2]));
+			} catch (NumberFormatException e) {
+				throw new InvalidSignException(
+						"Invalid numbers in coordinates!");
+			}
+		} else {
+			throw new InvalidSignException(
+					"Line 2 must contain coordinates in the format '1,2,3'!");
+		}
+
+		String[] direction = lines[2].split(",");
+		if (direction.length > 2) { // too many arguments
+			throw new InvalidSignException(
+					"Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
+		}
+		String yaw = direction[0].trim();
+		if (!yaw.isEmpty()) {
+			if (YAW_SHORTHANDS.containsKey(yaw)) {
+				destination.setYaw(YAW_SHORTHANDS.get(yaw));
 			} else {
-				throw new InvalidSignException("Line 2 must contain coordinates!");
-			}
-		
-			String[] direction = lines[2].split(",");
-			if (direction.length > 2) {
-				throw new InvalidSignException("Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
-			}
-			if (direction.length > 0) {
-				String yaw = direction[0].trim();
-				if (YAW_SHORTHANDS.containsKey(yaw)) {
-					destination.setYaw(YAW_SHORTHANDS.get(yaw));
-				} else {
+				try {
 					destination.setYaw(new Integer(yaw));
+				} catch (NumberFormatException e) {
+					throw new InvalidSignException("Yaw is an invalid number!");
 				}
 			}
-			if (direction.length > 1) {
+		}
+		if (direction.length > 1) {
+			try {
 				destination.setPitch(new Integer(direction[1]));
+			} catch (NumberFormatException e) {
+				throw new InvalidSignException("Pitch is an invalid number!");
 			}
-		} catch (NumberFormatException e) {
-			throw new InvalidSignException("Invalid number(s) given!");
 		}
 	}
 
