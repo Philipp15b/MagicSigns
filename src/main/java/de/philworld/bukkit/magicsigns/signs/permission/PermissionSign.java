@@ -51,7 +51,6 @@ public class PermissionSign extends PurchasableMagicSign {
 	@Override
 	public void onRightClick(PlayerInteractEvent event) {
 		for (String perm : permissions) {
-			System.out.println(perm);
 			MagicSigns.getPermission().playerAdd(event.getPlayer(), perm);
 		}
 		event.getPlayer().sendMessage(
