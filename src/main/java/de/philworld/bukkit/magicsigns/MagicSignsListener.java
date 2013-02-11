@@ -113,10 +113,7 @@ public class MagicSignsListener implements Listener {
 				event.setCancelled(true);
 
 			} catch (PermissionException e) {
-				if (e.getMessage() == null)
-					MSMsg.NO_PERMISSION.send(event.getPlayer());
-				else
-					event.getPlayer().sendMessage(e.getMessage());
+				e.send(event.getPlayer());
 			}
 		}
 	}
