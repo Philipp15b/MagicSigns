@@ -19,7 +19,6 @@ import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
-import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 
 /**
  * This is the parent class for every magic sign. Subclasses of MagicSign must
@@ -205,12 +204,8 @@ public abstract class MagicSign {
 
 	/**
 	 * Called on every right click on the sign.
-	 *
-	 * @param event
-	 * @throws PermissionException
 	 */
-	public void onRightClick(PlayerInteractEvent event)
-			throws PermissionException {
+	public void onRightClick(PlayerInteractEvent event) {
 		return;
 	}
 
