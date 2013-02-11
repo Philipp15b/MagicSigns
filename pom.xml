@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.philworld.bukkit.magicsigns</groupId>
 	<artifactId>MagicSigns</artifactId>
-	<version>1.2.3</version>
+	<version>1.2.4</version>
 	<name>MagicSigns</name>
 	<description>MagicSigns is a Bukkit plugin that adds interactive signs.</description>
 	<licenses>
@@ -47,13 +47,13 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.4.5-R0.2</version>
+			<version>1.4.7-R1.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldedit</artifactId>
-			<version>5.4.5</version>
+			<version>5.5</version>
 		</dependency>
 
 		<dependency>
@@ -63,9 +63,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.mcstats</groupId>
-			<artifactId>metrics</artifactId>
-			<version>1.1</version>
+			<groupId>org.mcstats.bukkit</groupId>
+			<artifactId>metrics-lite</artifactId>
+			<version>R6</version>
 		</dependency>
 	</dependencies>
 
@@ -135,7 +135,7 @@
 							<artifactSet>
 								<includes>
 									<include>com.sk89q:worldedit:jar:*</include>
-									<include>org.mcstats:metrics:jar:*</include>
+									<include>org.mcstats.bukkit:metrics-lite:jar:*</include>
 								</includes>
 							</artifactSet>
 							<filters>
@@ -152,7 +152,7 @@
 
 								<!-- Metrics -->
 								<filter>
-									<artifact>org.mcstats:metrics:jar:*</artifact>
+									<artifact>org.mcstats.bukkit:metrics-lite:jar:*</artifact>
 									<includes>
 										<include>org/mcstats/*</include>
 									</includes>
