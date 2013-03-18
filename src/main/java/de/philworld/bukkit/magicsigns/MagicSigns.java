@@ -2,6 +2,7 @@ package de.philworld.bukkit.magicsigns;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -138,7 +139,15 @@ public class MagicSigns extends JavaPlugin {
 
 		// register all sign types
 		for (Class<? extends MagicSign> signType : includedSignTypes) {
-			getSignManager().registerSignType(signType);
+			try {
+				getSignManager().registerSignType(signType);
+			} catch (InvocationTargetException e) {
+				getLogger().log(
+						Level.WARNING,
+						"Error registering sign type '"
+								+ signType.getCanonicalName() + "': "
+								+ e.getMessage(), e);
+			}
 		}
 
 		// and then load them from the config
@@ -220,7 +229,7 @@ public class MagicSigns extends JavaPlugin {
 
 	@SuppressWarnings("unused")
 	private void saveConfiguration() {
-		getSignManager().saveConfig(getConfig());
+		getSignManager().saveConfig();
 		saveConfig();
 	}
 
@@ -229,7 +238,7 @@ public class MagicSigns extends JavaPlugin {
 		signsDb.set("magic-signs", null);
 
 		List<MagicSignSerializationProxy> signList = new LinkedList<MagicSignSerializationProxy>();
-		for (MagicSign sign : getSignManager().getSigns()) {
+		for (MagicSign sign : getSignManager().signs.values()) {
 			signList.add(sign.serialize());
 		}
 

@@ -66,7 +66,7 @@ public class MagicSignsListener implements Listener {
 
 		Location loc = event.getClickedBlock().getLocation();
 
-		if (manager.containsSign(loc)) {
+		if (manager.hasSign(loc)) {
 
 			// if the plugin will edit this sign, don't allow interaction.
 			if (plugin.getSignEdit().getListener().willEditMagicSign(event))
@@ -124,7 +124,7 @@ public class MagicSignsListener implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (manager.containsSign(event.getBlock().getLocation())) {
+		if (manager.hasSign(event.getBlock().getLocation())) {
 			manager.removeSign(event.getBlock().getLocation());
 		}
 	}
