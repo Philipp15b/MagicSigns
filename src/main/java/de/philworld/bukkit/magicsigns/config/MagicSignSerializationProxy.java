@@ -117,7 +117,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 
 	/**
 	 * Get the Magic Sign behind this proxy.
-	 *
+	 * 
 	 * @return MagicSign
 	 * @throws Exception
 	 *             - Error when instantiating new Magic Sign of this type.
@@ -147,14 +147,13 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 				magicSign.setPlayerLocks(playerLocks);
 
 			return magicSign;
-		} else {
-			throw new InvalidConfigException("No sign found at coordinates: X("
-					+ block.getLocation().getBlockX() + ") Y("
-					+ block.getLocation().getBlockY() + ") Z("
-					+ block.getLocation().getBlockZ() + ") in world '"
-					+ block.getLocation().getWorld().getName()
-					+ "' ! The sign config will be deleted on server shutdown!");
 		}
+		throw new InvalidConfigException("No sign found at coordinates: X("
+				+ block.getLocation().getBlockX() + ") Y("
+				+ block.getLocation().getBlockY() + ") Z("
+				+ block.getLocation().getBlockZ() + ") in world '"
+				+ block.getLocation().getWorld().getName()
+				+ "' ! The sign config will be deleted on server shutdown!");
 	}
 
 }

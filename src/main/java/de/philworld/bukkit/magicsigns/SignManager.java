@@ -23,9 +23,9 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * Manages all signs and sign types.
- *
+ * 
  * <h2>Usage</h2>
- *
+ * 
  * <pre>
  * <code>
  *   SignManager manager = new SignManager();
@@ -33,11 +33,11 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  *   manager.registerSign(Block mysign, String[] lines); // for every sign thats created or changed.
  * </code>
  * </pre>
- *
+ * 
  * <p>
  * The manager will automatically check all sign types and if some take action,
  * it will instantiate new objects of them.
- *
+ * 
  * <p>
  * Note: Sign types don't have to be registered before using them. This means
  * you can register a single MagicSign with
@@ -52,18 +52,21 @@ public class SignManager {
 		public final Method takeAction;
 		public final Constructor<? extends MagicSign> constructor;
 		public final String buildPermission;
-		
-		private SignType(Class<? extends MagicSign> clazz, Method takeAction, Constructor<? extends MagicSign> constructor, String buildPermission) {
+
+		private SignType(Class<? extends MagicSign> clazz, Method takeAction,
+				Constructor<? extends MagicSign> constructor,
+				String buildPermission) {
 			this.clazz = clazz;
 			this.takeAction = takeAction;
 			this.constructor = constructor;
 			this.buildPermission = buildPermission;
 		}
 	}
-	
-	private List<SignType> signTypes = new ArrayList<SignType>(MagicSigns.getIncludedSignTypes().size());
-	private Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
-	private MagicSigns plugin;
+
+	private final List<SignType> signTypes = new ArrayList<SignType>(MagicSigns
+			.getIncludedSignTypes().size());
+	private final Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
+	private final MagicSigns plugin;
 	private ConfigurationSection config;
 
 	public SignManager(MagicSigns plugin, ConfigurationSection config) {
@@ -73,7 +76,7 @@ public class SignManager {
 
 	/**
 	 * Get all registered {@link MagicSign}s in a list.
-	 *
+	 * 
 	 * @return List of {@link MagicSign}s
 	 */
 	public List<MagicSign> getSigns() {
@@ -84,18 +87,18 @@ public class SignManager {
 	 * Adds a new sign type. It must extend MagicSign and override the static
 	 * method <code>takeAction()</code>. The class must have a
 	 * {@link MagicSignInfo} annotation.
-	 *
+	 * 
 	 * @throws IllegalArgumentException
 	 *             if the sign type doesnt have a {@link MagicSignInfo}
 	 *             annotation or no {@link MagicSign#takeAction(Sign, String[])}
 	 *             method.
-	 * @param clazz
 	 */
 	public void registerSignType(Class<? extends MagicSign> clazz) {
 		// get takeAction method
 		Method takeAction;
 		try {
-			takeAction = clazz.getMethod("takeAction", Block.class, String[].class);
+			takeAction = clazz.getMethod("takeAction", Block.class,
+					String[].class);
 		} catch (NoSuchMethodException e) {
 			throw new IllegalArgumentException("The sign type '"
 					+ clazz.getName()
@@ -105,21 +108,23 @@ public class SignManager {
 					+ clazz.getName()
 					+ "' must have a static takeAction(Sign, String[]) method!");
 		}
-		
+
 		// get constructor
 		Constructor<? extends MagicSign> constructor;
 		try {
 			constructor = clazz.getConstructor(Block.class, String[].class);
 		} catch (NoSuchMethodException e) {
-			throw new IllegalArgumentException("The sign type '"
-					+ clazz.getName()
-					+ "' must have a constructor with arguments Block and String[]!");
+			throw new IllegalArgumentException(
+					"The sign type '"
+							+ clazz.getName()
+							+ "' must have a constructor with arguments Block and String[]!");
 		} catch (SecurityException e) {
-			throw new IllegalArgumentException("The sign type '"
-					+ clazz.getName()
-					+ "' must have a constructor with arguments Block and String[]!");
+			throw new IllegalArgumentException(
+					"The sign type '"
+							+ clazz.getName()
+							+ "' must have a constructor with arguments Block and String[]!");
 		}
-		
+
 		// get permissions
 		MagicSignInfo annotation = clazz.getAnnotation(MagicSignInfo.class);
 		if (annotation == null)
@@ -127,12 +132,11 @@ public class SignManager {
 					+ clazz.getName()
 					+ "' must have a MagicSignInfo annotation!");
 		String buildPerm = annotation.buildPerm();
-		
 
 		// load the config into this sign type
 		try {
-			clazz.getMethod("loadConfig", ConfigurationSection.class)
-					.invoke(null, config);
+			clazz.getMethod("loadConfig", ConfigurationSection.class).invoke(
+					null, config);
 		} catch (Throwable e) {
 			getLogger().log(
 					Level.WARNING,
@@ -147,12 +151,12 @@ public class SignManager {
 	 * Checks all registered sign types with the static method
 	 * {@link MagicSign#takeAction(Sign, String[])} if a new MagicSign of the
 	 * type should be created.
-	 *
+	 * 
 	 * <ul>
 	 * <li>Add player if you want to check for permissions
 	 * <li>Add event if you want to call onCreate() on the new sign.
 	 * </ul>
-	 *
+	 * 
 	 * @param sign
 	 *            Sign Block
 	 * @param lines
@@ -181,7 +185,8 @@ public class SignManager {
 					return;
 				}
 
-				MagicSign magicSign = signType.constructor.newInstance(sign, lines);
+				MagicSign magicSign = signType.constructor.newInstance(sign,
+						lines);
 
 				if (event != null)
 					magicSign.onCreate(event);
@@ -199,7 +204,7 @@ public class SignManager {
 					} else {
 						sign.breakNaturally();
 					}
-					
+
 					if (p != null) {
 						p.sendMessage(ChatColor.RED
 								+ e.getTargetException().getMessage());
@@ -229,7 +234,7 @@ public class SignManager {
 
 	/**
 	 * Registers a MagicSign directly.
-	 *
+	 * 
 	 * @param sign
 	 */
 	public void registerSign(MagicSign sign) {
@@ -238,8 +243,9 @@ public class SignManager {
 
 	/**
 	 * Returns if a sign at the given location is registered.
-	 *
-	 * @param loc The location
+	 * 
+	 * @param loc
+	 *            The location
 	 * @return true if it exists, else false
 	 */
 	public boolean containsSign(Location loc) {
@@ -248,8 +254,9 @@ public class SignManager {
 
 	/**
 	 * Returns a {@link MagicSign} by a given location
-	 *
-	 * @param loc The location
+	 * 
+	 * @param loc
+	 *            The location
 	 * @return the magic sign.
 	 */
 	public MagicSign getSign(Location loc) {
@@ -258,8 +265,9 @@ public class SignManager {
 
 	/**
 	 * Removes a sign by a given location.
-	 *
-	 * @param loc The location of this sign.
+	 * 
+	 * @param loc
+	 *            The location of this sign.
 	 * @return true if the sign was found and deleted
 	 */
 	public boolean removeSign(Location loc) {
@@ -268,8 +276,6 @@ public class SignManager {
 
 	/**
 	 * Set the configuration used by all signs in this sign manager.
-	 *
-	 * @param section
 	 */
 	public void setConfig(ConfigurationSection config) {
 		this.config = config;
@@ -282,7 +288,7 @@ public class SignManager {
 	/**
 	 * Save the configuration of all sign types to the given
 	 * {@link ConfigurationSection}
-	 *
+	 * 
 	 * @param section
 	 *            ConfigurationSection to save the data to.
 	 * @return The modified ConfigurationSection
@@ -290,8 +296,9 @@ public class SignManager {
 	public ConfigurationSection saveConfig(ConfigurationSection section) {
 		for (SignType type : signTypes) {
 			try {
-				section = (ConfigurationSection) type.clazz.getMethod("saveConfig",
-						ConfigurationSection.class).invoke(null, section);
+				section = (ConfigurationSection) type.clazz.getMethod(
+						"saveConfig", ConfigurationSection.class).invoke(null,
+						section);
 			} catch (Throwable e) {
 				getLogger().log(Level.WARNING,
 						"Error saving config: " + e.getMessage(), e);
@@ -302,7 +309,7 @@ public class SignManager {
 
 	/**
 	 * Get the logger.
-	 *
+	 * 
 	 * @return the logger
 	 */
 	private Logger getLogger() {

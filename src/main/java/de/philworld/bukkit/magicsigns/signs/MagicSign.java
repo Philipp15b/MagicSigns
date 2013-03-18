@@ -15,46 +15,32 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
-import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
+import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 
 /**
  * This is the parent class for every magic sign. Subclasses of MagicSign must
- * override the static {@link #takeAction(Sign, String[])} method (which
- * throws an {@link Exception} in the default implementation) and should
- * override {@link #onRightClick(PlayerInteractEvent)}. For magic signs that
- * require configuration, they can override
- * {@link #loadConfig(ConfigurationSection)}.
- *
- * @see ConfigurationBase ConfigurationBase for a simple base configuration class.
+ * override the static {@link #takeAction(Sign, String[])} method (which throws
+ * an {@link Exception} in the default implementation) and should override
+ * {@link #onRightClick(PlayerInteractEvent)}. For magic signs that require
+ * configuration, they can override {@link #loadConfig(ConfigurationSection)}.
+ * 
+ * @see AnnotationConfiguration ConfigurationBase for a simple base
+ *      configuration class.
  */
 public abstract class MagicSign {
 
-	/**
-	 * Contains the configuration of this magic sign.
-	 */
-	private static ConfigurationBase config = null;
-
-	/**
-	 * Initializes the configuration.
-	 *
-	 * @param node
-	 *            {@link ConfigurationNode} the config.
-	 */
 	public static void loadConfig(ConfigurationSection section) {
 	}
 
 	public static void saveConfig(ConfigurationSection section) {
-		if (config != null) {
-			config.save(section);
-		}
 	}
 
 	/**
 	 * Returns if a new Magic Sign should be created of this sign.
-	 *
+	 * 
 	 * <i><b>Important:</b> Must be overridden!</i>
 	 */
 	public static boolean takeAction(Sign sign, String[] lines) {
@@ -69,7 +55,7 @@ public abstract class MagicSign {
 
 	/**
 	 * Create a new instance of the MagicSign
-	 *
+	 * 
 	 * @param sign
 	 * @param lines
 	 * @throws InvalidSignException
@@ -81,22 +67,12 @@ public abstract class MagicSign {
 
 	public String getDescription() {
 		MagicSignInfo signInfo = getClass().getAnnotation(MagicSignInfo.class);
-
-		if (signInfo != null) {
-			return signInfo.description();
-		} else {
-			return null;
-		}
+		return signInfo != null ? signInfo.description() : null;
 	}
 
 	public String getFriendlyName() {
 		MagicSignInfo signInfo = getClass().getAnnotation(MagicSignInfo.class);
-
-		if (signInfo != null) {
-			return signInfo.friendlyName();
-		} else {
-			return null;
-		}
+		return signInfo != null ? signInfo.friendlyName() : null;
 	}
 
 	/**
@@ -108,7 +84,7 @@ public abstract class MagicSign {
 
 	/**
 	 * Get the location of this sign
-	 *
+	 * 
 	 * @return Location
 	 */
 	public Location getLocation() {
@@ -125,7 +101,7 @@ public abstract class MagicSign {
 	/**
 	 * Get the player lock for this sign. If there is no player lock registered,
 	 * a new one is returned.
-	 *
+	 * 
 	 * @param p
 	 *            The player
 	 * @return The lock
@@ -134,22 +110,20 @@ public abstract class MagicSign {
 		if (playerLocks != null) {
 			if (playerLocks.containsKey(p.getName())) {
 				return playerLocks.get(p.getName());
-			} else {
-				PlayerLock lock = new PlayerLock(this.lock);
-				playerLocks.put(p.getName(), lock);
-				return lock;
 			}
-		} else {
-			playerLocks = new HashMap<String, PlayerLock>();
 			PlayerLock lock = new PlayerLock(this.lock);
 			playerLocks.put(p.getName(), lock);
 			return lock;
 		}
+		playerLocks = new HashMap<String, PlayerLock>();
+		PlayerLock lock = new PlayerLock(this.lock);
+		playerLocks.put(p.getName(), lock);
+		return lock;
 	}
 
 	/**
 	 * Get all player locks.
-	 *
+	 * 
 	 * @return The player locks; can be null.
 	 */
 	public Map<String, PlayerLock> getPlayerLocks() {
@@ -165,25 +139,16 @@ public abstract class MagicSign {
 
 	/**
 	 * Get the use permission for this {@link MagicSign}.
-	 *
-	 * @param sign
-	 *            the MagicSign
-	 * @return The use permission.
 	 */
 	public String getUsePermission() {
 		MagicSignInfo signInfo = getClass().getAnnotation(MagicSignInfo.class);
-
-		if (signInfo != null) {
-			return signInfo.usePerm();
-		} else {
-			return null;
-		}
+		return signInfo != null ? signInfo.usePerm() : null;
 	}
 
 	/**
 	 * Returns if this sign is masked (the sign shows a different text than this
 	 * MagicSign uses for its work).
-	 *
+	 * 
 	 * @return True if its masked, else false.
 	 */
 	public boolean isMasked() {
@@ -195,7 +160,7 @@ public abstract class MagicSign {
 	/**
 	 * Called every time the sign is created, but not when its loaded from
 	 * config.
-	 *
+	 * 
 	 * @param event
 	 */
 	public void onCreate(SignChangeEvent event) {
@@ -211,7 +176,7 @@ public abstract class MagicSign {
 
 	/**
 	 * Removes all registered player locks.
-	 *
+	 * 
 	 * @see {@link #setLock(Lock, boolean)} to delete only locks of the current
 	 *      lock type, not special player locks.
 	 */
@@ -221,7 +186,7 @@ public abstract class MagicSign {
 
 	/**
 	 * Return the serialization proxy.
-	 *
+	 * 
 	 * @return {@link MagicSignSerializationProxy}
 	 */
 	public MagicSignSerializationProxy serialize() {
@@ -248,7 +213,7 @@ public abstract class MagicSign {
 
 	/**
 	 * Set the player lock.
-	 *
+	 * 
 	 * @param p
 	 *            The player
 	 * @param lock

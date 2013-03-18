@@ -22,8 +22,8 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 public class MagicSignsListener implements Listener {
 
-	private SignManager manager;
-	private MagicSigns plugin;
+	private final SignManager manager;
+	private final MagicSigns plugin;
 
 	public MagicSignsListener(MagicSigns plugin) {
 		this.plugin = plugin;
@@ -32,7 +32,7 @@ public class MagicSignsListener implements Listener {
 
 	/**
 	 * Adds every created/changed sign to the plugin's signHandler.
-	 *
+	 * 
 	 * @param event
 	 */
 	@EventHandler(ignoreCancelled = true)
@@ -51,7 +51,7 @@ public class MagicSignsListener implements Listener {
 
 	/**
 	 * Calls <code>playerInteract()</code> on the MagicSigns.
-	 *
+	 * 
 	 * @param event
 	 */
 	@EventHandler
@@ -101,10 +101,9 @@ public class MagicSignsListener implements Listener {
 							MSMsg.NOT_ENOUGH_MONEY.send(event.getPlayer(),
 									pSign.getPrice().toString());
 							return;
-						} else {
-							MSMsg.PAID_SIGN.send(event.getPlayer(), pSign
-									.getPrice().toString());
 						}
+						MSMsg.PAID_SIGN.send(event.getPlayer(), pSign
+								.getPrice().toString());
 					}
 				}
 
@@ -120,7 +119,7 @@ public class MagicSignsListener implements Listener {
 
 	/**
 	 * Removes broken signs from the list.
-	 *
+	 * 
 	 * @param event
 	 */
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

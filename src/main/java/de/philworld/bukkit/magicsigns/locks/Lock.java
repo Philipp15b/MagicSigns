@@ -8,12 +8,12 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 /**
  * A lock for a certain object that saves the maximum uses and a lock period
  * between the uses.
- *
+ * 
  * <ul>
  * <li>If the period is zero, there is no delay between each usage.
  * <li>If maximum uses equals -1, there are unlimited usages.
  * </ul>
- *
+ * 
  * @see PlayerLock PlayerLock - Saves the lock data for each player.
  */
 public class Lock implements ConfigurationSerializable {

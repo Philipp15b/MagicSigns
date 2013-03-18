@@ -203,7 +203,7 @@ public class MagicSigns extends JavaPlugin {
 			getConfig().set("magic-signs", null);
 		}
 
-		if (list == null || list.isEmpty())
+		if (list.isEmpty())
 			return;
 
 		for (MagicSignSerializationProxy proxy : list) {

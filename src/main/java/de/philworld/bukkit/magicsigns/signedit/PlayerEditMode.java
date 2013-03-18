@@ -14,7 +14,7 @@ public class PlayerEditMode {
 
 	private final File file;
 	private final FileConfiguration config;
-	private Map<String, EditMode> editModes = new HashMap<String, EditMode>();
+	private final Map<String, EditMode> editModes = new HashMap<String, EditMode>();
 
 	public PlayerEditMode(File file) {
 		this.file = file;
@@ -37,11 +37,7 @@ public class PlayerEditMode {
 
 	public EditMode getEditMode(String playername) {
 		EditMode mode = editModes.get(playername);
-		if (mode != null) {
-			return mode;
-		} else {
-			return EditMode.NONE;
-		}
+		return mode != null ? mode : EditMode.NONE;
 	}
 
 	public void setEditMode(Player p, EditMode mode) {

@@ -19,7 +19,7 @@ public enum EditMode {
 	/**
 	 * Write an alternate value on {@link MagicSign}s, but keep them MagicSigns.
 	 * Users will see the mask text, but the MagicSign will work as before.
-	 *
+	 * 
 	 * <p>
 	 * Other signs wont be modified.
 	 */
@@ -48,11 +48,8 @@ public enum EditMode {
 	}
 
 	public boolean hasPermission(Player p) {
-		if (getPermission() != null) {
-			return p.hasPermission(getPermission());
-		} else {
-			return true;
-		}
+		return getPermission() != null ? p.hasPermission(getPermission())
+				: true;
 	}
 
 }

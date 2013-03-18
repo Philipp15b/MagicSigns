@@ -8,11 +8,11 @@ public class InventoryUtil {
 
 	/**
 	 * Removes a specific amount of items from an inventory.
-	 *
+	 * 
 	 * <p>
 	 * Thanks to bergerkiller:
 	 * {@code http://forums.bukkit.org/threads/remove-items-from-an-inventory.27853/}
-	 *
+	 * 
 	 * @param inv
 	 *            The inventory
 	 * @param type
@@ -27,12 +27,11 @@ public class InventoryUtil {
 				if (newamount > 0) {
 					is.setAmount(newamount);
 					break;
-				} else {
-					inv.remove(is);
-					amount = -newamount;
-					if (amount == 0)
-						break;
 				}
+				inv.remove(is);
+				amount = -newamount;
+				if (amount == 0)
+					break;
 			}
 		}
 	}

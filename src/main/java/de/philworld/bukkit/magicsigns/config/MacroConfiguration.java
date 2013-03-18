@@ -12,7 +12,7 @@ import de.philworld.bukkit.magicsigns.MagicSigns;
 /**
  * A configuration that can save Macros ({@code Map<String, List<String>>}).
  */
-public class MacroConfiguration extends ConfigurationBase {
+public class MacroConfiguration implements Configuration {
 
 	private final String configKey;
 	private final Map<String, List<String>> macros = new HashMap<String, List<String>>();

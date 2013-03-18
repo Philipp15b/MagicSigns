@@ -52,7 +52,7 @@ public class PlayerLock {
 	 * Returns if this object is no longer necessary: The 'NextAllowedTime' has
 	 * passed and remaining uses equal the maximum uses in the this object's
 	 * {@link Lock}.
-	 *
+	 * 
 	 * @param currentTime
 	 *            The current server time
 	 * @return If its obsolete, else false.
@@ -64,9 +64,7 @@ public class PlayerLock {
 
 	/**
 	 * If the object is usable now.
-	 *
-	 * @param currentTick
-	 *            The current server time.
+	 * 
 	 * @return If it's usable, else false.
 	 */
 	public boolean isUsable(long currentTime) {
@@ -96,7 +94,7 @@ public class PlayerLock {
 	/**
 	 * 'Touch' this object: Decrement the remaining usages and set the new next
 	 * allowed tick.
-	 *
+	 * 
 	 * @param currentTime
 	 *            The current server time.
 	 * @throws IllegalStateException

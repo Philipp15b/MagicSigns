@@ -7,9 +7,9 @@ import org.bukkit.util.Vector;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
-import de.philworld.bukkit.magicsigns.config.ConfigurationBase;
-import de.philworld.bukkit.magicsigns.config.Setting;
-import de.philworld.bukkit.magicsigns.config.SettingBase;
+import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
+import de.philworld.bukkit.magicsigns.config.annotation.Setting;
+import de.philworld.bukkit.magicsigns.config.annotation.SettingBase;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -29,7 +29,7 @@ public class RocketSign extends PurchasableMagicSign {
 	public static LocalConfiguration config;
 
 	@SettingBase("rocket")
-	private static class LocalConfiguration extends ConfigurationBase {
+	private static class LocalConfiguration extends AnnotationConfiguration {
 		@Setting("defaultVelocity")
 		public String defaultVelocity = "0,200,0";
 	}

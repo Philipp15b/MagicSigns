@@ -117,10 +117,8 @@ public class MagicSignsLockCommandExecutor {
 			p.sendMessage(ChatColor.GREEN
 					+ "The lock has been removed from this sign!");
 			return true;
-		} else {
-			p.sendMessage(ChatColor.RED
-					+ "This sign does not even have a lock!");
-			return true;
 		}
+		p.sendMessage(ChatColor.RED + "This sign does not even have a lock!");
+		return true;
 	}
 }

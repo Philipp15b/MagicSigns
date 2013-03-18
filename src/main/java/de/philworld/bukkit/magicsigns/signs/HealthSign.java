@@ -9,9 +9,9 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that sets the health of a player to a specific value.
- *
+ * 
  * @see {@link HealSign} - Increases the player's health.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Health sign",

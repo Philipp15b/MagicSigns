@@ -112,9 +112,6 @@ public class SignEditListener implements Listener {
 	/**
 	 * If this listener would handle a interaction with a sign. This should be
 	 * used not to react to a {@link PlayerInteractEvent}.
-	 *
-	 * @param event
-	 * @return
 	 */
 	public boolean willEditMagicSign(PlayerInteractEvent event) {
 		if (signEdit.getEditMode(event.getPlayer()) == EditMode.NONE)

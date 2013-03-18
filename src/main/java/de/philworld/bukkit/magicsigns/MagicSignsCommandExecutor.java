@@ -15,8 +15,8 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 public class MagicSignsCommandExecutor implements CommandExecutor {
 
-	private MagicSigns plugin;
-	private MagicSignsLockCommandExecutor magicSignsLockCommandExecutor = new MagicSignsLockCommandExecutor();
+	private final MagicSigns plugin;
+	private final MagicSignsLockCommandExecutor magicSignsLockCommandExecutor = new MagicSignsLockCommandExecutor();
 
 	public MagicSignsCommandExecutor(MagicSigns plugin) {
 		this.plugin = plugin;
@@ -92,8 +92,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 		p.sendMessage(ChatColor.GOLD + "MagicSigns Sign Info");
 		p.sendMessage(ChatColor.GOLD + "--------------------");
 
-		MagicSign sign = plugin.getSignManager().getSign(
-				target.getLocation());
+		MagicSign sign = plugin.getSignManager().getSign(target.getLocation());
 		if (sign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
 			return true;
@@ -116,6 +115,5 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 
 		return true;
 	}
-
 
 }
