@@ -15,7 +15,7 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 public class SurvivalModeSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Surival]");
+		return lines[0].equalsIgnoreCase("[Survival]");
 	}
 
 	public SurvivalModeSign(Block sign, String[] lines)
