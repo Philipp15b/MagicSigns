@@ -14,10 +14,10 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that can modify player's velocity.
- *
+ * 
  * It accepts also an vector (comma-separated) for velocity on the second line.
  * For example: <code>0,300,0</code> to make a huge jump in the air.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Rocket sign",
@@ -30,8 +30,7 @@ public class RocketSign extends PurchasableMagicSign {
 
 	@SettingBase("rocket")
 	private static class LocalConfiguration extends AnnotationConfiguration {
-		@Setting("defaultVelocity")
-		public String defaultVelocity = "0,200,0";
+		@Setting("defaultVelocity") public String defaultVelocity = "0,2,0";
 	}
 
 	public static void loadConfig(ConfigurationSection section) {
@@ -43,7 +42,7 @@ public class RocketSign extends PurchasableMagicSign {
 		return lines[0].equalsIgnoreCase("[Rocket]");
 	}
 
-	private Vector velocity;
+	private final Vector velocity;
 
 	public RocketSign(Block sign, String[] lines) throws InvalidSignException {
 		super(sign, lines);
@@ -52,12 +51,16 @@ public class RocketSign extends PurchasableMagicSign {
 				: lines[1];
 
 		String[] parts = vector.split(",");
-		
-		if (parts.length != 3)
-			throw new InvalidSignException("Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
 
-		velocity = new Vector(new Integer(parts[0]), new Integer(parts[1]),
-				new Integer(parts[2]));
+		if (parts.length == 3) {
+			velocity = new Vector(new Integer(parts[0]), new Integer(parts[1]),
+					new Integer(parts[2]));
+		} else if (parts.length == 1) {
+			velocity = new Vector(0, new Integer(parts[0]), 0);
+		} else {
+			throw new InvalidSignException(
+					"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
+		}
 	}
 
 	@Override
