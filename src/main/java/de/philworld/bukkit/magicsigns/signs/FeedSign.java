@@ -19,7 +19,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 public class FeedSign extends PurchasableMagicSign {
 
 	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[1].equalsIgnoreCase("[Feed]");
+		return lines[0].equalsIgnoreCase("[Feed]");
 	}
 
 	public static final int MAX_FOOD_LEVEL = 6;
