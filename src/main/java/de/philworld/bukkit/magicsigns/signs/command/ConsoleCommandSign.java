@@ -9,11 +9,11 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
 /**
  * A sign that executes commands in the server's context. Caution!
- *
+ * 
  * The command can be written on the three last lines.
- *
+ * 
  * <code>%p</code> will be replaced with the player's name.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Console Command sign",
@@ -36,7 +36,7 @@ public class ConsoleCommandSign extends CommandSign {
 		for (String cmd : this.commands) {
 			Bukkit.getServer().dispatchCommand(
 					Bukkit.getServer().getConsoleSender(),
-					cmd.replace("%p", event.getPlayer().getName()));
+					formatCommand(cmd, event));
 		}
 	}
 

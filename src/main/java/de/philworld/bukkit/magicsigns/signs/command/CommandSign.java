@@ -16,9 +16,9 @@ import de.philworld.bukkit.magicsigns.util.MacroUtil;
 
 /**
  * A sign that executes commands on the sign in the player's context.
- *
+ * 
  * <code>%p</code> will be replaced with the player's name.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Command sign",
@@ -76,9 +76,13 @@ public class CommandSign extends PurchasableMagicSign {
 	public void onRightClick(PlayerInteractEvent event) {
 		for (String cmd : commands) {
 			Bukkit.getServer().dispatchCommand(event.getPlayer(),
-					cmd.replace("%p", event.getPlayer().getName()));
+					formatCommand(cmd, event));
 		}
 
+	}
+
+	protected String formatCommand(String cmd, PlayerInteractEvent event) {
+		return cmd.replace("%p", event.getPlayer().getName());
 	}
 
 }
