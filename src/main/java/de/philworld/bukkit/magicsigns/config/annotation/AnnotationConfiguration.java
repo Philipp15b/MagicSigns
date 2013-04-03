@@ -66,9 +66,9 @@ public abstract class AnnotationConfiguration implements Configuration {
 					section.set(key, field.get(this));
 				}
 			} catch (IllegalAccessException e) {
-				getLogger().log(Level.WARNING, "Error loading config:", e);
+				getLogger().log(Level.SEVERE, "Error loading config:", e);
 			} catch (InvalidConfigException e) {
-				getLogger().log(Level.WARNING, "Error loading config:", e);
+				getLogger().log(Level.SEVERE, "Error loading config:", e);
 			}
 		}
 
@@ -99,7 +99,7 @@ public abstract class AnnotationConfiguration implements Configuration {
 			try {
 				section.set(key, field.get(this));
 			} catch (IllegalAccessException e) {
-				getLogger().log(Level.WARNING,
+				getLogger().log(Level.SEVERE,
 						"Error saving config: " + e.getMessage(), e);
 			}
 		}

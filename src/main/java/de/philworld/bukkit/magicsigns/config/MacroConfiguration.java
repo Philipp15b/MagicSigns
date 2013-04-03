@@ -3,11 +3,8 @@ package de.philworld.bukkit.magicsigns.config;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
-
-import de.philworld.bukkit.magicsigns.MagicSigns;
 
 /**
  * A configuration that can save Macros ({@code Map<String, List<String>>}).
@@ -30,25 +27,9 @@ public class MacroConfiguration implements Configuration {
 			// convert Map<String, Object> to Map<String, List<String>>
 			for (Map.Entry<String, Object> entry : values.entrySet()) {
 				String key = entry.getKey();
-				try {
-
-					@SuppressWarnings("unchecked")
-					List<String> macroValue = (List<String>) entry.getValue();
-					getMacros().put(key, macroValue);
-
-				} catch (ClassCastException e) {
-					MagicSigns
-							.inst()
-							.getLogger()
-							.log(Level.WARNING,
-									"Config value of '"
-											+ configKey
-											+ "."
-											+ key
-											+ "' must by of type 'List<String>', found instead '"
-											+ entry.getValue().getClass()
-													.getName() + "'!");
-				}
+				@SuppressWarnings("unchecked")
+				List<String> macroValue = (List<String>) entry.getValue();
+				getMacros().put(key, macroValue);
 			}
 		}
 	}

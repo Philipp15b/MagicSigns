@@ -122,7 +122,7 @@ public class MagicSigns extends JavaPlugin {
 		try {
 			getSignEdit().save();
 		} catch (IOException e) {
-			getLogger().log(Level.WARNING, "Error saving EditModes:", e);
+			getLogger().log(Level.SEVERE, "Error saving EditModes:", e);
 		}
 		saveSigns();
 		instance = null;
@@ -144,7 +144,7 @@ public class MagicSigns extends JavaPlugin {
 				getSignManager().registerSignType(signType);
 			} catch (InvocationTargetException e) {
 				getLogger().log(
-						Level.WARNING,
+						Level.SEVERE,
 						"Error registering sign type '"
 								+ signType.getCanonicalName() + "': "
 								+ e.getMessage(), e);
@@ -222,7 +222,7 @@ public class MagicSigns extends JavaPlugin {
 				getSignManager().registerSign(proxy.getMagicSign());
 			} catch (Exception e) {
 				getLogger().log(
-						Level.WARNING,
+						Level.SEVERE,
 						"Error loading Magic Sign from config: "
 								+ e.getMessage(), e);
 			}
@@ -241,14 +241,21 @@ public class MagicSigns extends JavaPlugin {
 
 		List<MagicSignSerializationProxy> signList = new LinkedList<MagicSignSerializationProxy>();
 		for (MagicSign sign : getSignManager().signs.values()) {
-			signList.add(sign.serialize());
+			try {
+				signList.add(sign.serialize());
+			} catch (Exception e) {
+				getLogger().log(
+						Level.SEVERE,
+						"Error saving Magic Sign of type '"
+								+ sign.getClass().getCanonicalName() + "':", e);
+			}
 		}
 
 		signsDb.set("magic-signs", signList);
 		try {
 			signsDb.save(signsDbFile);
 		} catch (IOException e) {
-			getLogger().log(Level.WARNING, "Error saving MagicSigns:", e);
+			getLogger().log(Level.SEVERE, "Error saving MagicSigns:", e);
 		}
 	}
 
