@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -117,12 +118,11 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 
 	/**
 	 * Get the Magic Sign behind this proxy.
-	 * 
-	 * @return MagicSign
-	 * @throws Exception
-	 *             - Error when instantiating new Magic Sign of this type.
 	 */
-	public MagicSign getMagicSign() throws Exception {
+	public MagicSign getMagicSign() throws InvalidConfigException,
+			InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException, ClassNotFoundException {
 		Location loc = new Location(world, x, y, z);
 		Block block = world.getBlockAt(loc);
 
