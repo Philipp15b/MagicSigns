@@ -55,7 +55,8 @@ public class PlayerEditMode {
 
 	public void save() throws IOException {
 		// convert Map<String, EditMode> to Map<String, String>
-		Map<String, String> editModesAsString = new HashMap<String, String>();
+		Map<String, String> editModesAsString = new HashMap<String, String>(
+				editModes.size());
 		for (Entry<String, EditMode> entry : editModes.entrySet()) {
 			editModesAsString.put(entry.getKey(), entry.getValue().toString());
 		}
