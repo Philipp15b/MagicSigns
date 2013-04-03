@@ -19,11 +19,15 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * is optional.
  * 
  */
-@MagicSignInfo(friendlyName = "Teleport sign", description = "Sign that allows teleportation.", buildPerm = "magicsigns.teleport.create", usePerm = "magicsigns.teleport.use")
+@MagicSignInfo(
+		friendlyName = "Teleport sign",
+		description = "Sign that allows teleportation.",
+		buildPerm = "magicsigns.teleport.create",
+		usePerm = "magicsigns.teleport.use")
 public class TeleportSign extends PurchasableMagicSign {
 
-	@SuppressWarnings("serial")
-	private static final Map<String, Integer> YAW_SHORTHANDS = new HashMap<String, Integer>(8) {
+	@SuppressWarnings("serial") private static final Map<String, Integer> YAW_SHORTHANDS = new HashMap<String, Integer>(
+			8) {
 		{
 			put("N", 180);
 			put("NE", 225);
