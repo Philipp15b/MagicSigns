@@ -125,6 +125,7 @@ public class MagicSigns extends JavaPlugin {
 			getLogger().log(Level.WARNING, "Error saving EditModes:", e);
 		}
 		saveSigns();
+		instance = null;
 	}
 
 	@Override
@@ -183,15 +184,16 @@ public class MagicSigns extends JavaPlugin {
 	}
 
 	private void loadConfiguration() {
-		ConfigurationSerialization
-				.registerClass(MagicSignSerializationProxy.class);
-		ConfigurationSerialization.registerClass(Lock.class);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
 
 	@SuppressWarnings("unchecked")
 	private void loadSigns() {
+		ConfigurationSerialization
+				.registerClass(MagicSignSerializationProxy.class);
+		ConfigurationSerialization.registerClass(Lock.class);
+
 		signsDbFile = new File(getDataFolder(), "signs.db.yml");
 		signsDb = YamlConfiguration.loadConfiguration(signsDbFile);
 
@@ -218,7 +220,7 @@ public class MagicSigns extends JavaPlugin {
 		for (MagicSignSerializationProxy proxy : list) {
 			try {
 				getSignManager().registerSign(proxy.getMagicSign());
-			} catch (Throwable e) {
+			} catch (Exception e) {
 				getLogger().log(
 						Level.WARNING,
 						"Error loading Magic Sign from config: "
