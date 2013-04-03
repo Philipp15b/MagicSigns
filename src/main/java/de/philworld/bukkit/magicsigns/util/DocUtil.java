@@ -6,6 +6,10 @@ import de.philworld.bukkit.magicsigns.signs.MagicSign;
 
 public class DocUtil {
 
+	public static void main(String[] args) {
+		System.out.println(getSignPermissions());
+	}
+
 	public static String getSignPermissions() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("# -----------------------\n# MagicSigns Permissions\n# -----------------------\n");
