@@ -10,7 +10,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * Adds a specific amount of levels to a player.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Level sign",
@@ -29,7 +29,12 @@ public class LevelSign extends PurchasableMagicSign {
 		super(sign, lines);
 
 		if (!lines[1].isEmpty()) {
-			additionalLevels = new Integer(lines[1]);
+			try {
+				additionalLevels = new Integer(lines[1]);
+			} catch (NumberFormatException e) {
+				throw new InvalidSignException(
+						"The level on line 2 must be a number or empty!");
+			}
 		}
 	}
 

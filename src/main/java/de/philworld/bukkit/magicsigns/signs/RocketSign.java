@@ -52,12 +52,17 @@ public class RocketSign extends PurchasableMagicSign {
 
 		String[] parts = vector.split(",");
 
-		if (parts.length == 3) {
-			velocity = new Vector(new Integer(parts[0]), new Integer(parts[1]),
-					new Integer(parts[2]));
-		} else if (parts.length == 1) {
-			velocity = new Vector(0, new Integer(parts[0]), 0);
-		} else {
+		try {
+			if (parts.length == 3) {
+				velocity = new Vector(new Integer(parts[0]), new Integer(
+						parts[1]), new Integer(parts[2]));
+			} else if (parts.length == 1) {
+				velocity = new Vector(0, new Integer(parts[0]), 0);
+			} else {
+				throw new InvalidSignException(
+						"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
+			}
+		} catch (NumberFormatException e) {
 			throw new InvalidSignException(
 					"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
 		}

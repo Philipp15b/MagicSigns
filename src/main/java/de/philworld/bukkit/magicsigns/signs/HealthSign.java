@@ -30,7 +30,12 @@ public class HealthSign extends PurchasableMagicSign {
 		super(sign, lines);
 
 		if (!lines[1].isEmpty()) {
-			healthNumber = new Integer(lines[1]);
+			try {
+				healthNumber = new Integer(lines[1]);
+			} catch (NumberFormatException e) {
+				throw new InvalidSignException(
+						"The health on line 2 must be a number or empty!");
+			}
 		}
 
 	}

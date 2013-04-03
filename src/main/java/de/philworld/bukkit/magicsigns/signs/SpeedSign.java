@@ -10,10 +10,10 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
 /**
  * A sign that applies the speed potion effect to players.
- *
+ * 
  * The second line may contain a duration and the third line may contain an
  * amplifier.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Speed sign",
@@ -39,8 +39,18 @@ public class SpeedSign extends PurchasableMagicSign {
 			throw new InvalidSignException("Line 3 must contain an amplifier!");
 		}
 
-		duration = new Integer(lines[1]);
-		amplifier = new Integer(lines[2]);
+		try {
+			duration = new Integer(lines[1]);
+		} catch (NumberFormatException e) {
+			throw new InvalidSignException(
+					"The duration on line 2 must be a number!");
+		}
+		try {
+			amplifier = new Integer(lines[2]);
+		} catch (NumberFormatException e) {
+			throw new InvalidSignException(
+					"The amplifier on line 3 must be a number!");
+		}
 	}
 
 	@Override

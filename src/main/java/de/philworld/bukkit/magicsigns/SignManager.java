@@ -149,13 +149,17 @@ public class SignManager {
 										+ e.getTargetException().getMessage(),
 								e.getTargetException());
 					}
-				} else
+				} else {
 					getLogger().log(
 							Level.WARNING,
 							"Error registering Magic sign of type "
 									+ signType.getCanonicalName() + ": "
 									+ e.getTargetException().getMessage(),
 							e.getTargetException());
+					if (p != null)
+						p.sendMessage(ChatColor.RED
+								+ "Some error occured while creating this sign.");
+				}
 			} catch (Throwable e) {
 				getLogger().log(
 						Level.WARNING,

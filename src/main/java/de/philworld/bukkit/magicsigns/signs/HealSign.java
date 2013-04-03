@@ -10,7 +10,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that adds some health to a player.
- *
+ * 
  * @see {@link HealthSign} - Sets the health directly to a value.
  */
 @MagicSignInfo(
@@ -30,7 +30,12 @@ public class HealSign extends PurchasableMagicSign {
 		super(sign, lines);
 
 		if (!lines[1].isEmpty()) {
-			healAmount = new Integer(lines[1]);
+			try {
+				healAmount = new Integer(lines[1]);
+			} catch (NumberFormatException e) {
+				throw new InvalidSignException(
+						"The amount on line 2 must be a number or empty!");
+			}
 		}
 	}
 

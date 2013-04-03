@@ -30,7 +30,12 @@ public class FeedSign extends PurchasableMagicSign {
 		super(sign, lines);
 
 		if (!lines[1].isEmpty()) {
-			feedAmount = new Integer(lines[1]);
+			try {
+				feedAmount = new Integer(lines[1]);
+			} catch (NumberFormatException e) {
+				throw new InvalidSignException(
+						"Line 2 must be a number or empty!");
+			}
 		}
 	}
 
