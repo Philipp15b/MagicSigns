@@ -47,7 +47,7 @@ public class SignManager {
 
 	private final List<SignType> signTypes = new ArrayList<SignType>(MagicSigns
 			.getIncludedSignTypes().size());
-	public final Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
+	public Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
 	private final MagicSigns plugin;
 	private ConfigurationSection config;
 
@@ -198,7 +198,8 @@ public class SignManager {
 	}
 
 	/**
-	 * Reloads the given config into all currently registered sign types.
+	 * Reloads the given config into all currently registered sign types and
+	 * recreates all MagicSigns.
 	 */
 	public void reloadConfig(ConfigurationSection config) {
 		this.config = config;
@@ -210,6 +211,18 @@ public class SignManager {
 						Level.WARNING,
 						"Error loading config into sign type "
 								+ signType.getCanonicalName() + "!", e);
+			}
+		}
+		Map<Location, MagicSign> oldSigns = signs;
+		signs = new HashMap<Location, MagicSign>(oldSigns.size());
+		for (MagicSign sign : oldSigns.values()) {
+			try {
+				registerSign(sign.serialize().getMagicSign());
+			} catch (Exception e) {
+				getLogger().log(
+						Level.WARNING,
+						"Error loading Magic Sign from config: "
+								+ e.getMessage(), e);
 			}
 		}
 	}

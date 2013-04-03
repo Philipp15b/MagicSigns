@@ -1,11 +1,17 @@
 package de.philworld.bukkit.magicsigns;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.locks.MagicSignsLockCommandExecutor;
@@ -25,50 +31,47 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
-
-		// Determine if the sender is a player (and an op), or the console.
-		boolean isPlayer = (sender instanceof Player);
-
-		// Cast the sender to Player if possible.
-		Player p = (isPlayer) ? (Player) sender : null;
-
-		// no usage from the console cuz we use the player all the time.
-		if (!isPlayer) {
-			sender.sendMessage("Please only use in game!");
-			return true;
-		}
-
-		String base = (args.length > 0) ? args[0].toLowerCase() : "";
+		String base = args.length > 0 ? args[0].toLowerCase() : "";
 
 		try {
+			if (base.equals("reload")) {
+				reload(sender, label);
+				return true;
+			}
 
-			// INFO COMMAND
-			if (base == "" || base.equalsIgnoreCase("info")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("Please only use in game!");
+				return true;
+			}
+			Player p = (Player) sender;
+
+			if (base.isEmpty() || base.equals("info")) {
 				return info(p, label);
 			}
 
-			else if (base.equalsIgnoreCase("edit")) {
+			else if (base.equals("edit")) {
 				return plugin.getSignEdit().getCmdExecutor()
 						.edit(p, label, args);
 			}
 
-			else if (base.equalsIgnoreCase("unmask")) {
+			else if (base.equals("unmask")) {
 				return plugin.getSignEdit().getCmdExecutor().unmask(p, label);
 			}
 
-			else if (base.equalsIgnoreCase("lock")) {
+			else if (base.equals("lock")) {
 				return magicSignsLockCommandExecutor.lock(p, label, args);
 			}
 
-			else if (base.equalsIgnoreCase("unlock")) {
+			else if (base.equals("unlock")) {
 				return magicSignsLockCommandExecutor.unlock(p, label);
 			}
 
-		} catch (PermissionException e) {
-			MSMsg.NO_PERMISSION.send(p);
-		}
+			return false;
 
-		return false;
+		} catch (PermissionException e) {
+			MSMsg.NO_PERMISSION.send(sender);
+			return true;
+		}
 	}
 
 	public boolean info(Player p, String label) {
@@ -113,6 +116,31 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 
 		plugin.getSignEdit().getCmdExecutor().sendEditNote(p, label);
 
+		return true;
+	}
+
+	public boolean reload(CommandSender p, String label)
+			throws PermissionException {
+		if (!p.hasPermission("magicsigns.reload"))
+			throw new PermissionException();
+		try {
+			plugin.getConfig().load(
+					new File(plugin.getDataFolder(), "config.yml"));
+			plugin.getSignManager().reloadConfig(plugin.getConfig());
+			p.sendMessage(ChatColor.GREEN + "Reloaded the config!");
+			return true;
+		} catch (FileNotFoundException e) {
+			plugin.getLogger().log(Level.SEVERE,
+					"Error reloading the configuration!", e);
+		} catch (IOException e) {
+			plugin.getLogger().log(Level.SEVERE,
+					"Error reloading the configuration!", e);
+		} catch (InvalidConfigurationException e) {
+			plugin.getLogger().log(Level.SEVERE,
+					"Error reloading the configuration!", e);
+		}
+		p.sendMessage(ChatColor.RED
+				+ "Failed to load the config, see the server log!");
 		return true;
 	}
 
