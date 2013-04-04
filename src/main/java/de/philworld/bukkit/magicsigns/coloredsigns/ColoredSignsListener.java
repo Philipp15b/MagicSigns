@@ -11,13 +11,23 @@ public class ColoredSignsListener implements Listener {
 	public void onSignChange(SignChangeEvent event) {
 		if (event.getPlayer()
 				.hasPermission(ColoredSigns.COLOR_SIGNS_PERMISSION)) {
-			for (int i = 0; i <= 3; i++) {
-				String line = event.getLine(i);
-				line = line.replaceAll("&(?<!&&)(?=[0-9a-fA-F])", "\u00A7")
-						.replace("&&", "&");
-				event.setLine(i, line);
+			for (int line = 0; line <= 3; line++) {
+				boolean seenAnd = false;
+				for (int ic = 0; ic < event.getLine(line).length(); ic++) {
+					char ch = event.getLine(line).charAt(ic);
+					if (seenAnd && "0123456789abcdefklmnor".indexOf(ch) != -1) {
+						StringBuilder sb = new StringBuilder(
+								event.getLine(line));
+						sb.setCharAt(ic - 1, '§');
+						event.setLine(line, sb.toString());
+						seenAnd = false;
+					} else if (ch == '&') {
+						seenAnd = true;
+					} else {
+						seenAnd = false;
+					}
+				}
 			}
 		}
 	}
-
 }
