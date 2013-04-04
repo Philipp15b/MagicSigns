@@ -153,7 +153,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 				+ block.getLocation().getBlockY() + ") Z("
 				+ block.getLocation().getBlockZ() + ") in world '"
 				+ block.getLocation().getWorld().getName()
-				+ "' ! The sign config will be deleted on server shutdown!");
+				+ "' ! Ignoring the sign!");
 	}
 
 }
