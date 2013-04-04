@@ -35,14 +35,14 @@ public abstract class Price {
 
 	/**
 	 * Returns if the sign is free.
-	 *
+	 * 
 	 * @return True if the sign is free, else false
 	 */
 	public abstract boolean isFree();
 
 	/**
 	 * Returns if the player can pay this price.
-	 *
+	 * 
 	 * @param p
 	 *            The player
 	 * @return True if the player can pay this, else false
@@ -51,7 +51,7 @@ public abstract class Price {
 
 	/**
 	 * Withdraw an amount from a player.
-	 *
+	 * 
 	 * @param p
 	 *            The player
 	 * @return True if the transaction succeeded, else false.
@@ -67,7 +67,7 @@ public abstract class Price {
 
 	/**
 	 * A price that uses Vault's economy.
-	 *
+	 * 
 	 */
 	public static class VaultEconomy extends Price {
 
@@ -126,14 +126,14 @@ public abstract class Price {
 			if (MagicSigns.getEconomy() != null) {
 				return MagicSigns.getEconomy().format(price);
 			}
-			return null;
+			return "";
 		}
 
 	}
 
 	/**
 	 * A price that uses items.
-	 *
+	 * 
 	 */
 	public static class Item extends Price {
 
@@ -235,7 +235,7 @@ public abstract class Price {
 			}
 			return false;
 		}
-		
+
 		public int getLevel() {
 			return level;
 		}

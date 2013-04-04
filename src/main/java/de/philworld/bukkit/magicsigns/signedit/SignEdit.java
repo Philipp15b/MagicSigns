@@ -89,7 +89,7 @@ public class SignEdit {
 	 */
 	public Block getTempEditBlock(Block sign) {
 		for (Entry<Location, Location> entry : editSigns.entrySet()) {
-			if (sign.equals(entry.getValue())) {
+			if (entry.getValue().equals(sign.getLocation())) {
 				return entry.getKey().getBlock();
 			}
 		}

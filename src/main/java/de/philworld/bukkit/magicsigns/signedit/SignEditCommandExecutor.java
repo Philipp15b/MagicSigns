@@ -54,7 +54,7 @@ public class SignEditCommandExecutor {
 
 		String arg1 = (args.length > 1) ? args[1].toLowerCase() : "";
 
-		if (arg1 == "") {
+		if (arg1.equals("")) {
 
 			p.sendMessage(ChatColor.YELLOW
 					+ "It's possible to edit signs by clicking them with other signs.");
