@@ -149,9 +149,14 @@ public abstract class MagicSign {
 	 * Returns if this sign is masked (the sign shows a different text than this
 	 * MagicSign uses for its work).
 	 * 
+	 * <p>
+	 * <b>Always returns false if the chunk is not loaded!</b>
+	 * 
 	 * @return True if its masked, else false.
 	 */
 	public boolean isMasked() {
+		if (getSign().getChunk().isLoaded())
+			return true;
 		Sign sign = (Sign) this.getSign().getState();
 		String[] currentLines = sign.getLines();
 		return !Arrays.equals(currentLines, getLines());
