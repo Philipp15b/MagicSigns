@@ -3,6 +3,7 @@ package de.philworld.bukkit.magicsigns.signs.permission;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -75,5 +76,17 @@ public class PermissionSign extends PurchasableMagicSign {
 		}
 		event.getPlayer().sendMessage(
 				ChatColor.GREEN + "You got some permissions!");
+	}
+
+	protected String getPermissions(String[] lines) {
+		return lines[1] + lines[2];
+	}
+
+	protected boolean hasPermission(Player p, String perm) {
+		return MagicSigns.getPermission().has((World) null, p.getName(), perm);
+	}
+
+	protected void addPermission(Player p, String perm) {
+		MagicSigns.getPermission().playerAdd((World) null, p.getName(), perm);
 	}
 }
