@@ -1,5 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import java.util.logging.Level;
+
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -7,6 +9,7 @@ import org.bukkit.util.Vector;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.config.annotation.Setting;
 import de.philworld.bukkit.magicsigns.config.annotation.SettingBase;
@@ -36,6 +39,23 @@ public class RocketSign extends PurchasableMagicSign {
 	public static void loadConfig(ConfigurationSection section) {
 		config = new LocalConfiguration();
 		config.load(section);
+		try {
+			Vector v = parseVelocity(config.defaultVelocity);
+			if (v.length() > 100)
+				MagicSigns
+						.inst()
+						.getLogger()
+						.warning(
+								"The default velocity of a Rocket sign may only have a vector length of 100, "
+										+ "Bukkit won't let you move that fast!");
+		} catch (InvalidSignException e) {
+			MagicSigns
+					.inst()
+					.getLogger()
+					.log(Level.WARNING,
+							"Invalid Rocket sign default velocity: "
+									+ e.getMessage(), e);
+		}
 	}
 
 	public static boolean takeAction(Block sign, String[] lines) {
@@ -49,15 +69,25 @@ public class RocketSign extends PurchasableMagicSign {
 
 		String vector = (lines[1].isEmpty()) ? config.defaultVelocity
 				: lines[1];
+		velocity = parseVelocity(vector);
+	}
 
+	@Override
+	public void onRightClick(PlayerInteractEvent event) {
+		event.getPlayer().setVelocity(velocity);
+		MSMsg.ROCKETED.send(event.getPlayer());
+	}
+
+	private static Vector parseVelocity(String vector)
+			throws InvalidSignException {
 		String[] parts = vector.split(",");
 
 		try {
 			if (parts.length == 3) {
-				velocity = new Vector(new Integer(parts[0]), new Integer(
-						parts[1]), new Integer(parts[2]));
+				return new Vector(new Integer(parts[0]), new Integer(parts[1]),
+						new Integer(parts[2]));
 			} else if (parts.length == 1) {
-				velocity = new Vector(0, new Integer(parts[0]), 0);
+				return new Vector(0, new Integer(parts[0]), 0);
 			} else {
 				throw new InvalidSignException(
 						"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
@@ -66,12 +96,6 @@ public class RocketSign extends PurchasableMagicSign {
 			throw new InvalidSignException(
 					"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
 		}
-	}
-
-	@Override
-	public void onRightClick(PlayerInteractEvent event) {
-		event.getPlayer().setVelocity(velocity);
-		MSMsg.ROCKETED.send(event.getPlayer());
 	}
 
 }
