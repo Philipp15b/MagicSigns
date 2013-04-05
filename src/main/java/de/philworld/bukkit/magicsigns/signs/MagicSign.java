@@ -155,7 +155,7 @@ public abstract class MagicSign {
 	 * @return True if its masked, else false.
 	 */
 	public boolean isMasked() {
-		if (getSign().getChunk().isLoaded())
+		if (!getSign().getChunk().isLoaded())
 			return true;
 		Sign sign = (Sign) this.getSign().getState();
 		String[] currentLines = sign.getLines();
