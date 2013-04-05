@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -26,8 +27,9 @@ public class FeedSign extends PurchasableMagicSign {
 
 	private int feedAmount = MAX_FOOD_LEVEL;
 
-	public FeedSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public FeedSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {

@@ -2,6 +2,7 @@ package de.philworld.bukkit.magicsigns.signs;
 
 import java.util.logging.Level;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -64,8 +65,9 @@ public class RocketSign extends PurchasableMagicSign {
 
 	private final Vector velocity;
 
-	public RocketSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public RocketSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		String vector = (lines[1].isEmpty()) ? config.defaultVelocity
 				: lines[1];

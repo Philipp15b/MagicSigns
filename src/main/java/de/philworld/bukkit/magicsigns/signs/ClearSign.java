@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,10 +14,10 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that clears player's inventory.
- *
+ * 
  * If <code>[all]</code> is on the second line, it will clear the whole
  * inventory, otherwise only the hot bar.
- *
+ * 
  */
 @MagicSignInfo(
 		friendlyName = "Clear sign",
@@ -34,8 +35,9 @@ public class ClearSign extends PurchasableMagicSign {
 	 */
 	private boolean clearAll = false;
 
-	public ClearSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public ClearSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		if (lines[1].equalsIgnoreCase("[all]")) {
 			clearAll = true;

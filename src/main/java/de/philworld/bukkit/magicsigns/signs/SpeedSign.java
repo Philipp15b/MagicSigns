@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
@@ -29,8 +30,9 @@ public class SpeedSign extends PurchasableMagicSign {
 		return lines[0].equalsIgnoreCase("[Speed]");
 	}
 
-	public SpeedSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public SpeedSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		if (lines[1].isEmpty()) {
 			throw new InvalidSignException("Line 2 must contain the duration!");

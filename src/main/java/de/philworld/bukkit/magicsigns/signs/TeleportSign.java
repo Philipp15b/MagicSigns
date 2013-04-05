@@ -46,13 +46,14 @@ public class TeleportSign extends PurchasableMagicSign {
 		return lines[0].equalsIgnoreCase("[Teleport]");
 	}
 
-	public TeleportSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public TeleportSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		String[] coords = lines[1].split(",");
 		if (coords.length == 3) {
 			try {
-				destination = new Location(sign.getWorld(), new Integer(
+				destination = new Location(location.getWorld(), new Integer(
 						coords[0]), new Integer(coords[1]), new Integer(
 						coords[2]));
 			} catch (NumberFormatException e) {

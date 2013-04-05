@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,8 +26,9 @@ public class LevelSign extends PurchasableMagicSign {
 
 	private int additionalLevels = 1;
 
-	public LevelSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public LevelSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -62,8 +63,9 @@ public class CommandSign extends PurchasableMagicSign {
 
 	protected LinkedList<String> commands = new LinkedList<String>();
 
-	public CommandSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public CommandSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 		try {
 			commands.addAll(removeSlashes(MacroUtil.format(lines[1] + lines[2],
 					config.getMacros())));

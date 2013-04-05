@@ -1,6 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs.command;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -26,9 +27,9 @@ public class ConsoleCommandSign extends CommandSign {
 		return lines[0].equalsIgnoreCase("[CCommand]");
 	}
 
-	public ConsoleCommandSign(Block sign, String[] lines)
+	public ConsoleCommandSign(Location location, String[] lines)
 			throws InvalidSignException {
-		super(sign, lines);
+		super(location, lines);
 	}
 
 	@Override

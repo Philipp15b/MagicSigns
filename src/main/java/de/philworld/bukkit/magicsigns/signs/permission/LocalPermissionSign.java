@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs.permission;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -19,9 +20,9 @@ public class LocalPermissionSign extends PermissionSign {
 				&& MagicSigns.getPermission() != null;
 	}
 
-	public LocalPermissionSign(Block sign, String[] lines)
+	public LocalPermissionSign(Location location, String[] lines)
 			throws InvalidSignException {
-		super(sign, lines);
+		super(location, lines);
 	}
 
 	@Override

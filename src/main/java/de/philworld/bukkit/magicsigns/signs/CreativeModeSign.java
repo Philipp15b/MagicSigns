@@ -1,6 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -18,9 +19,9 @@ public class CreativeModeSign extends PurchasableMagicSign {
 		return lines[0].equalsIgnoreCase("[Creative]");
 	}
 
-	public CreativeModeSign(Block sign, String[] lines)
+	public CreativeModeSign(Location location, String[] lines)
 			throws InvalidSignException {
-		super(sign, lines);
+		super(location, lines);
 	}
 
 	@Override

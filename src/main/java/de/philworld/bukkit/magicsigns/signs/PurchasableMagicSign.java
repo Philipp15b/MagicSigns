@@ -1,6 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.block.Block;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -18,14 +18,10 @@ public abstract class PurchasableMagicSign extends MagicSign {
 	/**
 	 * Creates a new purchasable magic sign by setting the price of this sign.
 	 * The price has to be on the last line of the sign.
-	 * 
-	 * @param sign
-	 * @param lines
-	 * @throws InvalidSignException
 	 */
-	public PurchasableMagicSign(Block sign, String[] lines)
+	public PurchasableMagicSign(Location location, String[] lines)
 			throws InvalidSignException {
-		super(sign, lines);
+		super(location, lines);
 
 		if (!lines[3].isEmpty()) {
 			try {

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -48,10 +47,10 @@ public abstract class MagicSign {
 				"The static method takeAction() must be overridden!");
 	}
 
+	private final Location location;
 	private final String[] lines;
 	private Lock lock = null;
 	private Map<String, PlayerLock> playerLocks = null;
-	private final Block sign;
 
 	/**
 	 * Create a new instance of the MagicSign
@@ -60,8 +59,9 @@ public abstract class MagicSign {
 	 * @param lines
 	 * @throws InvalidSignException
 	 */
-	public MagicSign(Block sign, String[] lines) throws InvalidSignException {
-		this.sign = sign;
+	public MagicSign(Location location, String[] lines)
+			throws InvalidSignException {
+		this.location = location;
 		this.lines = lines;
 	}
 
@@ -88,7 +88,7 @@ public abstract class MagicSign {
 	 * @return Location
 	 */
 	public Location getLocation() {
-		return getSign().getLocation();
+		return location;
 	}
 
 	/**
@@ -131,13 +131,6 @@ public abstract class MagicSign {
 	}
 
 	/**
-	 * @return the sign
-	 */
-	public Block getSign() {
-		return sign;
-	}
-
-	/**
 	 * Get the use permission for this {@link MagicSign}.
 	 */
 	public String getUsePermission() {
@@ -155,9 +148,9 @@ public abstract class MagicSign {
 	 * @return True if its masked, else false.
 	 */
 	public boolean isMasked() {
-		if (!getSign().getChunk().isLoaded())
+		if (!getLocation().getBlock().getChunk().isLoaded())
 			return true;
-		Sign sign = (Sign) this.getSign().getState();
+		Sign sign = (Sign) getLocation().getBlock().getState();
 		String[] currentLines = sign.getLines();
 		return !Arrays.equals(currentLines, getLines());
 	}

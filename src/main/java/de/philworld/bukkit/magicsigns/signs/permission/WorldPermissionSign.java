@@ -1,6 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs.permission;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -23,9 +24,9 @@ public class WorldPermissionSign extends PermissionSign {
 
 	private final World world;
 
-	public WorldPermissionSign(Block sign, String[] lines)
+	public WorldPermissionSign(Location location, String[] lines)
 			throws InvalidSignException {
-		super(sign, lines);
+		super(location, lines);
 		String worldName = lines[2].trim();
 		if (!worldName.isEmpty()) {
 			world = Bukkit.getServer().getWorld(worldName);

@@ -120,7 +120,8 @@ public class SignManager {
 					return;
 				}
 
-				MagicSign magicSign = signType.newInstance(sign, lines);
+				MagicSign magicSign = signType.newInstance(sign.getLocation(),
+						lines);
 
 				if (event != null)
 					magicSign.onCreate(event);

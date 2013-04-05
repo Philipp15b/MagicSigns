@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -26,8 +27,9 @@ public class HealthSign extends PurchasableMagicSign {
 		return lines[0].equalsIgnoreCase("[Health]");
 	}
 
-	public HealthSign(Block sign, String[] lines) throws InvalidSignException {
-		super(sign, lines);
+	public HealthSign(Location location, String[] lines)
+			throws InvalidSignException {
+		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {

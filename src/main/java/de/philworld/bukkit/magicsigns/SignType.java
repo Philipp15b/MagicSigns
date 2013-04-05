@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -31,13 +32,13 @@ public class SignType {
 		}
 
 		try {
-			constructor = clazz.getConstructor(Block.class, String[].class);
+			constructor = clazz.getConstructor(Location.class, String[].class);
 		} catch (NoSuchMethodException e) {
 			throw mustHaveException(clazz,
-					"constructor with arguments Block and String[]", e);
+					"constructor with arguments Location and String[]", e);
 		} catch (SecurityException e) {
 			throw mustHaveException(clazz,
-					"constructor with arguments Block and String[]", e);
+					"constructor with arguments Location and String[]", e);
 		}
 
 		MagicSignInfo annotation = clazz.getAnnotation(MagicSignInfo.class);
@@ -59,10 +60,10 @@ public class SignType {
 		return (Boolean) takeAction.invoke(null, sign, lines);
 	}
 
-	public MagicSign newInstance(Block sign, String[] lines)
+	public MagicSign newInstance(Location location, String[] lines)
 			throws InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
-		return constructor.newInstance(sign, lines);
+		return constructor.newInstance(location, lines);
 	}
 
 	public void loadConfig(ConfigurationSection config)

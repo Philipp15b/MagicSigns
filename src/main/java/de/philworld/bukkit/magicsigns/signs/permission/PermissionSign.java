@@ -3,6 +3,7 @@ package de.philworld.bukkit.magicsigns.signs.permission;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,9 +44,9 @@ public class PermissionSign extends PurchasableMagicSign {
 				&& MagicSigns.getPermission() != null;
 	}
 
-	public PermissionSign(Block sign, String[] lines)
+	public PermissionSign(Location location, String[] lines)
 			throws InvalidSignException {
-		super(sign, lines);
+		super(location, lines);
 		permissions = MacroUtil.format(lines[1] + lines[2], config.getMacros());
 		if (permissions.size() == 0)
 			throw new InvalidSignException("No permissions found!");
