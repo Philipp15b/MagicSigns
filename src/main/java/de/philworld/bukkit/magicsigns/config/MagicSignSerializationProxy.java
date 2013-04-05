@@ -137,8 +137,8 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			}
 
 			MagicSign magicSign = (MagicSign) Class.forName(type)
-					.getConstructor(Block.class, String[].class)
-					.newInstance(block, lines);
+					.getConstructor(Location.class, String[].class)
+					.newInstance(block.getLocation(), lines);
 
 			if (lock != null)
 				magicSign.setLock(lock, false);
