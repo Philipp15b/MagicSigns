@@ -1,7 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -13,15 +12,12 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * A sign that increases the food level of a player by a certain amount.
  */
 @MagicSignInfo(
+		name = "Feed",
 		friendlyName = "Feed sign",
 		description = "A sign that increases the food level of a player by a certain amount.",
 		buildPerm = "magicsigns.feed.create",
 		usePerm = "magicsigns.feed.use")
 public class FeedSign extends PurchasableMagicSign {
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Feed]");
-	}
 
 	public static final int MAX_FOOD_LEVEL = 6;
 

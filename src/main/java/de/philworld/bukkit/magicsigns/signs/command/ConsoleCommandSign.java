@@ -2,7 +2,6 @@ package de.philworld.bukkit.magicsigns.signs.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -17,15 +16,12 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
  * 
  */
 @MagicSignInfo(
+		name = "CCommand",
 		friendlyName = "Console Command sign",
 		description = "A sign that executes commands in the server's context. Caution!",
 		buildPerm = "magicsigns.consolecommand.create",
 		usePerm = "magicsigns.consolecommand.use")
 public class ConsoleCommandSign extends CommandSign {
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[CCommand]");
-	}
 
 	public ConsoleCommandSign(Location location, String[] lines)
 			throws InvalidSignException {

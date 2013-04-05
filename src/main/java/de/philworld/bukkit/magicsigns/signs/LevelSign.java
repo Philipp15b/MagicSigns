@@ -1,7 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -14,15 +13,12 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * 
  */
 @MagicSignInfo(
+		name = "Level",
 		friendlyName = "Level sign",
 		description = "Adds a specific amount of levels to a player.",
 		buildPerm = "magicsigns.level.create",
 		usePerm = "magicsigns.level.use")
 public class LevelSign extends PurchasableMagicSign {
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Level]");
-	}
 
 	private int additionalLevels = 1;
 

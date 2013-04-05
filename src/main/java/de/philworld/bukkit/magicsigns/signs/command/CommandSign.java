@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -22,6 +21,7 @@ import de.philworld.bukkit.magicsigns.util.MacroUtil;
  * 
  */
 @MagicSignInfo(
+		name = "Command",
 		friendlyName = "Command sign",
 		description = "A sign that executes commands on the sign in the player's context.",
 		buildPerm = "magicsigns.command.create",
@@ -41,10 +41,6 @@ public class CommandSign extends PurchasableMagicSign {
 
 	public static void loadConfig(ConfigurationSection section) {
 		config.load(section);
-	}
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Command]");
 	}
 
 	private static List<String> removeSlashes(List<String> list)

@@ -3,7 +3,6 @@ package de.philworld.bukkit.magicsigns.signs.permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -11,16 +10,12 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
 
 @MagicSignInfo(
+		name = "WPermission",
 		buildPerm = "magicsigns.wpermission.create",
 		description = "A sign that gives a player permissions in a certain world.",
 		friendlyName = "World Permission sign",
 		usePerm = "magicsigns.wpermission.use")
 public class WorldPermissionSign extends PermissionSign {
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[WPermission]")
-				&& MagicSigns.getPermission() != null;
-	}
 
 	private final World world;
 

@@ -138,14 +138,15 @@ public class MagicSigns extends JavaPlugin {
 
 		loadConfiguration();
 
-		signManager = new SignManager(this, getConfig());
+		signManager = new SignManager(this.getLogger(), getConfig());
 		signEdit = new SignEdit(this);
 		coloredSigns = new ColoredSigns(this);
 
 		// register all sign types
 		for (Class<? extends MagicSign> signType : includedSignTypes) {
 			try {
-				getSignManager().registerSignType(signType);
+				if (!(PermissionSign.class.isAssignableFrom(signType) && permission == null))
+					getSignManager().registerSignType(signType);
 			} catch (InvocationTargetException e) {
 				getLogger().log(
 						Level.SEVERE,

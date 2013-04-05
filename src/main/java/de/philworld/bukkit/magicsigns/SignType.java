@@ -2,10 +2,8 @@ package de.philworld.bukkit.magicsigns;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
@@ -13,23 +11,11 @@ import de.philworld.bukkit.magicsigns.signs.MagicSign;
 public class SignType {
 
 	private final Class<? extends MagicSign> clazz;
-	private final Method takeAction;
 	private final Constructor<? extends MagicSign> constructor;
 	private final String buildPermission;
 
 	public SignType(Class<? extends MagicSign> clazz) {
 		this.clazz = clazz;
-
-		try {
-			takeAction = clazz.getMethod("takeAction", Block.class,
-					String[].class);
-		} catch (NoSuchMethodException e) {
-			throw mustHaveException(clazz,
-					"static takeAction(Sign, String[]) method", e);
-		} catch (SecurityException e) {
-			throw mustHaveException(clazz,
-					"static takeAction(Sign, String[]) method", e);
-		}
 
 		try {
 			constructor = clazz.getConstructor(Location.class, String[].class);
@@ -54,10 +40,8 @@ public class SignType {
 				cause);
 	}
 
-	public boolean takeAction(Block sign, String[] lines)
-			throws IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException {
-		return (Boolean) takeAction.invoke(null, sign, lines);
+	public String getName() {
+		return clazz.getAnnotation(MagicSignInfo.class).name();
 	}
 
 	public MagicSign newInstance(Location location, String[] lines)

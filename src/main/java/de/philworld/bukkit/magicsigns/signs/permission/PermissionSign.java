@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -19,6 +18,7 @@ import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.MacroUtil;
 
 @MagicSignInfo(
+		name = "Permission",
 		buildPerm = "magicsigns.permission.create",
 		description = "A sign that gives a player permissions.",
 		friendlyName = "Permission sign",
@@ -38,11 +38,6 @@ public class PermissionSign extends PurchasableMagicSign {
 	}
 
 	private final List<String> permissions;
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Permission]")
-				&& MagicSigns.getPermission() != null;
-	}
 
 	public PermissionSign(Location location, String[] lines)
 			throws InvalidSignException {

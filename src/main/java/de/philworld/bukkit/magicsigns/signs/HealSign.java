@@ -1,7 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -15,15 +14,12 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * @see {@link HealthSign} - Sets the health directly to a value.
  */
 @MagicSignInfo(
+		name = "Heal",
 		friendlyName = "Heal sign",
 		description = "A sign that adds some health to a player.",
 		buildPerm = "magicsigns.heal.create",
 		usePerm = "magicsigns.heal.use")
 public class HealSign extends PurchasableMagicSign {
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Heal]");
-	}
 
 	private int healAmount = 20;
 

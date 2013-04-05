@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -153,16 +152,6 @@ public abstract class MagicSign {
 		Sign sign = (Sign) getLocation().getBlock().getState();
 		String[] currentLines = sign.getLines();
 		return !Arrays.equals(currentLines, getLines());
-	}
-
-	/**
-	 * Called every time the sign is created, but not when its loaded from
-	 * config.
-	 * 
-	 * @param event
-	 */
-	public void onCreate(SignChangeEvent event) {
-		return;
 	}
 
 	/**

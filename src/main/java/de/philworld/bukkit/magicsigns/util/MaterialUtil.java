@@ -7,9 +7,6 @@ public class MaterialUtil {
 	/**
 	 * Returns if the Material is either a {@link Material#SIGN},
 	 * {@link Material#SIGN_POST} or a {@link Material#WALL_SIGN}.
-	 *
-	 * @param material
-	 * @return If its a sign
 	 */
 	public static boolean isSign(Material material) {
 		return material == Material.SIGN || material == Material.SIGN_POST

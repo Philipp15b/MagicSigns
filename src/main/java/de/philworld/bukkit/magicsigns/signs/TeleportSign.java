@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -20,6 +19,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * 
  */
 @MagicSignInfo(
+		name = "Teleport",
 		friendlyName = "Teleport sign",
 		description = "Sign that allows teleportation.",
 		buildPerm = "magicsigns.teleport.create",
@@ -41,10 +41,6 @@ public class TeleportSign extends PurchasableMagicSign {
 	};
 
 	private final Location destination;
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Teleport]");
-	}
 
 	public TeleportSign(Location location, String[] lines)
 			throws InvalidSignException {

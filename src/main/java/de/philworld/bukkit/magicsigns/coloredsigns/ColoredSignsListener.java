@@ -1,5 +1,6 @@
 package de.philworld.bukkit.magicsigns.coloredsigns;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,7 +19,7 @@ public class ColoredSignsListener implements Listener {
 					if (seenAnd && "0123456789abcdefklmnor".indexOf(ch) != -1) {
 						StringBuilder sb = new StringBuilder(
 								event.getLine(line));
-						sb.setCharAt(ic - 1, '§');
+						sb.setCharAt(ic - 1, ChatColor.COLOR_CHAR);
 						event.setLine(line, sb.toString());
 						seenAnd = false;
 					} else if (ch == '&') {

@@ -1,7 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -15,6 +14,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * 
  */
 @MagicSignInfo(
+		name = "Health",
 		friendlyName = "Health sign",
 		description = "A sign that sets the health of a player to a specific value.",
 		buildPerm = "magicsigns.health.create",
@@ -22,10 +22,6 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 public class HealthSign extends PurchasableMagicSign {
 
 	private int healthNumber = 20;
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Health]");
-	}
 
 	public HealthSign(Location location, String[] lines)
 			throws InvalidSignException {

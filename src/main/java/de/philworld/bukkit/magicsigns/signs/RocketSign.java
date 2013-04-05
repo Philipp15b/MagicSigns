@@ -3,7 +3,6 @@ package de.philworld.bukkit.magicsigns.signs;
 import java.util.logging.Level;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
@@ -24,6 +23,7 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
  * 
  */
 @MagicSignInfo(
+		name = "Rocket",
 		friendlyName = "Rocket sign",
 		description = "A sign that can modify player's velocity.",
 		buildPerm = "magicsigns.rocket.create",
@@ -57,10 +57,6 @@ public class RocketSign extends PurchasableMagicSign {
 							"Invalid Rocket sign default velocity: "
 									+ e.getMessage(), e);
 		}
-	}
-
-	public static boolean takeAction(Block sign, String[] lines) {
-		return lines[0].equalsIgnoreCase("[Rocket]");
 	}
 
 	private final Vector velocity;
