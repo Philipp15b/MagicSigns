@@ -54,6 +54,7 @@ public class MagicSignsListener implements Listener {
 					.getLocation(), event.getLines());
 
 			manager.registerSign(magicSign);
+			event.setLine(0, ChatColor.BLUE + "[" + typeName + "]");
 
 			MSMsg.SIGN_CREATED.send(event.getPlayer());
 			return;
