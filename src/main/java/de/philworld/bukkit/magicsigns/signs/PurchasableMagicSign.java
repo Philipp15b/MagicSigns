@@ -13,7 +13,7 @@ import de.philworld.bukkit.magicsigns.permissions.PermissionException;
  */
 public abstract class PurchasableMagicSign extends MagicSign {
 
-	protected final Price price;
+	private final Price price;
 
 	/**
 	 * Creates a new purchasable magic sign by setting the price of this sign.
