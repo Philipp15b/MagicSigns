@@ -13,6 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
@@ -28,6 +29,12 @@ public class MagicSignsListener implements Listener {
 	public MagicSignsListener(MagicSigns plugin) {
 		this.plugin = plugin;
 		manager = plugin.getSignManager();
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+	public void onChunkLoad(ChunkLoadEvent event) {
+		if (plugin.lazyLoader != null)
+			plugin.lazyLoader.loadChunk(event.getChunk());
 	}
 
 	@EventHandler(ignoreCancelled = true)

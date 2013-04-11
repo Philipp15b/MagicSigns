@@ -11,6 +11,9 @@ import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -93,6 +96,7 @@ public class MagicSigns extends JavaPlugin {
 	private ColoredSigns coloredSigns;
 	private SignEdit signEdit;
 	private SignManager signManager;
+	SignLazyLoader lazyLoader;
 	private FileConfiguration signsDb;
 	private File signsDbFile;
 
@@ -219,19 +223,15 @@ public class MagicSigns extends JavaPlugin {
 			getConfig().set("magic-signs", null);
 		}
 
-		if (list.isEmpty())
-			return;
-
-		for (MagicSignSerializationProxy proxy : list) {
-			try {
-				getSignManager().registerSign(proxy.getMagicSign());
-			} catch (Exception e) {
-				getLogger().log(
-						Level.SEVERE,
-						"Error loading Magic Sign from config: "
-								+ e.getMessage(), e);
+		// the proxies are lazy loaded
+		lazyLoader = new SignLazyLoader(signManager, list);
+		// load chunks that were loaded before this plugin
+		for (World world : Bukkit.getWorlds()) {
+			for (Chunk chunk : world.getLoadedChunks()) {
+				lazyLoader.loadChunk(chunk);
 			}
 		}
+
 	}
 
 	@SuppressWarnings("unused")
@@ -255,6 +255,7 @@ public class MagicSigns extends JavaPlugin {
 								+ sign.getClass().getCanonicalName() + "':", e);
 			}
 		}
+		signList.addAll(lazyLoader.getAllQueued());
 
 		signsDb.set("magic-signs", signList);
 		try {
