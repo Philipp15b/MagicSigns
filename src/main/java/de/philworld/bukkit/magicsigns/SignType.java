@@ -4,8 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 
+import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 
 public class SignType {
@@ -50,18 +50,10 @@ public class SignType {
 		return constructor.newInstance(location, lines);
 	}
 
-	public void loadConfig(ConfigurationSection config)
-			throws IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException {
-		clazz.getMethod("loadConfig", ConfigurationSection.class).invoke(null,
-				config);
-	}
-
-	public void saveConfig(ConfigurationSection config)
-			throws IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException {
-		clazz.getMethod("saveConfig", ConfigurationSection.class).invoke(null,
-				config);
+	public Configuration getConfig() throws IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
+		return (Configuration) clazz.getMethod("getConfig").invoke(null);
 	}
 
 	public String getBuildPermission() {

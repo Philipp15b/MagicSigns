@@ -35,8 +35,7 @@ public class MacroConfiguration implements Configuration {
 	}
 
 	@Override
-	public ConfigurationSection save(ConfigurationSection section) {
-		return section; // nothing changes at runtime
+	public void save(ConfigurationSection section) {
 	}
 
 	/**

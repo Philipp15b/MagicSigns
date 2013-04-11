@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 
 @MagicSignInfo(
 		name = "WPermission",
@@ -16,6 +17,10 @@ import de.philworld.bukkit.magicsigns.MagicSigns;
 		friendlyName = "World Permission sign",
 		usePerm = "magicsigns.wpermission.use")
 public class WorldPermissionSign extends PermissionSign {
+
+	public static Configuration getConfig() {
+		return null; // we reuse PermissionSign's config
+	}
 
 	private final World world;
 

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
+import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 
 public class SignManager {
@@ -39,7 +40,9 @@ public class SignManager {
 			throws InvocationTargetException {
 		SignType signType = new SignType(clazz);
 		try {
-			signType.loadConfig(config);
+			Configuration config = signType.getConfig();
+			if (config != null)
+				config.load(getConfig());
 		} catch (Exception e) {
 			throw new InvocationTargetException(e,
 					"Error loading config into sign type "
@@ -76,7 +79,9 @@ public class SignManager {
 		this.config = config;
 		for (SignType signType : signTypes.values()) {
 			try {
-				signType.loadConfig(config);
+				Configuration c = signType.getConfig();
+				if (c != null)
+					c.load(getConfig());
 			} catch (Exception e) {
 				logger.log(
 						Level.WARNING,
@@ -105,7 +110,9 @@ public class SignManager {
 	public void saveConfig() {
 		for (SignType type : signTypes.values()) {
 			try {
-				type.saveConfig(config);
+				Configuration config = type.getConfig();
+				if (config != null)
+					config.save(getConfig());
 			} catch (Exception e) {
 				logger.log(Level.SEVERE, "Error saving config for sign type "
 						+ type.getCanonicalName() + ": " + e.getMessage(), e);

@@ -5,13 +5,13 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.MacroConfiguration;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
@@ -25,16 +25,16 @@ import de.philworld.bukkit.magicsigns.util.MacroUtil;
 		usePerm = "magicsigns.permission.use")
 public class PermissionSign extends PurchasableMagicSign {
 
-	public static class LocalConfiguration extends MacroConfiguration {
+	private static class LocalConfiguration extends MacroConfiguration {
 		public LocalConfiguration() {
 			super("permission-macros");
 		}
 	}
 
-	public static LocalConfiguration config = new LocalConfiguration();
+	protected static LocalConfiguration config = new LocalConfiguration();
 
-	public static void loadConfig(ConfigurationSection section) {
-		config.load(section);
+	public static Configuration getConfig() {
+		return config;
 	}
 
 	private final List<String> permissions;

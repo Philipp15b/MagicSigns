@@ -80,7 +80,7 @@ public abstract class AnnotationConfiguration implements Configuration {
 	 * @param section
 	 */
 	@Override
-	public ConfigurationSection save(ConfigurationSection section) {
+	public void save(ConfigurationSection section) {
 		if (getClass().isAnnotationPresent(SettingBase.class)) {
 			String base = getClass().getAnnotation(SettingBase.class).value();
 
@@ -103,7 +103,6 @@ public abstract class AnnotationConfiguration implements Configuration {
 						"Error saving config: " + e.getMessage(), e);
 			}
 		}
-		return section;
 	}
 
 	private Logger getLogger() {

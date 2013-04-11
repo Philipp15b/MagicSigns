@@ -6,6 +6,6 @@ public interface Configuration {
 
 	public void load(ConfigurationSection section);
 
-	public ConfigurationSection save(ConfigurationSection section);
+	public void save(ConfigurationSection section);
 
 }

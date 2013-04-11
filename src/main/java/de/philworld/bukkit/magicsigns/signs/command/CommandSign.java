@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.MacroConfiguration;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.MacroUtil;
@@ -31,16 +31,16 @@ public class CommandSign extends PurchasableMagicSign {
 	/**
 	 * Configuration that saves all macros.
 	 */
-	public static class LocalConfiguration extends MacroConfiguration {
+	private static class LocalConfiguration extends MacroConfiguration {
 		public LocalConfiguration() {
 			super("command-macros");
 		}
 	}
 
-	public static LocalConfiguration config = new LocalConfiguration();
+	protected static LocalConfiguration config = new LocalConfiguration();
 
-	public static void loadConfig(ConfigurationSection section) {
-		config.load(section);
+	public static Configuration getConfig() {
+		return config;
 	}
 
 	private static List<String> removeSlashes(List<String> list)

@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.config.annotation.Setting;
 import de.philworld.bukkit.magicsigns.config.annotation.SettingBase;
@@ -30,33 +31,37 @@ import de.philworld.bukkit.magicsigns.util.MSMsg;
 		usePerm = "magicsigns.rocket.use")
 public class RocketSign extends PurchasableMagicSign {
 
-	public static LocalConfiguration config;
+	private static LocalConfiguration config = new LocalConfiguration();
 
 	@SettingBase("rocket")
 	private static class LocalConfiguration extends AnnotationConfiguration {
 		@Setting("defaultVelocity") public String defaultVelocity = "0,2,0";
-	}
 
-	public static void loadConfig(ConfigurationSection section) {
-		config = new LocalConfiguration();
-		config.load(section);
-		try {
-			Vector v = parseVelocity(config.defaultVelocity);
-			if (v.length() > 100)
+		@Override
+		public void load(ConfigurationSection section) {
+			super.load(section);
+			try {
+				Vector v = parseVelocity(config.defaultVelocity);
+				if (v.length() > 100)
+					MagicSigns
+							.inst()
+							.getLogger()
+							.warning(
+									"The default velocity of a Rocket sign may only have a vector length of 100, "
+											+ "Bukkit won't let you move that fast!");
+			} catch (InvalidSignException e) {
 				MagicSigns
 						.inst()
 						.getLogger()
-						.warning(
-								"The default velocity of a Rocket sign may only have a vector length of 100, "
-										+ "Bukkit won't let you move that fast!");
-		} catch (InvalidSignException e) {
-			MagicSigns
-					.inst()
-					.getLogger()
-					.log(Level.WARNING,
-							"Invalid Rocket sign default velocity: "
-									+ e.getMessage(), e);
+						.log(Level.WARNING,
+								"Invalid Rocket sign default velocity: "
+										+ e.getMessage(), e);
+			}
 		}
+	}
+
+	public static Configuration getConfig() {
+		return config;
 	}
 
 	private final Vector velocity;

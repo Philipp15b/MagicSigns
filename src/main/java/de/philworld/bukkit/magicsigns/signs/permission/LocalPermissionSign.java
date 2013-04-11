@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 
 @MagicSignInfo(
 		name = "LPermission",
@@ -14,6 +15,10 @@ import de.philworld.bukkit.magicsigns.MagicSigns;
 		friendlyName = "Local Permission sign",
 		usePerm = "magicsigns.lpermission.use")
 public class LocalPermissionSign extends PermissionSign {
+
+	public static Configuration getConfig() {
+		return null; // we reuse PermissionSign's config
+	}
 
 	public LocalPermissionSign(Location location, String[] lines)
 			throws InvalidSignException {

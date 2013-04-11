@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.locks.Lock;
@@ -30,10 +31,8 @@ import de.philworld.bukkit.magicsigns.locks.PlayerLock;
  */
 public abstract class MagicSign {
 
-	public static void loadConfig(ConfigurationSection section) {
-	}
-
-	public static void saveConfig(ConfigurationSection section) {
+	public static Configuration getConfig() {
+		return null;
 	}
 
 	/**

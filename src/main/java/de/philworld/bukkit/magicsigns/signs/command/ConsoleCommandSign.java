@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.config.Configuration;
 
 /**
  * A sign that executes commands in the server's context. Caution!
@@ -22,6 +23,10 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 		buildPerm = "magicsigns.consolecommand.create",
 		usePerm = "magicsigns.consolecommand.use")
 public class ConsoleCommandSign extends CommandSign {
+
+	public static Configuration getConfig() {
+		return null; // we reuse CommandSigns' config
+	}
 
 	public ConsoleCommandSign(Location location, String[] lines)
 			throws InvalidSignException {
