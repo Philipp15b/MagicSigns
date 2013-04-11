@@ -142,7 +142,7 @@ public abstract class MagicSign {
 	 * MagicSign uses for its work).
 	 * 
 	 * <p>
-	 * <b>Always returns false if the chunk is not loaded!</b>
+	 * <b>Always returns true if the chunk is not loaded!</b>
 	 * 
 	 * @return True if its masked, else false.
 	 */
