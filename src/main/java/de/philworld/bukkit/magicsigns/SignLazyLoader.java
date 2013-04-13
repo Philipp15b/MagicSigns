@@ -23,7 +23,7 @@ class SignLazyLoader {
 			List<MagicSignSerializationProxy> items) {
 		this.manager = manager;
 		for (MagicSignSerializationProxy sign : items) {
-			ChunkVector pos = new ChunkVector(sign.getLocation().getChunk());
+			ChunkVector pos = sign.getChunkVector();
 			if (!serialized.containsKey(pos))
 				serialized.put(pos,
 						new ArrayList<MagicSignSerializationProxy>());

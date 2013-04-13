@@ -1,18 +1,27 @@
 package de.philworld.bukkit.magicsigns.util;
 
 import org.bukkit.Chunk;
-import org.bukkit.World;
 
 public class ChunkVector {
 
+	public static ChunkVector fromLocation(String world, int x, int y, int z) {
+		return new ChunkVector(world, x >> 4, z >> 4);
+	}
+
+	public final String world;
 	public final int x;
 	public final int z;
-	public final World world;
 
 	public ChunkVector(Chunk chunk) {
-		x = chunk.getX();
-		z = chunk.getZ();
-		world = chunk.getWorld();
+		this.world = chunk.getWorld().getName();
+		this.x = chunk.getX();
+		this.z = chunk.getZ();
+	}
+
+	public ChunkVector(String world, int x, int z) {
+		this.world = world;
+		this.x = x;
+		this.z = z;
 	}
 
 	@Override

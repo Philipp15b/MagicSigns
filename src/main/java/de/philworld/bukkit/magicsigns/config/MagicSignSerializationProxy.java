@@ -17,6 +17,7 @@ import de.philworld.bukkit.magicsigns.SignType;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.ChunkVector;
 
 /**
  * Proxy for serializing a MagicSign.
@@ -116,19 +117,18 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 		return map;
 	}
 
-	public Location getLocation() {
-		return new Location(Bukkit.getServer().getWorld(world), x, y, z);
+	public ChunkVector getChunkVector() {
+		return ChunkVector.fromLocation(world, x, y, z);
 	}
 
 	/**
-	 * Get the Magic Sign behind this proxy. It is important that the chunk for
-	 * this sign is already loaded!
+	 * Get the Magic Sign behind this proxy. The sign must be already loaded!
 	 */
 	public MagicSign getMagicSign() throws InvalidConfigException,
 			InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, ClassNotFoundException {
-		Location loc = getLocation();
+		Location loc = new Location(Bukkit.getServer().getWorld(world), x, y, z);
 		Block block = loc.getBlock();
 
 		if (!block.getChunk().isLoaded())
