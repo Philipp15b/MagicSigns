@@ -8,7 +8,7 @@ import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 
 @MagicSignInfo(
-		name = "Clear",
+		name = "Creative",
 		friendlyName = "Creative Mode sign",
 		description = "Sets the player's game mode to Creative Mode.",
 		buildPerm = "magicsigns.creative.create",
