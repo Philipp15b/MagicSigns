@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import org.bukkit.Chunk;
 
 import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
-import de.philworld.bukkit.magicsigns.util.ChunkVector;
+import de.philworld.bukkit.magicsigns.util.ChunkLocation;
 
 /**
  * Provides chunk-based lazy loading for {@link MagicSignSerializationProxy}s.
@@ -17,13 +17,13 @@ import de.philworld.bukkit.magicsigns.util.ChunkVector;
 class SignLazyLoader {
 
 	private final SignManager manager;
-	private final Map<ChunkVector, List<MagicSignSerializationProxy>> serialized = new HashMap<ChunkVector, List<MagicSignSerializationProxy>>();
+	private final Map<ChunkLocation, List<MagicSignSerializationProxy>> serialized = new HashMap<ChunkLocation, List<MagicSignSerializationProxy>>();
 
 	public SignLazyLoader(SignManager manager,
 			List<MagicSignSerializationProxy> items) {
 		this.manager = manager;
 		for (MagicSignSerializationProxy sign : items) {
-			ChunkVector pos = sign.getChunkVector();
+			ChunkLocation pos = sign.getChunkVector();
 			if (!serialized.containsKey(pos))
 				serialized.put(pos,
 						new ArrayList<MagicSignSerializationProxy>());
@@ -40,7 +40,7 @@ class SignLazyLoader {
 	}
 
 	public void loadChunk(Chunk chunk) {
-		ChunkVector pos = new ChunkVector(chunk);
+		ChunkLocation pos = new ChunkLocation(chunk);
 		List<MagicSignSerializationProxy> proxies = serialized.get(pos);
 		if (proxies == null)
 			return;

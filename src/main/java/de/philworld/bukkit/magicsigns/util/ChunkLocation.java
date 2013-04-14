@@ -2,23 +2,23 @@ package de.philworld.bukkit.magicsigns.util;
 
 import org.bukkit.Chunk;
 
-public class ChunkVector {
+public class ChunkLocation {
 
-	public static ChunkVector fromLocation(String world, int x, int y, int z) {
-		return new ChunkVector(world, x >> 4, z >> 4);
+	public static ChunkLocation fromLocation(String world, int x, int y, int z) {
+		return new ChunkLocation(world, x >> 4, z >> 4);
 	}
 
 	public final String world;
 	public final int x;
 	public final int z;
 
-	public ChunkVector(Chunk chunk) {
+	public ChunkLocation(Chunk chunk) {
 		this.world = chunk.getWorld().getName();
 		this.x = chunk.getX();
 		this.z = chunk.getZ();
 	}
 
-	public ChunkVector(String world, int x, int z) {
+	public ChunkLocation(String world, int x, int z) {
 		this.world = world;
 		this.x = x;
 		this.z = z;
@@ -42,7 +42,7 @@ public class ChunkVector {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ChunkVector other = (ChunkVector) obj;
+		ChunkLocation other = (ChunkLocation) obj;
 		if (world == null) {
 			if (other.world != null)
 				return false;

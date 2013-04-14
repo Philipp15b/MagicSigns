@@ -17,7 +17,7 @@ import de.philworld.bukkit.magicsigns.SignType;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
-import de.philworld.bukkit.magicsigns.util.ChunkVector;
+import de.philworld.bukkit.magicsigns.util.ChunkLocation;
 
 /**
  * Proxy for serializing a MagicSign.
@@ -117,8 +117,8 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 		return map;
 	}
 
-	public ChunkVector getChunkVector() {
-		return ChunkVector.fromLocation(world, x, y, z);
+	public ChunkLocation getChunkVector() {
+		return ChunkLocation.fromLocation(world, x, y, z);
 	}
 
 	/**
