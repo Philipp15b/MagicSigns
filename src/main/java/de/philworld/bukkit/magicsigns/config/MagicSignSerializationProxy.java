@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -17,6 +16,7 @@ import de.philworld.bukkit.magicsigns.SignType;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.ChunkLocation;
 
 /**
@@ -24,20 +24,14 @@ import de.philworld.bukkit.magicsigns.util.ChunkLocation;
  */
 public class MagicSignSerializationProxy implements ConfigurationSerializable {
 
-	private final String world;
-	private final int x;
-	private final int y;
-	private final int z;
+	private final BlockLocation location;
 	private final String type;
 	private final String[] lines;
 	private final Lock lock;
 	private final Map<String, PlayerLock> playerLocks;
 
 	public MagicSignSerializationProxy(MagicSign magicSign) {
-		world = magicSign.getLocation().getWorld().getName();
-		x = magicSign.getLocation().getBlockX();
-		y = magicSign.getLocation().getBlockY();
-		z = magicSign.getLocation().getBlockZ();
+		location = magicSign.getLocation();
 		type = magicSign.getClass().getName();
 		lines = magicSign.isMasked() ? magicSign.getLines() : null;
 
@@ -55,10 +49,10 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	}
 
 	public MagicSignSerializationProxy(Map<String, Object> map) {
-		world = (String) map.get("world");
-		x = (Integer) map.get("x");
-		y = (Integer) map.get("y");
-		z = (Integer) map.get("z");
+		location = new BlockLocation((String) map.get("world"),
+				(Integer) map.get("x"), (Integer) map.get("y"),
+				(Integer) map.get("z"));
+
 		type = (String) map.get("type");
 
 		if (map.get("lines") != null) {
@@ -94,10 +88,10 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("world", world);
-		map.put("x", x);
-		map.put("y", y);
-		map.put("z", z);
+		map.put("world", location.world);
+		map.put("x", location.x);
+		map.put("y", location.y);
+		map.put("z", location.z);
 		map.put("type", type);
 
 		if (lines != null)
@@ -118,7 +112,8 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	}
 
 	public ChunkLocation getChunkVector() {
-		return ChunkLocation.fromLocation(world, x, y, z);
+		return ChunkLocation.fromLocation(location.world, location.x,
+				location.y, location.z);
 	}
 
 	/**
@@ -128,7 +123,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, ClassNotFoundException {
-		Location loc = new Location(Bukkit.getServer().getWorld(world), x, y, z);
+		Location loc = location.toLocation();
 		Block block = loc.getBlock();
 
 		if (!block.getChunk().isLoaded())
@@ -148,7 +143,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			@SuppressWarnings("unchecked")
 			SignType signType = new SignType(
 					(Class<? extends MagicSign>) Class.forName(type));
-			MagicSign magicSign = signType.newInstance(loc, lines);
+			MagicSign magicSign = signType.newInstance(location, lines);
 
 			if (lock != null)
 				magicSign.setLock(lock, false);

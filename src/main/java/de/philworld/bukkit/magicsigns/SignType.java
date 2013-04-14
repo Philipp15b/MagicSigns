@@ -3,10 +3,9 @@ package de.philworld.bukkit.magicsigns;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import org.bukkit.Location;
-
 import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 public class SignType {
 
@@ -18,10 +17,11 @@ public class SignType {
 		this.clazz = clazz;
 
 		try {
-			constructor = clazz.getConstructor(Location.class, String[].class);
+			constructor = clazz.getConstructor(BlockLocation.class,
+					String[].class);
 		} catch (NoSuchMethodException e) {
 			throw mustHaveException(clazz,
-					"constructor with arguments Location and String[]", e);
+					"constructor with arguments BlockLocation and String[]", e);
 		} catch (SecurityException e) {
 			throw mustHaveException(clazz,
 					"constructor with arguments Location and String[]", e);
@@ -44,7 +44,7 @@ public class SignType {
 		return clazz.getAnnotation(MagicSignInfo.class).name();
 	}
 
-	public MagicSign newInstance(Location location, String[] lines)
+	public MagicSign newInstance(BlockLocation location, String[] lines)
 			throws InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		return constructor.newInstance(location, lines);

@@ -3,12 +3,13 @@ package de.philworld.bukkit.magicsigns.signs;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Location;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
+import de.philworld.bukkit.magicsigns.util.RotatedBlockLocation;
 
 /**
  * Sign that allows teleportation.
@@ -40,39 +41,41 @@ public class TeleportSign extends PurchasableMagicSign {
 		}
 	};
 
-	private final Location destination;
+	private final RotatedBlockLocation destination;
 
-	public TeleportSign(Location location, String[] lines)
+	public TeleportSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 
 		String[] coords = lines[1].split(",");
-		if (coords.length == 3) {
-			try {
-				destination = new Location(location.getWorld(), new Integer(
-						coords[0]), new Integer(coords[1]), new Integer(
-						coords[2]));
-			} catch (NumberFormatException e) {
-				throw new InvalidSignException(
-						"Invalid numbers in coordinates!");
-			}
-		} else {
+		if (coords.length != 3)
 			throw new InvalidSignException(
 					"Line 2 must contain coordinates in the format '1,2,3'!");
+
+		String world = location.world;
+
+		int x, y, z;
+		try {
+			x = Integer.parseInt(coords[0]);
+			y = Integer.parseInt(coords[1]);
+			z = Integer.parseInt(coords[2]);
+		} catch (NumberFormatException e) {
+			throw new InvalidSignException("Invalid numbers in coordinates!");
 		}
 
+		int yaw = 0, pitch = 0;
 		String[] direction = lines[2].split(",");
 		if (direction.length > 2) { // too many arguments
 			throw new InvalidSignException(
 					"Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
 		}
-		String yaw = direction[0].trim();
-		if (!yaw.isEmpty()) {
-			if (YAW_SHORTHANDS.containsKey(yaw)) {
-				destination.setYaw(YAW_SHORTHANDS.get(yaw));
+		String yawString = direction[0].trim();
+		if (!yawString.isEmpty()) {
+			if (YAW_SHORTHANDS.containsKey(yawString)) {
+				yaw = YAW_SHORTHANDS.get(yawString);
 			} else {
 				try {
-					destination.setYaw(new Integer(yaw));
+					yaw = Integer.parseInt(yawString);
 				} catch (NumberFormatException e) {
 					throw new InvalidSignException("Yaw is an invalid number!");
 				}
@@ -80,16 +83,18 @@ public class TeleportSign extends PurchasableMagicSign {
 		}
 		if (direction.length > 1) {
 			try {
-				destination.setPitch(new Integer(direction[1]));
+				pitch = Integer.parseInt(direction[1]);
 			} catch (NumberFormatException e) {
 				throw new InvalidSignException("Pitch is an invalid number!");
 			}
 		}
+
+		destination = new RotatedBlockLocation(world, x, y, z, yaw, pitch);
 	}
 
 	@Override
 	public void onRightClick(PlayerInteractEvent event) {
-		event.getPlayer().teleport(destination);
+		event.getPlayer().teleport(destination.toLocation());
 		MSMsg.TELEPORT_SUCCESS.send(event.getPlayer());
 	}
 

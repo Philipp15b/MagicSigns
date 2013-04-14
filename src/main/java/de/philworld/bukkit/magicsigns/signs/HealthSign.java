@@ -1,10 +1,10 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.Location;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -23,7 +23,7 @@ public class HealthSign extends PurchasableMagicSign {
 
 	private int healthNumber = 20;
 
-	public HealthSign(Location location, String[] lines)
+	public HealthSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 

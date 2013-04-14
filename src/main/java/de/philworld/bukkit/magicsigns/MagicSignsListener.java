@@ -19,6 +19,7 @@ import de.philworld.bukkit.magicsigns.locks.PlayerLock;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 public class MagicSignsListener implements Listener {
@@ -57,8 +58,8 @@ public class MagicSignsListener implements Listener {
 		}
 
 		try {
-			MagicSign magicSign = signType.newInstance(event.getBlock()
-					.getLocation(), event.getLines());
+			MagicSign magicSign = signType.newInstance(new BlockLocation(event
+					.getBlock().getLocation()), event.getLines());
 
 			manager.registerSign(magicSign);
 			event.setLine(0, ChatColor.BLUE + "[" + typeName + "]");

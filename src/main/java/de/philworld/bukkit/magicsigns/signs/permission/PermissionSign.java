@@ -3,7 +3,6 @@ package de.philworld.bukkit.magicsigns.signs.permission;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -15,6 +14,7 @@ import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.MacroConfiguration;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MacroUtil;
 
 @MagicSignInfo(
@@ -39,7 +39,7 @@ public class PermissionSign extends PurchasableMagicSign {
 
 	private final List<String> permissions;
 
-	public PermissionSign(Location location, String[] lines)
+	public PermissionSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 		permissions = MacroUtil.format(lines[1] + lines[2], config.getMacros());

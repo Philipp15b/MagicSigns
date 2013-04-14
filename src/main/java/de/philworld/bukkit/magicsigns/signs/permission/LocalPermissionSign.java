@@ -1,12 +1,12 @@
 package de.philworld.bukkit.magicsigns.signs.permission;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.config.Configuration;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 @MagicSignInfo(
 		name = "LPermission",
@@ -20,7 +20,7 @@ public class LocalPermissionSign extends PermissionSign {
 		return null; // we reuse PermissionSign's config
 	}
 
-	public LocalPermissionSign(Location location, String[] lines)
+	public LocalPermissionSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 	}

@@ -12,12 +12,13 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 public class SignManager {
 
 	private final Logger logger;
 	private final Map<String, SignType> signTypes = new HashMap<String, SignType>();
-	public Map<Location, MagicSign> signs = new HashMap<Location, MagicSign>();
+	public Map<BlockLocation, MagicSign> signs = new HashMap<BlockLocation, MagicSign>();
 	private ConfigurationSection config;
 
 	public SignManager(Logger logger, ConfigurationSection config) {
@@ -89,8 +90,8 @@ public class SignManager {
 								+ signType.getCanonicalName() + "!", e);
 			}
 		}
-		Map<Location, MagicSign> oldSigns = signs;
-		signs = new HashMap<Location, MagicSign>(oldSigns.size());
+		Map<BlockLocation, MagicSign> oldSigns = signs;
+		signs = new HashMap<BlockLocation, MagicSign>(oldSigns.size());
 		for (MagicSign sign : oldSigns.values()) {
 			try {
 				registerSign(sign.serialize().getMagicSign());

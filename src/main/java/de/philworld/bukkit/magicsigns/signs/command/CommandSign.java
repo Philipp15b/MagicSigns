@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
@@ -12,6 +11,7 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.MacroConfiguration;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MacroUtil;
 
 /**
@@ -59,7 +59,7 @@ public class CommandSign extends PurchasableMagicSign {
 
 	protected LinkedList<String> commands = new LinkedList<String>();
 
-	public CommandSign(Location location, String[] lines)
+	public CommandSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 		try {

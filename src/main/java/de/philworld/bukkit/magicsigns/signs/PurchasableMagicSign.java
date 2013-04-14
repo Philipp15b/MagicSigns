@@ -1,11 +1,11 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.economy.Price;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 /**
  * This is a {@link MagicSign} that allows to be payed for usage. The price has
@@ -19,7 +19,7 @@ public abstract class PurchasableMagicSign extends MagicSign {
 	 * Creates a new purchasable magic sign by setting the price of this sign.
 	 * The price has to be on the last line of the sign.
 	 */
-	public PurchasableMagicSign(Location location, String[] lines)
+	public PurchasableMagicSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 

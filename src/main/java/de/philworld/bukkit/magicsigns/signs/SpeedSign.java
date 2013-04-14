@@ -1,12 +1,12 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.Location;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 /**
  * A sign that applies the speed potion effect to players.
@@ -26,7 +26,7 @@ public class SpeedSign extends PurchasableMagicSign {
 	private final int duration;
 	private final int amplifier;
 
-	public SpeedSign(Location location, String[] lines)
+	public SpeedSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 

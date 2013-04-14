@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -18,6 +18,7 @@ import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 /**
  * This is the parent class for every magic sign. Subclasses of MagicSign must
@@ -45,7 +46,7 @@ public abstract class MagicSign {
 				"The static method takeAction() must be overridden!");
 	}
 
-	private final Location location;
+	private final BlockLocation location;
 	private final String[] lines;
 	private Lock lock = null;
 	private Map<String, PlayerLock> playerLocks = null;
@@ -57,7 +58,7 @@ public abstract class MagicSign {
 	 * @param lines
 	 * @throws InvalidSignException
 	 */
-	public MagicSign(Location location, String[] lines)
+	public MagicSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		this.location = location;
 		this.lines = lines;
@@ -85,7 +86,7 @@ public abstract class MagicSign {
 	 * 
 	 * @return Location
 	 */
-	public Location getLocation() {
+	public BlockLocation getLocation() {
 		return location;
 	}
 
@@ -141,14 +142,15 @@ public abstract class MagicSign {
 	 * MagicSign uses for its work).
 	 * 
 	 * <p>
-	 * <b>Always returns true if the chunk is not loaded!</b>
+	 * <b>Always returns true if the world/chunk is not loaded!</b>
 	 * 
 	 * @return True if its masked, else false.
 	 */
 	public boolean isMasked() {
-		if (!getLocation().getBlock().getChunk().isLoaded())
+		Block block = getLocation().getBlockAt();
+		if (block == null || !block.getChunk().isLoaded())
 			return true;
-		Sign sign = (Sign) getLocation().getBlock().getState();
+		Sign sign = (Sign) block.getState();
 		String[] currentLines = sign.getLines();
 		return !Arrays.equals(currentLines, getLines());
 	}

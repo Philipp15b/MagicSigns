@@ -1,11 +1,11 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -22,7 +22,7 @@ public class LevelSign extends PurchasableMagicSign {
 
 	private int additionalLevels = 1;
 
-	public LevelSign(Location location, String[] lines)
+	public LevelSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 

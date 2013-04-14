@@ -1,11 +1,11 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 @MagicSignInfo(
 		name = "Survival",
@@ -15,7 +15,7 @@ import de.philworld.bukkit.magicsigns.MagicSignInfo;
 		usePerm = "magicsigns.survival.use")
 public class SurvivalModeSign extends PurchasableMagicSign {
 
-	public SurvivalModeSign(Location location, String[] lines)
+	public SurvivalModeSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 	}

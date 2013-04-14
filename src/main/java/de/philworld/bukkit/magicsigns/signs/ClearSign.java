@@ -1,6 +1,5 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -9,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -31,7 +31,7 @@ public class ClearSign extends PurchasableMagicSign {
 	 */
 	private boolean clearAll = false;
 
-	public ClearSign(Location location, String[] lines)
+	public ClearSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 

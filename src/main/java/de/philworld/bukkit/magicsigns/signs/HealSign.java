@@ -1,11 +1,11 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
@@ -23,7 +23,7 @@ public class HealSign extends PurchasableMagicSign {
 
 	private int healAmount = 20;
 
-	public HealSign(Location location, String[] lines)
+	public HealSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 

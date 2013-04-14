@@ -1,12 +1,12 @@
 package de.philworld.bukkit.magicsigns.signs.command;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.config.Configuration;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 /**
  * A sign that executes commands in the server's context. Caution!
@@ -28,7 +28,7 @@ public class ConsoleCommandSign extends CommandSign {
 		return null; // we reuse CommandSigns' config
 	}
 
-	public ConsoleCommandSign(Location location, String[] lines)
+	public ConsoleCommandSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
 		super(location, lines);
 	}
