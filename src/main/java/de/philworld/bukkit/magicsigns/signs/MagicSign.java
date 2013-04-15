@@ -36,16 +36,6 @@ public abstract class MagicSign {
 		return null;
 	}
 
-	/**
-	 * Returns if a new Magic Sign should be created of this sign.
-	 * 
-	 * <i><b>Important:</b> Must be overridden!</i>
-	 */
-	public static boolean takeAction(Sign sign, String[] lines) {
-		throw new UnsupportedOperationException(
-				"The static method takeAction() must be overridden!");
-	}
-
 	private final BlockLocation location;
 	private final String[] lines;
 	private Lock lock = null;
