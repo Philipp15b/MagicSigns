@@ -4,6 +4,7 @@ import org.bukkit.Chunk;
 
 public class ChunkLocation {
 
+	@SuppressWarnings("unused")
 	public static ChunkLocation fromLocation(String world, int x, int y, int z) {
 		return new ChunkLocation(world, x >> 4, z >> 4);
 	}
