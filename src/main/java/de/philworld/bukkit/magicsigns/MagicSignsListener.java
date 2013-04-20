@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,6 +20,7 @@ import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
+import de.philworld.bukkit.magicsigns.util.MaterialUtil;
 
 public class MagicSignsListener implements Listener {
 
@@ -118,11 +118,12 @@ public class MagicSignsListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (!event.hasBlock() || event.getAction() != Action.RIGHT_CLICK_BLOCK
 				|| event.getClickedBlock() == null
-				|| !(event.getClickedBlock().getState() instanceof Sign)) {
+				|| !MaterialUtil.isSign(event.getClickedBlock().getType())) {
 			return;
 		}
 
-		MagicSign sign = manager.getSign(event.getClickedBlock().getLocation());
+		MagicSign sign = manager.getSign(new BlockLocation(event
+				.getClickedBlock().getLocation()));
 		if (sign == null)
 			return;
 
@@ -173,7 +174,8 @@ public class MagicSignsListener implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
-		manager.removeSign(event.getBlock().getLocation());
+		if (MaterialUtil.isSign(event.getBlock().getType()))
+			manager.removeSign(new BlockLocation(event.getBlock().getLocation()));
 	}
 
 }

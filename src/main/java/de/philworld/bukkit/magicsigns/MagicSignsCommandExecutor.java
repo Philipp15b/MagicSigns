@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import de.philworld.bukkit.magicsigns.locks.MagicSignsLockCommandExecutor;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 public class MagicSignsCommandExecutor implements CommandExecutor {
@@ -95,7 +96,8 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 		p.sendMessage(ChatColor.GOLD + "MagicSigns Sign Info");
 		p.sendMessage(ChatColor.GOLD + "--------------------");
 
-		MagicSign sign = plugin.getSignManager().getSign(target.getLocation());
+		MagicSign sign = plugin.getSignManager().getSign(
+				new BlockLocation(target.getLocation()));
 		if (sign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
 			return true;

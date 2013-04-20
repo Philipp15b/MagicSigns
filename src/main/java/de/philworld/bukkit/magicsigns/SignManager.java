@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -60,11 +59,11 @@ public class SignManager {
 		signs.put(sign.getLocation(), sign);
 	}
 
-	public MagicSign getSign(Location loc) {
+	public MagicSign getSign(BlockLocation loc) {
 		return signs.get(loc);
 	}
 
-	public boolean removeSign(Location loc) {
+	public boolean removeSign(BlockLocation loc) {
 		return signs.remove(loc) != null;
 	}
 

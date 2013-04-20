@@ -7,7 +7,9 @@ import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
+import de.philworld.bukkit.magicsigns.util.MaterialUtil;
 
 public class SignEditCommandExecutor {
 
@@ -130,18 +132,13 @@ public class SignEditCommandExecutor {
 			throw new PermissionException();
 
 		Block target = p.getTargetBlock(null, 100);
-		if (target == null) {
-			MSMsg.POINT_AT_SIGN.send(p);
-			return true;
-		}
-
-		if (!(target.getState() instanceof Sign)) {
+		if (target == null || !MaterialUtil.isSign(target.getType())) {
 			MSMsg.POINT_AT_SIGN.send(p);
 			return true;
 		}
 
 		MagicSign magicSign = signEdit.plugin.getSignManager().getSign(
-				target.getLocation());
+				new BlockLocation(target.getLocation()));
 		if (magicSign == null) {
 			p.sendMessage(ChatColor.RED
 					+ "This is not a MagicSign hence it can not be unmasked!");

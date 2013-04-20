@@ -6,7 +6,9 @@ import org.bukkit.entity.Player;
 
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
 import de.philworld.bukkit.magicsigns.util.MSMsg;
+import de.philworld.bukkit.magicsigns.util.MaterialUtil;
 
 public class MagicSignsLockCommandExecutor {
 
@@ -17,13 +19,13 @@ public class MagicSignsLockCommandExecutor {
 		}
 
 		Block target = p.getTargetBlock(null, 30);
-		if (target == null) {
+		if (target == null || !MaterialUtil.isSign(target.getType())) {
 			MSMsg.POINT_AT_SIGN.send(p);
 			return true;
 		}
 
 		MagicSign magicSign = MagicSigns.inst().getSignManager()
-				.getSign(target.getLocation());
+				.getSign(new BlockLocation(target.getLocation()));
 
 		if (magicSign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
@@ -73,13 +75,13 @@ public class MagicSignsLockCommandExecutor {
 
 		Block target = p.getPlayer().getTargetBlock(null, 20);
 
-		if (target == null) {
+		if (target == null || !MaterialUtil.isSign(target.getType())) {
 			MSMsg.POINT_AT_SIGN.send(p);
 			return true;
 		}
 
 		MagicSign magicSign = MagicSigns.inst().getSignManager()
-				.getSign(target.getLocation());
+				.getSign(new BlockLocation(target.getLocation()));
 
 		if (magicSign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
@@ -98,13 +100,13 @@ public class MagicSignsLockCommandExecutor {
 	public boolean unlock(Player p, String label) {
 
 		Block target = p.getTargetBlock(null, 30);
-		if (target == null) {
+		if (target == null || !MaterialUtil.isSign(target.getType())) {
 			MSMsg.POINT_AT_SIGN.send(p);
 			return true;
 		}
 
 		MagicSign magicSign = MagicSigns.inst().getSignManager()
-				.getSign(target.getLocation());
+				.getSign(new BlockLocation(target.getLocation()));
 
 		if (magicSign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);

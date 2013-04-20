@@ -14,6 +14,8 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import de.philworld.bukkit.magicsigns.util.BlockLocation;
+
 public class SignEditListener implements Listener {
 
 	private final SignEdit signEdit;
@@ -36,8 +38,10 @@ public class SignEditListener implements Listener {
 
 		// only allow MagicSigns if mode is mask.
 		if (mode == EditMode.MASK_MAGIC_SIGNS
-				&& signEdit.plugin.getSignManager().getSign(
-						event.getBlockAgainst().getLocation()) == null)
+				&& signEdit.plugin.getSignManager()
+						.getSign(
+								new BlockLocation(event.getBlockAgainst()
+										.getLocation())) == null)
 			return;
 
 		signEdit.registerEditSign(event.getBlockPlaced().getLocation(), event
@@ -59,7 +63,8 @@ public class SignEditListener implements Listener {
 
 		// whether to mask a MagicSign. If true, don't call SignChangeEvent.
 		boolean maskMagicSign = ((playerEditMode == EditMode.MASK_MAGIC_SIGNS || playerEditMode == EditMode.AUTO) && signEdit.plugin
-				.getSignManager().getSign(targetSign.getLocation()) != null);
+				.getSignManager().getSign(
+						new BlockLocation(targetSign.getLocation())) != null);
 
 		SignChangeEvent signChange = null;
 		String[] newLines = event.getLines();
@@ -68,9 +73,9 @@ public class SignEditListener implements Listener {
 			// delete the old MagicSign if the EditMode is modify.
 			if (playerEditMode == EditMode.MODIFY
 					&& signEdit.plugin.getSignManager().getSign(
-							targetSign.getLocation()) != null) {
+							new BlockLocation(targetSign.getLocation())) != null) {
 				signEdit.plugin.getSignManager().removeSign(
-						targetSign.getLocation());
+						new BlockLocation(targetSign.getLocation()));
 			}
 
 			// call a new SignChangeEvent to inform other plugins
