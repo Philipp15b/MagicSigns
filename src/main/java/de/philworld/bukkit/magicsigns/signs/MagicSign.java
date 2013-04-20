@@ -138,7 +138,8 @@ public abstract class MagicSign {
 	 */
 	public boolean isMasked() {
 		Block block = getLocation().getBlockAt();
-		if (block == null || !block.getChunk().isLoaded())
+		if (block == null || block.getChunk() == null
+				|| !block.getChunk().isLoaded())
 			return true;
 		Sign sign = (Sign) block.getState();
 		String[] currentLines = sign.getLines();
