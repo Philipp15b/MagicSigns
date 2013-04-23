@@ -41,7 +41,7 @@ public class TeleportSign extends PurchasableMagicSign {
 		}
 	};
 
-	private final RotatedBlockLocation destination;
+	final RotatedBlockLocation destination;
 
 	public TeleportSign(BlockLocation location, String[] lines)
 			throws InvalidSignException {
@@ -88,7 +88,6 @@ public class TeleportSign extends PurchasableMagicSign {
 				throw new InvalidSignException("Pitch is an invalid number!");
 			}
 		}
-
 		destination = new RotatedBlockLocation(world, x, y, z, yaw, pitch);
 	}
 
