@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.philworld.bukkit.magicsigns</groupId>
 	<artifactId>MagicSigns</artifactId>
-	<version>1.6.1</version>
+	<version>1.6.2</version>
 	<name>MagicSigns</name>
 	<description>MagicSigns is a Bukkit plugin that adds interactive signs.</description>
 	<licenses>
