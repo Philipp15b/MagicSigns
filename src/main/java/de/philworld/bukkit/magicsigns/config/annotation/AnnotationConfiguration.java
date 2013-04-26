@@ -22,21 +22,14 @@ public abstract class AnnotationConfiguration implements Configuration {
 	/**
 	 * Set all properties annotated with {@link Setting} to the value in the
 	 * {@link Setting}.
-	 * 
-	 * If the field does not exist in the node, it will be set to the current
-	 * value in the field.
-	 * 
-	 * @param section
 	 */
 	@Override
 	public void load(ConfigurationSection section) {
 		if (getClass().isAnnotationPresent(SettingBase.class)) {
 			String base = getClass().getAnnotation(SettingBase.class).value();
-
-			if (section.getConfigurationSection(base) == null) {
-				section.createSection(base);
-			}
 			section = section.getConfigurationSection(base);
+			if (section == null)
+				return;
 		}
 
 		for (Field field : getClass().getDeclaredFields()) {
@@ -62,8 +55,6 @@ public abstract class AnnotationConfiguration implements Configuration {
 								+ value.getClass().getName()
 								+ "'! Using default for this key.");
 					}
-				} else {
-					section.set(key, field.get(this));
 				}
 			} catch (IllegalAccessException e) {
 				getLogger().log(Level.SEVERE, "Error loading config:", e);
@@ -76,8 +67,6 @@ public abstract class AnnotationConfiguration implements Configuration {
 
 	/**
 	 * Save all contents of fields annotated with {@link Setting} to the node.
-	 * 
-	 * @param section
 	 */
 	@Override
 	public void save(ConfigurationSection section) {
