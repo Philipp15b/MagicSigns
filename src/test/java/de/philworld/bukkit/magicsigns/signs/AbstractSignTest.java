@@ -11,10 +11,10 @@ abstract class AbstractSignTest {
 			"myworld", 1, 1, 1);
 
 	@SuppressWarnings("unchecked")
-	protected <T extends MagicSign> T createSign(Class<T> clazz, String line2,
-			String line3, String line4) throws InstantiationException,
-			IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException {
+	protected static <T extends MagicSign> T createSign(Class<T> clazz,
+			String line2, String line3, String line4)
+			throws InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
 		SignType signType = new SignType(clazz);
 		String[] lines = { "", line2, line3, line4 };
 		return (T) signType.newInstance(LOCATION, lines);
