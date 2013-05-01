@@ -48,8 +48,7 @@ public enum EditMode {
 	}
 
 	public boolean hasPermission(Player p) {
-		return getPermission() != null ? p.hasPermission(getPermission())
-				: true;
+		return getPermission() != null ? p.hasPermission(getPermission()) : true;
 	}
 
 }

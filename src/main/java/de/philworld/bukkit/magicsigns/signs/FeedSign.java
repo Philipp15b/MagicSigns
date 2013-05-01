@@ -23,16 +23,14 @@ public class FeedSign extends PurchasableMagicSign {
 
 	private int feedAmount = MAX_FOOD_LEVEL;
 
-	public FeedSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public FeedSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {
 				feedAmount = new Integer(lines[1]);
 			} catch (NumberFormatException e) {
-				throw new InvalidSignException(
-						"Line 2 must be a number or empty!");
+				throw new InvalidSignException("Line 2 must be a number or empty!");
 			}
 		}
 	}

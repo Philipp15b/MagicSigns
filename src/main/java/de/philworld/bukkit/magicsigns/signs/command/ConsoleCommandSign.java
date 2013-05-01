@@ -28,17 +28,14 @@ public class ConsoleCommandSign extends CommandSign {
 		return null; // we reuse CommandSigns' config
 	}
 
-	public ConsoleCommandSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public ConsoleCommandSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 	}
 
 	@Override
 	public void onRightClick(PlayerInteractEvent event) {
 		for (String cmd : this.commands) {
-			Bukkit.getServer().dispatchCommand(
-					Bukkit.getServer().getConsoleSender(),
-					formatCommand(cmd, event));
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), formatCommand(cmd, event));
 		}
 	}
 

@@ -17,14 +17,11 @@ public class SignType {
 		this.clazz = clazz;
 
 		try {
-			constructor = clazz.getConstructor(BlockLocation.class,
-					String[].class);
+			constructor = clazz.getConstructor(BlockLocation.class, String[].class);
 		} catch (NoSuchMethodException e) {
-			throw mustHaveException(clazz,
-					"constructor with arguments BlockLocation and String[]", e);
+			throw mustHaveException(clazz, "constructor with arguments BlockLocation and String[]", e);
 		} catch (SecurityException e) {
-			throw mustHaveException(clazz,
-					"constructor with arguments Location and String[]", e);
+			throw mustHaveException(clazz, "constructor with arguments Location and String[]", e);
 		}
 
 		MagicSignInfo annotation = clazz.getAnnotation(MagicSignInfo.class);
@@ -33,26 +30,23 @@ public class SignType {
 		buildPermission = annotation.buildPerm();
 	}
 
-	private static IllegalArgumentException mustHaveException(
-			Class<? extends MagicSign> clazz, String what, Exception cause) {
-		return new IllegalArgumentException("The sign type '"
-				+ clazz.getCanonicalName() + "' must have a " + what + "!",
-				cause);
+	private static IllegalArgumentException mustHaveException(Class<? extends MagicSign> clazz, String what,
+			Exception cause) {
+		return new IllegalArgumentException("The sign type '" + clazz.getCanonicalName() + "' must have a " + what
+				+ "!", cause);
 	}
 
 	public String getName() {
 		return clazz.getAnnotation(MagicSignInfo.class).name();
 	}
 
-	public MagicSign newInstance(BlockLocation location, String[] lines)
-			throws InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+	public MagicSign newInstance(BlockLocation location, String[] lines) throws InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return constructor.newInstance(location, lines);
 	}
 
-	public Configuration getConfig() throws IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, SecurityException {
+	public Configuration getConfig() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
 		return (Configuration) clazz.getMethod("getConfig").invoke(null);
 	}
 

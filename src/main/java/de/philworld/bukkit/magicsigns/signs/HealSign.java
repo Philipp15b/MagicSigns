@@ -23,16 +23,14 @@ public class HealSign extends PurchasableMagicSign {
 
 	private int healAmount = 20;
 
-	public HealSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public HealSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {
 				healAmount = new Integer(lines[1]);
 			} catch (NumberFormatException e) {
-				throw new InvalidSignException(
-						"The amount on line 2 must be a number or empty!");
+				throw new InvalidSignException("The amount on line 2 must be a number or empty!");
 			}
 		}
 	}

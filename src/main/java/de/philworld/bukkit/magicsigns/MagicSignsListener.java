@@ -58,8 +58,8 @@ public class MagicSignsListener implements Listener {
 		}
 
 		try {
-			MagicSign magicSign = signType.newInstance(new BlockLocation(event
-					.getBlock().getLocation()), event.getLines());
+			MagicSign magicSign = signType.newInstance(new BlockLocation(event.getBlock().getLocation()),
+					event.getLines());
 
 			manager.registerSign(magicSign);
 			event.setLine(0, ChatColor.BLUE + "[" + typeName + "]");
@@ -69,19 +69,15 @@ public class MagicSignsListener implements Listener {
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof InvalidSignException) {
 				event.setCancelled(true);
-				event.getPlayer().sendMessage(
-						ChatColor.RED + e.getCause().getMessage());
+				event.getPlayer().sendMessage(ChatColor.RED + e.getCause().getMessage());
 				return;
 			}
-			plugin.getLogger().log(Level.SEVERE,
-					"Error registering Magic sign:", e.getTargetException());
+			plugin.getLogger().log(Level.SEVERE, "Error registering Magic sign:", e.getTargetException());
 		} catch (Exception e) {
-			plugin.getLogger().log(Level.SEVERE,
-					"Error registering Magic sign:", e);
+			plugin.getLogger().log(Level.SEVERE, "Error registering Magic sign:", e);
 		}
 
-		event.getPlayer().sendMessage(
-				ChatColor.RED + "An error occured while creating this sign :(");
+		event.getPlayer().sendMessage(ChatColor.RED + "An error occured while creating this sign :(");
 	}
 
 	/**
@@ -116,14 +112,12 @@ public class MagicSignsListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (!event.hasBlock() || event.getAction() != Action.RIGHT_CLICK_BLOCK
-				|| event.getClickedBlock() == null
+		if (!event.hasBlock() || event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock() == null
 				|| !MaterialUtil.isSign(event.getClickedBlock().getType())) {
 			return;
 		}
 
-		MagicSign sign = manager.getSign(new BlockLocation(event
-				.getClickedBlock().getLocation()));
+		MagicSign sign = manager.getSign(new BlockLocation(event.getClickedBlock().getLocation()));
 		if (sign == null)
 			return;
 
@@ -135,8 +129,7 @@ public class MagicSignsListener implements Listener {
 
 		Player p = event.getPlayer();
 		try {
-			if (sign.getUsePermission() != null
-					&& !p.hasPermission(sign.getUsePermission()))
+			if (sign.getUsePermission() != null && !p.hasPermission(sign.getUsePermission()))
 				throw new PermissionException();
 
 			if (sign.getLock() != null && sign.getPlayerLock(p) != null) {
@@ -145,8 +138,7 @@ public class MagicSignsListener implements Listener {
 				if (pLock.isUsable(time)) {
 					pLock.touch(time);
 				} else {
-					throw new PermissionException(ChatColor.RED
-							+ pLock.getErrorMessage(time));
+					throw new PermissionException(ChatColor.RED + pLock.getErrorMessage(time));
 				}
 			}
 
@@ -156,8 +148,7 @@ public class MagicSignsListener implements Listener {
 					if (pSign.withdrawPlayer(p)) {
 						MSMsg.PAID_SIGN.send(p, pSign.getPrice().toString());
 					} else {
-						MSMsg.NOT_ENOUGH_MONEY.send(p, pSign.getPrice()
-								.toString());
+						MSMsg.NOT_ENOUGH_MONEY.send(p, pSign.getPrice().toString());
 						return;
 					}
 				}

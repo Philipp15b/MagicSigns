@@ -50,12 +50,8 @@ public class RocketSign extends PurchasableMagicSign {
 									"The default velocity of a Rocket sign may only have a vector length of 100, "
 											+ "Bukkit won't let you move that fast!");
 			} catch (InvalidSignException e) {
-				MagicSigns
-						.inst()
-						.getLogger()
-						.log(Level.WARNING,
-								"Invalid Rocket sign default velocity: "
-										+ e.getMessage(), e);
+				MagicSigns.inst().getLogger()
+						.log(Level.WARNING, "Invalid Rocket sign default velocity: " + e.getMessage(), e);
 			}
 		}
 	}
@@ -66,12 +62,10 @@ public class RocketSign extends PurchasableMagicSign {
 
 	private final Vector velocity;
 
-	public RocketSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public RocketSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
-		String vector = (lines[1].isEmpty()) ? config.defaultVelocity
-				: lines[1];
+		String vector = (lines[1].isEmpty()) ? config.defaultVelocity : lines[1];
 		velocity = parseVelocity(vector);
 	}
 
@@ -81,23 +75,19 @@ public class RocketSign extends PurchasableMagicSign {
 		MSMsg.ROCKETED.send(event.getPlayer());
 	}
 
-	private static Vector parseVelocity(String vector)
-			throws InvalidSignException {
+	private static Vector parseVelocity(String vector) throws InvalidSignException {
 		String[] parts = vector.split(",");
 
 		try {
 			if (parts.length == 3) {
-				return new Vector(new Integer(parts[0]), new Integer(parts[1]),
-						new Integer(parts[2]));
+				return new Vector(new Integer(parts[0]), new Integer(parts[1]), new Integer(parts[2]));
 			} else if (parts.length == 1) {
 				return new Vector(0, new Integer(parts[0]), 0);
 			} else {
-				throw new InvalidSignException(
-						"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
+				throw new InvalidSignException("Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
 			}
 		} catch (NumberFormatException e) {
-			throw new InvalidSignException(
-					"Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
+			throw new InvalidSignException("Make sure you specify the velocity like this: 10,20,30 (x,y,z)");
 		}
 	}
 

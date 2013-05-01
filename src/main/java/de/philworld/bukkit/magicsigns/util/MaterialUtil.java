@@ -9,8 +9,7 @@ public class MaterialUtil {
 	 * {@link Material#SIGN_POST} or a {@link Material#WALL_SIGN}.
 	 */
 	public static boolean isSign(Material material) {
-		return material == Material.SIGN || material == Material.SIGN_POST
-				|| material == Material.WALL_SIGN;
+		return material == Material.SIGN || material == Material.SIGN_POST || material == Material.WALL_SIGN;
 	}
 
 }

@@ -31,8 +31,7 @@ public class ClearSign extends PurchasableMagicSign {
 	 */
 	private boolean clearAll = false;
 
-	public ClearSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public ClearSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (lines[1].equalsIgnoreCase("[all]")) {

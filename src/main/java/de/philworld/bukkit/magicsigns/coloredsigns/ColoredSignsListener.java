@@ -10,15 +10,13 @@ public class ColoredSignsListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onSignChange(SignChangeEvent event) {
-		if (event.getPlayer()
-				.hasPermission(ColoredSigns.COLOR_SIGNS_PERMISSION)) {
+		if (event.getPlayer().hasPermission(ColoredSigns.COLOR_SIGNS_PERMISSION)) {
 			for (int line = 0; line <= 3; line++) {
 				boolean seenAnd = false;
 				for (int ic = 0; ic < event.getLine(line).length(); ic++) {
 					char ch = event.getLine(line).charAt(ic);
 					if (seenAnd && "0123456789abcdefklmnor".indexOf(ch) != -1) {
-						StringBuilder sb = new StringBuilder(
-								event.getLine(line));
+						StringBuilder sb = new StringBuilder(event.getLine(line));
 						sb.setCharAt(ic - 1, ChatColor.COLOR_CHAR);
 						event.setLine(line, sb.toString());
 						seenAnd = false;

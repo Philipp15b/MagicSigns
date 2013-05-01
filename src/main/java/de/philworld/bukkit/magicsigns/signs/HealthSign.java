@@ -23,16 +23,14 @@ public class HealthSign extends PurchasableMagicSign {
 
 	private int healthNumber = 20;
 
-	public HealthSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public HealthSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {
 				healthNumber = new Integer(lines[1]);
 			} catch (NumberFormatException e) {
-				throw new InvalidSignException(
-						"The health on line 2 must be a number or empty!");
+				throw new InvalidSignException("The health on line 2 must be a number or empty!");
 			}
 		}
 

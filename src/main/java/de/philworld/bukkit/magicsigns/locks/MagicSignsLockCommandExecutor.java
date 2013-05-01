@@ -24,8 +24,7 @@ public class MagicSignsLockCommandExecutor {
 			return true;
 		}
 
-		MagicSign magicSign = MagicSigns.inst().getSignManager()
-				.getSign(new BlockLocation(target.getLocation()));
+		MagicSign magicSign = MagicSigns.inst().getSignManager().getSign(new BlockLocation(target.getLocation()));
 
 		if (magicSign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
@@ -35,23 +34,17 @@ public class MagicSignsLockCommandExecutor {
 		if (magicSign.getLock() != null) {
 			Lock lock = magicSign.getLock();
 			p.sendMessage(ChatColor.BLUE + "This sign has a lock:");
-			p.sendMessage(ChatColor.BLUE + "    Maximum Uses: "
-					+ lock.getMaxUses());
-			p.sendMessage(ChatColor.BLUE + "    Period between clicks: "
-					+ lock.getPeriod());
-			p.sendMessage(ChatColor.GOLD + "To remove this lock, type "
-					+ ChatColor.GRAY + "/" + label + " unlock");
+			p.sendMessage(ChatColor.BLUE + "    Maximum Uses: " + lock.getMaxUses());
+			p.sendMessage(ChatColor.BLUE + "    Period between clicks: " + lock.getPeriod());
+			p.sendMessage(ChatColor.GOLD + "To remove this lock, type " + ChatColor.GRAY + "/" + label + " unlock");
 		} else {
 			p.sendMessage(ChatColor.BLUE + "This sign has no lock.");
 		}
 
-		p.sendMessage(ChatColor.GOLD + "To set a new lock, type "
-				+ ChatColor.GRAY + "/" + label + " lock max:5,period:2");
-		p.sendMessage(ChatColor.GRAY + "max:" + ChatColor.GOLD
-				+ " stands for the maximum uses for a player");
-		p.sendMessage(ChatColor.GRAY
-				+ "period"
-				+ ChatColor.GOLD
+		p.sendMessage(ChatColor.GOLD + "To set a new lock, type " + ChatColor.GRAY + "/" + label
+				+ " lock max:5,period:2");
+		p.sendMessage(ChatColor.GRAY + "max:" + ChatColor.GOLD + " stands for the maximum uses for a player");
+		p.sendMessage(ChatColor.GRAY + "period" + ChatColor.GOLD
 				+ " stands for the delay between each click on the sign (in seconds)");
 
 		return true;
@@ -80,8 +73,7 @@ public class MagicSignsLockCommandExecutor {
 			return true;
 		}
 
-		MagicSign magicSign = MagicSigns.inst().getSignManager()
-				.getSign(new BlockLocation(target.getLocation()));
+		MagicSign magicSign = MagicSigns.inst().getSignManager().getSign(new BlockLocation(target.getLocation()));
 
 		if (magicSign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
@@ -90,9 +82,8 @@ public class MagicSignsLockCommandExecutor {
 
 		magicSign.setLock(signLock, true);
 
-		p.sendMessage(ChatColor.GREEN
-				+ "This sign now has a lock with a period of " + period
-				+ ", maximum uses of " + maxuses);
+		p.sendMessage(ChatColor.GREEN + "This sign now has a lock with a period of " + period + ", maximum uses of "
+				+ maxuses);
 
 		return true;
 	}
@@ -105,8 +96,7 @@ public class MagicSignsLockCommandExecutor {
 			return true;
 		}
 
-		MagicSign magicSign = MagicSigns.inst().getSignManager()
-				.getSign(new BlockLocation(target.getLocation()));
+		MagicSign magicSign = MagicSigns.inst().getSignManager().getSign(new BlockLocation(target.getLocation()));
 
 		if (magicSign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
@@ -116,8 +106,7 @@ public class MagicSignsLockCommandExecutor {
 		if (magicSign.getLock() != null) {
 			magicSign.setLock(null, false);
 			magicSign.removePlayerLocks();
-			p.sendMessage(ChatColor.GREEN
-					+ "The lock has been removed from this sign!");
+			p.sendMessage(ChatColor.GREEN + "The lock has been removed from this sign!");
 			return true;
 		}
 		p.sendMessage(ChatColor.RED + "This sign does not even have a lock!");

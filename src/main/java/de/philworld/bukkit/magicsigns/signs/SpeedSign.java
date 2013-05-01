@@ -26,8 +26,7 @@ public class SpeedSign extends PurchasableMagicSign {
 	private final int duration;
 	private final int amplifier;
 
-	public SpeedSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public SpeedSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (lines[1].isEmpty()) {
@@ -40,22 +39,18 @@ public class SpeedSign extends PurchasableMagicSign {
 		try {
 			duration = new Integer(lines[1]);
 		} catch (NumberFormatException e) {
-			throw new InvalidSignException(
-					"The duration on line 2 must be a number!");
+			throw new InvalidSignException("The duration on line 2 must be a number!");
 		}
 		try {
 			amplifier = new Integer(lines[2]);
 		} catch (NumberFormatException e) {
-			throw new InvalidSignException(
-					"The amplifier on line 3 must be a number!");
+			throw new InvalidSignException("The amplifier on line 3 must be a number!");
 		}
 	}
 
 	@Override
 	public void onRightClick(PlayerInteractEvent event) {
-		event.getPlayer().addPotionEffect(
-				new PotionEffect(PotionEffectType.SPEED, duration, amplifier),
-				true);
+		event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, duration, amplifier), true);
 	}
 
 }

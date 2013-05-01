@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Defines a setting in the config on a field. The value contains the path to
  * the setting. If a {@link SettingBase} is exists on the class, all paths are
  * relative to the value defined in {@link SettingBase}.
- *
+ * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

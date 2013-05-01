@@ -19,8 +19,7 @@ public abstract class PurchasableMagicSign extends MagicSign {
 	 * Creates a new purchasable magic sign by setting the price of this sign.
 	 * The price has to be on the last line of the sign.
 	 */
-	public PurchasableMagicSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public PurchasableMagicSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (!lines[3].isEmpty()) {

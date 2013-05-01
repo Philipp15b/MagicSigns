@@ -152,11 +152,8 @@ public class MagicSigns extends JavaPlugin {
 				if (!(PermissionSign.class.isAssignableFrom(signType) && permission == null))
 					getSignManager().registerSignType(signType);
 			} catch (InvocationTargetException e) {
-				getLogger().log(
-						Level.SEVERE,
-						"Error registering sign type '"
-								+ signType.getCanonicalName() + "': "
-								+ e.getMessage(), e);
+				getLogger().log(Level.SEVERE,
+						"Error registering sign type '" + signType.getCanonicalName() + "': " + e.getMessage(), e);
 			}
 		}
 
@@ -166,29 +163,25 @@ public class MagicSigns extends JavaPlugin {
 		if (setupEconomy()) {
 			getLogger().log(Level.INFO, "Using Vault for economy.");
 		} else {
-			getLogger().log(Level.INFO,
-					"Vault was not found, all signs will be free!");
+			getLogger().log(Level.INFO, "Vault was not found, all signs will be free!");
 		}
 
 		if (setupPermissions()) {
 			getLogger().log(Level.INFO, "Using Vault for permissions.");
 		} else {
-			getLogger()
-					.log(Level.INFO,
-							"Vault was not found, permission signs will not work (Permissions in general will work though!)");
+			getLogger().log(Level.INFO,
+					"Vault was not found, permission signs will not work (Permissions in general will work though!)");
 		}
 
 		getCommand("ms").setExecutor(new MagicSignsCommandExecutor(this));
 
-		getServer().getPluginManager().registerEvents(
-				new MagicSignsListener(this), this);
+		getServer().getPluginManager().registerEvents(new MagicSignsListener(this), this);
 
 		// start metrics
 		try {
 			new MetricsLite(this).start();
 		} catch (IOException e) {
-			getLogger().log(Level.WARNING,
-					"Error enabling Metrics for MagicSigns:", e);
+			getLogger().log(Level.WARNING, "Error enabling Metrics for MagicSigns:", e);
 		}
 	}
 
@@ -199,15 +192,13 @@ public class MagicSigns extends JavaPlugin {
 
 	@SuppressWarnings("unchecked")
 	private void loadSigns() {
-		ConfigurationSerialization
-				.registerClass(MagicSignSerializationProxy.class);
+		ConfigurationSerialization.registerClass(MagicSignSerializationProxy.class);
 		ConfigurationSerialization.registerClass(Lock.class);
 
 		signsDbFile = new File(getDataFolder(), "signs.db.yml");
 		signsDb = YamlConfiguration.loadConfiguration(signsDbFile);
 
-		List<MagicSignSerializationProxy> list = (List<MagicSignSerializationProxy>) signsDb
-				.get("magic-signs");
+		List<MagicSignSerializationProxy> list = (List<MagicSignSerializationProxy>) signsDb.get("magic-signs");
 
 		if (list == null) {
 			list = new ArrayList<MagicSignSerializationProxy>();
@@ -215,11 +206,9 @@ public class MagicSigns extends JavaPlugin {
 
 		// migrate from old config file.
 		if (getConfig().get("magic-signs") != null) {
-			getLogger()
-					.log(Level.INFO,
-							"Found list of signs in main config file. MagicSigns are now saved in signs.db.yml! Copying...");
-			list.addAll((List<? extends MagicSignSerializationProxy>) getConfig()
-					.get("magic-signs"));
+			getLogger().log(Level.INFO,
+					"Found list of signs in main config file. MagicSigns are now saved in signs.db.yml! Copying...");
+			list.addAll((List<? extends MagicSignSerializationProxy>) getConfig().get("magic-signs"));
 			getConfig().set("magic-signs", null);
 		}
 
@@ -249,10 +238,8 @@ public class MagicSigns extends JavaPlugin {
 			try {
 				signList.add(sign.serialize());
 			} catch (Exception e) {
-				getLogger().log(
-						Level.SEVERE,
-						"Error saving Magic Sign of type '"
-								+ sign.getClass().getCanonicalName() + "':", e);
+				getLogger().log(Level.SEVERE,
+						"Error saving Magic Sign of type '" + sign.getClass().getCanonicalName() + "':", e);
 			}
 		}
 		signList.addAll(lazyLoader.getAllQueued());
@@ -267,9 +254,8 @@ public class MagicSigns extends JavaPlugin {
 
 	private boolean setupEconomy() {
 		try {
-			RegisteredServiceProvider<Economy> economyProvider = getServer()
-					.getServicesManager().getRegistration(
-							net.milkbowl.vault.economy.Economy.class);
+			RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(
+					net.milkbowl.vault.economy.Economy.class);
 
 			if (economyProvider == null)
 				return false;
@@ -284,9 +270,8 @@ public class MagicSigns extends JavaPlugin {
 
 	private boolean setupPermissions() {
 		try {
-			RegisteredServiceProvider<Permission> economyProvider = getServer()
-					.getServicesManager().getRegistration(
-							net.milkbowl.vault.permission.Permission.class);
+			RegisteredServiceProvider<Permission> economyProvider = getServer().getServicesManager().getRegistration(
+					net.milkbowl.vault.permission.Permission.class);
 
 			if (economyProvider == null)
 				return false;

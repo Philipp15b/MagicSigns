@@ -29,16 +29,13 @@ public class SignEdit {
 	private final Map<Location, Location> editSigns = new HashMap<Location, Location>();
 	private final PlayerEditMode editMode;
 	private final SignEditListener listener = new SignEditListener(this);
-	private final SignEditCommandExecutor cmdExecutor = new SignEditCommandExecutor(
-			this);
+	private final SignEditCommandExecutor cmdExecutor = new SignEditCommandExecutor(this);
 
 	public SignEdit(MagicSigns plugin) {
 		this.plugin = plugin;
-		plugin.getServer().getPluginManager()
-				.registerEvents(getListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(getListener(), plugin);
 
-		editMode = new PlayerEditMode(new File(plugin.getDataFolder(),
-				"edit-modes.db.yml"));
+		editMode = new PlayerEditMode(new File(plugin.getDataFolder(), "edit-modes.db.yml"));
 	}
 
 	public void save() throws IOException {
@@ -123,8 +120,7 @@ public class SignEdit {
 	 *             If the player has not enough permissions and
 	 *             {@code checkPermissions} is set to true.
 	 */
-	public void setEditMode(Player p, EditMode mode, boolean checkPermissions)
-			throws PermissionException {
+	public void setEditMode(Player p, EditMode mode, boolean checkPermissions) throws PermissionException {
 		if (mode.hasPermission(p)) {
 			editMode.setEditMode(p, mode);
 		} else {

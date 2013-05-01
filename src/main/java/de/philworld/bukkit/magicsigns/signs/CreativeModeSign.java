@@ -15,8 +15,7 @@ import de.philworld.bukkit.magicsigns.util.BlockLocation;
 		usePerm = "magicsigns.creative.use")
 public class CreativeModeSign extends PurchasableMagicSign {
 
-	public CreativeModeSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public CreativeModeSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 	}
 

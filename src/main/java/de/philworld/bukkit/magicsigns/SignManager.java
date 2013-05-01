@@ -36,17 +36,15 @@ public class SignManager {
 	 *             annotation or no {@link MagicSign#takeAction(Sign, String[])}
 	 *             method.
 	 */
-	public void registerSignType(Class<? extends MagicSign> clazz)
-			throws InvocationTargetException {
+	public void registerSignType(Class<? extends MagicSign> clazz) throws InvocationTargetException {
 		SignType signType = new SignType(clazz);
 		try {
 			Configuration config = signType.getConfig();
 			if (config != null)
 				config.load(getConfig());
 		} catch (Exception e) {
-			throw new InvocationTargetException(e,
-					"Error loading config into sign type "
-							+ signType.getCanonicalName() + "!");
+			throw new InvocationTargetException(e, "Error loading config into sign type " + signType.getCanonicalName()
+					+ "!");
 		}
 		signTypes.put(signType.getName().toLowerCase(), signType);
 	}
@@ -83,10 +81,7 @@ public class SignManager {
 				if (c != null)
 					c.load(getConfig());
 			} catch (Exception e) {
-				logger.log(
-						Level.WARNING,
-						"Error loading config into sign type "
-								+ signType.getCanonicalName() + "!", e);
+				logger.log(Level.WARNING, "Error loading config into sign type " + signType.getCanonicalName() + "!", e);
 			}
 		}
 		Map<BlockLocation, MagicSign> oldSigns = signs;
@@ -95,10 +90,7 @@ public class SignManager {
 			try {
 				registerSign(sign.serialize().getMagicSign());
 			} catch (Exception e) {
-				logger.log(
-						Level.SEVERE,
-						"Error loading Magic Sign from config: "
-								+ e.getMessage(), e);
+				logger.log(Level.SEVERE, "Error loading Magic Sign from config: " + e.getMessage(), e);
 			}
 		}
 	}
@@ -114,8 +106,8 @@ public class SignManager {
 				if (config != null)
 					config.save(getConfig());
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, "Error saving config for sign type "
-						+ type.getCanonicalName() + ": " + e.getMessage(), e);
+				logger.log(Level.SEVERE,
+						"Error saving config for sign type " + type.getCanonicalName() + ": " + e.getMessage(), e);
 			}
 		}
 	}

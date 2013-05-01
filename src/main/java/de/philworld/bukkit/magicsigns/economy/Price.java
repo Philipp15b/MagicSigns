@@ -19,14 +19,12 @@ public abstract class Price {
 		if (text.startsWith("i:")) {
 			String[] result = text.split("i:");
 			if (result.length != 2)
-				throw new IllegalArgumentException(
-						"Invalid price format for an item! Format: `i:ITEMNAME`");
+				throw new IllegalArgumentException("Invalid price format for an item! Format: `i:ITEMNAME`");
 			return Price.Item.valueOf(result[1]);
 		} else if (text.startsWith("lvl:")) {
 			String[] result = text.split("lvl:");
 			if (result.length != 2)
-				throw new IllegalArgumentException(
-						"Invalid price format for levels! Format: `lvl:10`");
+				throw new IllegalArgumentException("Invalid price format for levels! Format: `lvl:10`");
 			return Price.Level.valueOf(result[1]);
 		} else { // its just money
 			return Price.VaultEconomy.valueOf(text);
@@ -71,18 +69,15 @@ public abstract class Price {
 	 */
 	public static class VaultEconomy extends Price {
 
-		public static VaultEconomy valueOf(String text)
-				throws IllegalArgumentException {
+		public static VaultEconomy valueOf(String text) throws IllegalArgumentException {
 			double money;
 			try {
 				money = Double.parseDouble(text);
 			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException(
-						"Make sure to insert a real price! Example: 23.5");
+				throw new IllegalArgumentException("Make sure to insert a real price! Example: 23.5");
 			}
 			if (money < 0)
-				throw new IllegalArgumentException(
-						"The price may not be lower than zero!");
+				throw new IllegalArgumentException("The price may not be lower than zero!");
 			return new Price.VaultEconomy(money);
 		}
 
@@ -110,9 +105,7 @@ public abstract class Price {
 		public boolean withdrawPlayer(Player p) {
 			if (MagicSigns.getEconomy() != null) {
 				if (has(p)) {
-					if (MagicSigns.getEconomy()
-							.withdrawPlayer(p.getName(), price)
-							.transactionSuccess()) {
+					if (MagicSigns.getEconomy().withdrawPlayer(p.getName(), price).transactionSuccess()) {
 						return true;
 					}
 				}
@@ -150,8 +143,7 @@ public abstract class Price {
 				try {
 					amount = Integer.parseInt(result[1]);
 				} catch (NumberFormatException e) {
-					throw new IllegalArgumentException(
-							"The amount is not a number! Please insert a valid number.");
+					throw new IllegalArgumentException("The amount is not a number! Please insert a valid number.");
 				}
 			}
 			return new Item(material, itemType.getName(), amount);
@@ -201,13 +193,11 @@ public abstract class Price {
 
 	public static class Level extends Price {
 
-		public static Level valueOf(String text)
-				throws IllegalArgumentException {
+		public static Level valueOf(String text) throws IllegalArgumentException {
 			try {
 				return new Level(Integer.valueOf(text));
 			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException(
-						"Make sure the level is a real number!");
+				throw new IllegalArgumentException("Make sure the level is a real number!");
 			}
 		}
 

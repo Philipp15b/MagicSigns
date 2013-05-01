@@ -43,14 +43,12 @@ public class TeleportSign extends PurchasableMagicSign {
 
 	final RotatedBlockLocation destination;
 
-	public TeleportSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public TeleportSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		String[] coords = lines[1].split(",");
 		if (coords.length != 3)
-			throw new InvalidSignException(
-					"Line 2 must contain coordinates in the format '1,2,3'!");
+			throw new InvalidSignException("Line 2 must contain coordinates in the format '1,2,3'!");
 
 		String world = location.world;
 
@@ -66,8 +64,7 @@ public class TeleportSign extends PurchasableMagicSign {
 		int yaw = 0, pitch = 0;
 		String[] direction = lines[2].split(",");
 		if (direction.length > 2) { // too many arguments
-			throw new InvalidSignException(
-					"Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
+			throw new InvalidSignException("Line 3 must specifiy yaw and pitch in the format 'yaw, pitch'!");
 		}
 		String yawString = direction[0].trim();
 		if (!yawString.isEmpty()) {

@@ -39,8 +39,7 @@ public class PermissionSign extends PurchasableMagicSign {
 
 	private final List<String> permissions;
 
-	public PermissionSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public PermissionSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 		permissions = MacroUtil.format(lines[1] + lines[2], config.getMacros());
 		if (permissions.size() == 0)
@@ -70,8 +69,7 @@ public class PermissionSign extends PurchasableMagicSign {
 		for (String perm : permissions) {
 			MagicSigns.getPermission().playerAdd(event.getPlayer(), perm);
 		}
-		event.getPlayer().sendMessage(
-				ChatColor.GREEN + "You got some permissions!");
+		event.getPlayer().sendMessage(ChatColor.GREEN + "You got some permissions!");
 	}
 
 	protected String getPermissions(String[] lines) {

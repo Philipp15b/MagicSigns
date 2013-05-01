@@ -19,14 +19,12 @@ class SignLazyLoader {
 	private final SignManager manager;
 	private final Map<ChunkLocation, List<MagicSignSerializationProxy>> serialized = new HashMap<ChunkLocation, List<MagicSignSerializationProxy>>();
 
-	public SignLazyLoader(SignManager manager,
-			List<MagicSignSerializationProxy> items) {
+	public SignLazyLoader(SignManager manager, List<MagicSignSerializationProxy> items) {
 		this.manager = manager;
 		for (MagicSignSerializationProxy sign : items) {
 			ChunkLocation pos = sign.getChunkVector();
 			if (!serialized.containsKey(pos))
-				serialized.put(pos,
-						new ArrayList<MagicSignSerializationProxy>());
+				serialized.put(pos, new ArrayList<MagicSignSerializationProxy>());
 			serialized.get(pos).add(sign);
 		}
 	}
@@ -48,8 +46,7 @@ class SignLazyLoader {
 			try {
 				manager.registerSign(proxy.getMagicSign());
 			} catch (Exception e) {
-				MagicSigns.inst().getLogger()
-						.log(Level.SEVERE, "Unable to load MagicSign!", e);
+				MagicSigns.inst().getLogger().log(Level.SEVERE, "Unable to load MagicSign!", e);
 			}
 		}
 		serialized.remove(pos);

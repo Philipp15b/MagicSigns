@@ -48,8 +48,7 @@ public abstract class MagicSign {
 	 * @param lines
 	 * @throws InvalidSignException
 	 */
-	public MagicSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public MagicSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		this.location = location;
 		this.lines = lines;
 	}
@@ -138,8 +137,7 @@ public abstract class MagicSign {
 	 */
 	public boolean isMasked() {
 		Block block = getLocation().getBlockAt();
-		if (block == null || block.getChunk() == null
-				|| !block.getChunk().isLoaded())
+		if (block == null || block.getChunk() == null || !block.getChunk().isLoaded())
 			return true;
 		Sign sign = (Sign) block.getState();
 		String[] currentLines = sign.getLines();

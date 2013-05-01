@@ -15,8 +15,7 @@ import de.philworld.bukkit.magicsigns.util.BlockLocation;
 		usePerm = "magicsigns.survival.use")
 public class SurvivalModeSign extends PurchasableMagicSign {
 
-	public SurvivalModeSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public SurvivalModeSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 	}
 

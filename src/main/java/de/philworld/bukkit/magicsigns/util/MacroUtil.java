@@ -14,22 +14,22 @@ public class MacroUtil {
 	 * Formats the string by splitting it by the {@link MacroUtil#DELIMITER} and
 	 * inserting the given macros. Macros will be formatted recursively; this
 	 * allows macros contain macros.
-	 *
+	 * 
 	 * @param text
 	 *            The text to format
 	 * @param macros
 	 *            The macros
-	 * @return The list of formatted elements; can be empty if there are only spaces.
+	 * @return The list of formatted elements; can be empty if there are only
+	 *         spaces.
 	 */
-	public static List<String> format(String text,
-			Map<String, List<String>> macros) {
+	public static List<String> format(String text, Map<String, List<String>> macros) {
 		String[] elements = text.split(DELIMITER);
 
 		List<String> resultList = new LinkedList<String>();
 
 		for (String element : elements) {
 
-			if(element.replaceAll(" ", "").isEmpty())
+			if (element.replaceAll(" ", "").isEmpty())
 				continue;
 
 			// insert macros

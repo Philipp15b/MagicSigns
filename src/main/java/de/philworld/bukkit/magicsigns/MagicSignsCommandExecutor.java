@@ -30,8 +30,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label,
-			String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		String base = args.length > 0 ? args[0].toLowerCase() : "";
 
 		try {
@@ -51,8 +50,7 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 			}
 
 			else if (base.equals("edit")) {
-				return plugin.getSignEdit().getCmdExecutor()
-						.edit(p, label, args);
+				return plugin.getSignEdit().getCmdExecutor().edit(p, label, args);
 			}
 
 			else if (base.equals("unmask")) {
@@ -96,15 +94,13 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 		p.sendMessage(ChatColor.GOLD + "MagicSigns Sign Info");
 		p.sendMessage(ChatColor.GOLD + "--------------------");
 
-		MagicSign sign = plugin.getSignManager().getSign(
-				new BlockLocation(target.getLocation()));
+		MagicSign sign = plugin.getSignManager().getSign(new BlockLocation(target.getLocation()));
 		if (sign == null) {
 			MSMsg.NOT_MAGIC_SIGN.send(p);
 			return true;
 		}
 
-		p.sendMessage(ChatColor.AQUA + "Type of this Magic Sign: "
-				+ ChatColor.BLUE + sign.getFriendlyName());
+		p.sendMessage(ChatColor.AQUA + "Type of this Magic Sign: " + ChatColor.BLUE + sign.getFriendlyName());
 
 		p.sendMessage(ChatColor.BLUE + " - " + sign.getDescription());
 
@@ -121,28 +117,22 @@ public class MagicSignsCommandExecutor implements CommandExecutor {
 		return true;
 	}
 
-	public boolean reload(CommandSender p, String label)
-			throws PermissionException {
+	public boolean reload(CommandSender p, String label) throws PermissionException {
 		if (!p.hasPermission("magicsigns.reload"))
 			throw new PermissionException();
 		try {
-			plugin.getConfig().load(
-					new File(plugin.getDataFolder(), "config.yml"));
+			plugin.getConfig().load(new File(plugin.getDataFolder(), "config.yml"));
 			plugin.getSignManager().reloadConfig(plugin.getConfig());
 			p.sendMessage(ChatColor.GREEN + "Reloaded the config!");
 			return true;
 		} catch (FileNotFoundException e) {
-			plugin.getLogger().log(Level.SEVERE,
-					"Error reloading the configuration!", e);
+			plugin.getLogger().log(Level.SEVERE, "Error reloading the configuration!", e);
 		} catch (IOException e) {
-			plugin.getLogger().log(Level.SEVERE,
-					"Error reloading the configuration!", e);
+			plugin.getLogger().log(Level.SEVERE, "Error reloading the configuration!", e);
 		} catch (InvalidConfigurationException e) {
-			plugin.getLogger().log(Level.SEVERE,
-					"Error reloading the configuration!", e);
+			plugin.getLogger().log(Level.SEVERE, "Error reloading the configuration!", e);
 		}
-		p.sendMessage(ChatColor.RED
-				+ "Failed to load the config, see the server log!");
+		p.sendMessage(ChatColor.RED + "Failed to load the config, see the server log!");
 		return true;
 	}
 

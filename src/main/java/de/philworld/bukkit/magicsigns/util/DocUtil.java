@@ -13,14 +13,11 @@ public class DocUtil {
 	public static String getSignPermissions() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("# -----------------------\n# MagicSigns Permissions\n# -----------------------\n");
-		for (Class<? extends MagicSign> clazz : MagicSigns
-				.getIncludedSignTypes()) {
+		for (Class<? extends MagicSign> clazz : MagicSigns.getIncludedSignTypes()) {
 			MagicSignInfo annotation = clazz.getAnnotation(MagicSignInfo.class);
 			if (annotation != null) {
-				builder.append("# ").append(annotation.friendlyName())
-						.append("\n");
-				builder.append(" - ").append(annotation.buildPerm())
-						.append("\n");
+				builder.append("# ").append(annotation.friendlyName()).append("\n");
+				builder.append(" - ").append(annotation.buildPerm()).append("\n");
 				builder.append(" - ").append(annotation.usePerm()).append("\n");
 			}
 		}

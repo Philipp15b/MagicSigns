@@ -15,8 +15,7 @@ public class PlayerLock {
 	}
 
 	public static PlayerLock valueOf(Map<String, Object> map, Lock lock) {
-		long nextAllowedTime = Long.parseLong(((String) map
-				.get(ConfigKeys.NEXT_ALLOWED_TIME)).split("LONG-")[1]);
+		long nextAllowedTime = Long.parseLong(((String) map.get(ConfigKeys.NEXT_ALLOWED_TIME)).split("LONG-")[1]);
 		int period = (Integer) map.get(ConfigKeys.REMAINING_USES);
 		return new PlayerLock(nextAllowedTime, period, lock);
 	}
@@ -58,8 +57,7 @@ public class PlayerLock {
 	 * @return If its obsolete, else false.
 	 */
 	public boolean isObsolete(long currentTime) {
-		return nextAllowedTime <= currentTime
-				&& remainingUses == lock.getMaxUses();
+		return nextAllowedTime <= currentTime && remainingUses == lock.getMaxUses();
 	}
 
 	/**
@@ -102,8 +100,7 @@ public class PlayerLock {
 	 */
 	public void touch(long currentTime) throws IllegalStateException {
 		if (!isUsable(currentTime))
-			throw new IllegalStateException(
-					"This lock is currently not usable!");
+			throw new IllegalStateException("This lock is currently not usable!");
 		if (remainingUses != -1)
 			--remainingUses;
 		nextAllowedTime = currentTime + lock.getPeriod();
@@ -120,8 +117,7 @@ public class PlayerLock {
 		if (remainingUses == 0) {
 			msg = "You dont have any remaining uses!";
 		} else if (currentTime < nextAllowedTime) {
-			msg = "You have to wait " + (nextAllowedTime - currentTime)
-					+ " seconds until you can use this again!";
+			msg = "You have to wait " + (nextAllowedTime - currentTime) + " seconds until you can use this again!";
 		} else {
 			msg = "Something weird happened.";
 		}

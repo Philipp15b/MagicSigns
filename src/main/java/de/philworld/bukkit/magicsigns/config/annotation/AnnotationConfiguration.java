@@ -47,13 +47,9 @@ public abstract class AnnotationConfiguration implements Configuration {
 					try {
 						field.set(this, value);
 					} catch (IllegalArgumentException e) {
-						throw new InvalidConfigException("Config value of '"
-								+ section.getCurrentPath() + "." + key
-								+ "' must be assignable from '"
-								+ field.getType().getName()
-								+ "', found instead '"
-								+ value.getClass().getName()
-								+ "'! Using default for this key.");
+						throw new InvalidConfigException("Config value of '" + section.getCurrentPath() + "." + key
+								+ "' must be assignable from '" + field.getType().getName() + "', found instead '"
+								+ value.getClass().getName() + "'! Using default for this key.");
 					}
 				}
 			} catch (IllegalAccessException e) {
@@ -88,8 +84,7 @@ public abstract class AnnotationConfiguration implements Configuration {
 			try {
 				section.set(key, field.get(this));
 			} catch (IllegalAccessException e) {
-				getLogger().log(Level.SEVERE,
-						"Error saving config: " + e.getMessage(), e);
+				getLogger().log(Level.SEVERE, "Error saving config: " + e.getMessage(), e);
 			}
 		}
 	}

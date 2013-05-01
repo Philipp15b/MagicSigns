@@ -49,8 +49,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	}
 
 	public MagicSignSerializationProxy(Map<String, Object> map) {
-		location = new BlockLocation((String) map.get("world"),
-				(Integer) map.get("x"), (Integer) map.get("y"),
+		location = new BlockLocation((String) map.get("world"), (Integer) map.get("x"), (Integer) map.get("y"),
 				(Integer) map.get("z"));
 
 		type = (String) map.get("type");
@@ -59,8 +58,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			@SuppressWarnings("unchecked")
 			List<String> linesList = (List<String>) map.get("lines");
 			Object[] linesAsObj = linesList.toArray();
-			lines = Arrays
-					.copyOf(linesAsObj, linesAsObj.length, String[].class);
+			lines = Arrays.copyOf(linesAsObj, linesAsObj.length, String[].class);
 		} else {
 			lines = null;
 		}
@@ -69,16 +67,13 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 
 		if (map.get("playerLocks") != null) {
 			@SuppressWarnings("unchecked")
-			Map<String, Map<String, Object>> playerLocksObj = (Map<String, Map<String, Object>>) map
-					.get("playerLocks");
+			Map<String, Map<String, Object>> playerLocksObj = (Map<String, Map<String, Object>>) map.get("playerLocks");
 
 			playerLocks = new HashMap<String, PlayerLock>();
-			for (Entry<String, Map<String, Object>> entry : playerLocksObj
-					.entrySet()) {
+			for (Entry<String, Map<String, Object>> entry : playerLocksObj.entrySet()) {
 				String playername = entry.getKey();
 				Map<String, Object> playerLockData = entry.getValue();
-				playerLocks.put(playername,
-						PlayerLock.valueOf(playerLockData, lock));
+				playerLocks.put(playername, PlayerLock.valueOf(playerLockData, lock));
 			}
 		} else {
 			playerLocks = null;
@@ -112,23 +107,20 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	}
 
 	public ChunkLocation getChunkVector() {
-		return ChunkLocation.fromLocation(location.world, location.x,
-				location.y, location.z);
+		return ChunkLocation.fromLocation(location.world, location.x, location.y, location.z);
 	}
 
 	/**
 	 * Get the Magic Sign behind this proxy. The sign must be already loaded!
 	 */
-	public MagicSign getMagicSign() throws InvalidConfigException,
-			InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, SecurityException, ClassNotFoundException {
+	public MagicSign getMagicSign() throws InvalidConfigException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException,
+			ClassNotFoundException {
 		Location loc = location.toLocation();
 		Block block = loc.getBlock();
 
 		if (!block.getChunk().isLoaded())
-			throw new IllegalStateException(
-					"Attempted to create Magic Sign with unloaded chunk!");
+			throw new IllegalStateException("Attempted to create Magic Sign with unloaded chunk!");
 
 		if (block.getState() instanceof Sign) {
 
@@ -141,8 +133,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 			}
 
 			@SuppressWarnings("unchecked")
-			SignType signType = new SignType(
-					(Class<? extends MagicSign>) Class.forName(type));
+			SignType signType = new SignType((Class<? extends MagicSign>) Class.forName(type));
 			MagicSign magicSign = signType.newInstance(location, lines);
 
 			if (lock != null)
@@ -153,11 +144,8 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 
 			return magicSign;
 		}
-		throw new InvalidConfigException("No sign found at coordinates: X("
-				+ block.getLocation().getBlockX() + ") Y("
-				+ block.getLocation().getBlockY() + ") Z("
-				+ block.getLocation().getBlockZ() + ") in world '"
-				+ block.getLocation().getWorld().getName()
-				+ "' ! Ignoring the sign!");
+		throw new InvalidConfigException("No sign found at coordinates: X(" + block.getLocation().getBlockX() + ") Y("
+				+ block.getLocation().getBlockY() + ") Z(" + block.getLocation().getBlockZ() + ") in world '"
+				+ block.getLocation().getWorld().getName() + "' ! Ignoring the sign!");
 	}
 }

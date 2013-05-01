@@ -22,16 +22,14 @@ public class LevelSign extends PurchasableMagicSign {
 
 	private int additionalLevels = 1;
 
-	public LevelSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public LevelSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 
 		if (!lines[1].isEmpty()) {
 			try {
 				additionalLevels = new Integer(lines[1]);
 			} catch (NumberFormatException e) {
-				throw new InvalidSignException(
-						"The level on line 2 must be a number or empty!");
+				throw new InvalidSignException("The level on line 2 must be a number or empty!");
 			}
 		}
 	}

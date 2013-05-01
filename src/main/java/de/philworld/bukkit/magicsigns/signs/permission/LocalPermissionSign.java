@@ -20,8 +20,7 @@ public class LocalPermissionSign extends PermissionSign {
 		return null; // we reuse PermissionSign's config
 	}
 
-	public LocalPermissionSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public LocalPermissionSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 	}
 

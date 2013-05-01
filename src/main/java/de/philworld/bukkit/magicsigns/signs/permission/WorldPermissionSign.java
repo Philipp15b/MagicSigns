@@ -23,17 +23,14 @@ public class WorldPermissionSign extends PermissionSign {
 
 	private final String world;
 
-	public WorldPermissionSign(BlockLocation location, String[] lines)
-			throws InvalidSignException {
+	public WorldPermissionSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
 		world = lines[2].trim();
 		if (!world.isEmpty()) {
 			if (!MultiWorldUtil.exists(world))
-				throw new InvalidSignException("Could not find world '" + world
-						+ "'!");
+				throw new InvalidSignException("Could not find world '" + world + "'!");
 		} else {
-			throw new InvalidSignException(
-					"The third line must contain a world!");
+			throw new InvalidSignException("The third line must contain a world!");
 		}
 	}
 

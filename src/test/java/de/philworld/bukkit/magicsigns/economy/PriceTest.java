@@ -27,8 +27,7 @@ public class PriceTest {
 			Price.valueOf("hello!!");
 			fail("Invalid price should throw an exception!");
 		} catch (IllegalArgumentException e) {
-			assertEquals("Make sure to insert a real price! Example: 23.5",
-					e.getMessage());
+			assertEquals("Make sure to insert a real price! Example: 23.5", e.getMessage());
 		}
 	}
 
@@ -64,9 +63,7 @@ public class PriceTest {
 			Price.valueOf("i:cobblestone:abc");
 			fail("Invalid item price should throw exception!");
 		} catch (IllegalArgumentException e) {
-			assertEquals(
-					"The amount is not a number! Please insert a valid number.",
-					e.getMessage());
+			assertEquals("The amount is not a number! Please insert a valid number.", e.getMessage());
 		}
 
 		try {
@@ -96,8 +93,7 @@ public class PriceTest {
 			Price.valueOf("lvl:0abc");
 			fail("Invalid price should  throw an exception!");
 		} catch (IllegalArgumentException e) {
-			assertEquals("Make sure the level is a real number!",
-					e.getMessage());
+			assertEquals("Make sure the level is a real number!", e.getMessage());
 		}
 	}
 

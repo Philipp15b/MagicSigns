@@ -17,8 +17,7 @@ public class ColoredSignsTest {
 		lines[index] = in;
 
 		Player mockPlayer = mock(Player.class);
-		when(mockPlayer.hasPermission(ColoredSigns.COLOR_SIGNS_PERMISSION))
-				.thenReturn(true);
+		when(mockPlayer.hasPermission(ColoredSigns.COLOR_SIGNS_PERMISSION)).thenReturn(true);
 
 		SignChangeEvent event = new SignChangeEvent(null, mockPlayer, lines);
 		listener.onSignChange(event);

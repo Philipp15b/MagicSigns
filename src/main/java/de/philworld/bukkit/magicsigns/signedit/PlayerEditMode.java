@@ -21,12 +21,10 @@ public class PlayerEditMode {
 		this.config = YamlConfiguration.loadConfiguration(file);
 
 		if (config.contains("edit-modes")) {
-			Map<String, Object> values = config.getConfigurationSection(
-					"edit-modes").getValues(false);
+			Map<String, Object> values = config.getConfigurationSection("edit-modes").getValues(false);
 			// convert Map<String, Object> to Map<String, EditMode>
 			for (Entry<String, Object> entry : values.entrySet()) {
-				editModes.put(entry.getKey(),
-						EditMode.valueOf((String) entry.getValue()));
+				editModes.put(entry.getKey(), EditMode.valueOf((String) entry.getValue()));
 			}
 		}
 	}
@@ -55,8 +53,7 @@ public class PlayerEditMode {
 
 	public void save() throws IOException {
 		// convert Map<String, EditMode> to Map<String, String>
-		Map<String, String> editModesAsString = new HashMap<String, String>(
-				editModes.size());
+		Map<String, String> editModesAsString = new HashMap<String, String>(editModes.size());
 		for (Entry<String, EditMode> entry : editModes.entrySet()) {
 			editModesAsString.put(entry.getKey(), entry.getValue().toString());
 		}

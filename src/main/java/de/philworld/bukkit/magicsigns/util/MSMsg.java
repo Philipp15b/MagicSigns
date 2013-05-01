@@ -7,8 +7,7 @@ public enum MSMsg {
 
 	NO_PERMISSION(ChatColor.RED + "You don't have permission to do this."),
 	SIGN_CREATED(ChatColor.GREEN + "Your new Magic Sign has been created!"),
-	HEAL_SUCCESS(ChatColor.GREEN
-			+ "You have been healed. Do you already feel refreshed?"),
+	HEAL_SUCCESS(ChatColor.GREEN + "You have been healed. Do you already feel refreshed?"),
 	ROCKETED(ChatColor.GREEN + "Whoosh!"),
 	FEED_SUCCESS(ChatColor.GREEN + "Nom nom nom nom..."),
 	LEVEL_ADDED(ChatColor.GREEN + "You have been taught % levels."),
