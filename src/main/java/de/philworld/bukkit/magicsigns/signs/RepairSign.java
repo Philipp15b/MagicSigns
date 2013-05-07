@@ -49,6 +49,7 @@ public class RepairSign extends PurchasableMagicSign {
 	public void onRightClick(PlayerInteractEvent event) {
 		if (!all) {
 			ItemUtil.repair(event.getPlayer().getItemInHand());
+			event.getPlayer().sendMessage(ChatColor.GREEN + "Repaired your item!");
 		} else {
 			int i = 0;
 			for (ItemStack is : event.getPlayer().getInventory()) {
