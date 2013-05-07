@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
+import de.philworld.bukkit.magicsigns.MSMsg;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.config.Configuration;
@@ -14,7 +15,6 @@ import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.config.annotation.Setting;
 import de.philworld.bukkit.magicsigns.config.annotation.SettingBase;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that can modify player's velocity.

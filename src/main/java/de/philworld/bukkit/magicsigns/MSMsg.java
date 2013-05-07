@@ -1,4 +1,4 @@
-package de.philworld.bukkit.magicsigns.util;
+package de.philworld.bukkit.magicsigns;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -18,7 +18,6 @@ import de.philworld.bukkit.magicsigns.locks.MagicSignsLockCommandExecutor;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 public class MagicSignsCommandExecutor implements CommandExecutor {
 

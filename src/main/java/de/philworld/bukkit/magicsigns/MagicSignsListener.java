@@ -19,7 +19,6 @@ import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MSMsg;
 import de.philworld.bukkit.magicsigns.util.MaterialUtil;
 
 public class MagicSignsListener implements Listener {

@@ -4,10 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import de.philworld.bukkit.magicsigns.MSMsg;
 import de.philworld.bukkit.magicsigns.MagicSigns;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MSMsg;
 import de.philworld.bukkit.magicsigns.util.MaterialUtil;
 
 public class MagicSignsLockCommandExecutor {

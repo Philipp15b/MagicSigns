@@ -7,9 +7,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
+import de.philworld.bukkit.magicsigns.MSMsg;
 import de.philworld.bukkit.magicsigns.MagicSignInfo;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MSMsg;
 
 /**
  * A sign that clears player's inventory.
