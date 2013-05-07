@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import de.philworld.bukkit.magicsigns.config.Configuration;
@@ -33,8 +32,8 @@ public class SignManager {
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the sign type doesnt have a {@link MagicSignInfo}
-	 *             annotation or no {@link MagicSign#takeAction(Sign, String[])}
-	 *             method.
+	 *             annotation or not the same constructor as
+	 *             {@link MagicSign#MagicSign(BlockLocation, String[])}.
 	 */
 	public void registerSignType(Class<? extends MagicSign> clazz) throws InvocationTargetException {
 		SignType signType = new SignType(clazz);
