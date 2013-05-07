@@ -12,4 +12,8 @@ public class MaterialUtil {
 		return material == Material.SIGN || material == Material.SIGN_POST || material == Material.WALL_SIGN;
 	}
 
+	public static boolean isRepairable(Material material) {
+		return material.getMaxDurability() != 0;
+	}
+
 }

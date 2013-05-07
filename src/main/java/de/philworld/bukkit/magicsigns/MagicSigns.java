@@ -8,9 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -32,6 +29,7 @@ import de.philworld.bukkit.magicsigns.signs.HealSign;
 import de.philworld.bukkit.magicsigns.signs.HealthSign;
 import de.philworld.bukkit.magicsigns.signs.LevelSign;
 import de.philworld.bukkit.magicsigns.signs.MagicSign;
+import de.philworld.bukkit.magicsigns.signs.RepairSign;
 import de.philworld.bukkit.magicsigns.signs.RocketSign;
 import de.philworld.bukkit.magicsigns.signs.SpeedSign;
 import de.philworld.bukkit.magicsigns.signs.SurvivalModeSign;
@@ -41,12 +39,16 @@ import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
 import de.philworld.bukkit.magicsigns.signs.permission.LocalPermissionSign;
 import de.philworld.bukkit.magicsigns.signs.permission.PermissionSign;
 import de.philworld.bukkit.magicsigns.signs.permission.WorldPermissionSign;
+import de.philworld.bukkit.magicsigns.util.SpoutWrapper;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 public class MagicSigns extends JavaPlugin {
 
 	private static Economy economy = null;
 	private static MagicSigns instance;
 	private static Permission permission = null;
+	private static SpoutWrapper spout = null;
 	private static List<Class<? extends MagicSign>> includedSignTypes = new ArrayList<Class<? extends MagicSign>>();
 
 	static {
@@ -62,6 +64,7 @@ public class MagicSigns extends JavaPlugin {
 		includedSignTypes.add(CreativeModeSign.class);
 		includedSignTypes.add(SurvivalModeSign.class);
 		includedSignTypes.add(FeedSign.class);
+		includedSignTypes.add(RepairSign.class);
 		includedSignTypes.add(PermissionSign.class);
 		includedSignTypes.add(LocalPermissionSign.class);
 		includedSignTypes.add(WorldPermissionSign.class);
@@ -79,6 +82,10 @@ public class MagicSigns extends JavaPlugin {
 	 */
 	public static Permission getPermission() {
 		return permission;
+	}
+
+	public static SpoutWrapper getSpoutWrapper() {
+		return spout;
 	}
 
 	public static List<Class<? extends MagicSign>> getIncludedSignTypes() {
@@ -145,6 +152,8 @@ public class MagicSigns extends JavaPlugin {
 		signManager = new SignManager(this.getLogger(), getConfig());
 		signEdit = new SignEdit(this);
 		coloredSigns = new ColoredSigns(this);
+
+		spout = SpoutWrapper.get(getServer().getPluginManager());
 
 		// register all sign types
 		for (Class<? extends MagicSign> signType : includedSignTypes) {
