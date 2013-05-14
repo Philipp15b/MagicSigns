@@ -155,6 +155,19 @@ public class MagicSigns extends JavaPlugin {
 
 		spout = SpoutWrapper.get(getServer().getPluginManager());
 
+		if (setupEconomy()) {
+			getLogger().log(Level.INFO, "Using Vault for economy.");
+		} else {
+			getLogger().log(Level.INFO, "Vault was not found, all signs will be free!");
+		}
+
+		if (setupPermissions()) {
+			getLogger().log(Level.INFO, "Using Vault for permissions.");
+		} else {
+			getLogger().log(Level.INFO,
+					"Vault was not found, permission signs will not work (Permissions in general will work though!)");
+		}
+
 		// register all sign types
 		for (Class<? extends MagicSign> signType : includedSignTypes) {
 			try {
@@ -168,19 +181,6 @@ public class MagicSigns extends JavaPlugin {
 
 		// and then load them from the config
 		loadSigns();
-
-		if (setupEconomy()) {
-			getLogger().log(Level.INFO, "Using Vault for economy.");
-		} else {
-			getLogger().log(Level.INFO, "Vault was not found, all signs will be free!");
-		}
-
-		if (setupPermissions()) {
-			getLogger().log(Level.INFO, "Using Vault for permissions.");
-		} else {
-			getLogger().log(Level.INFO,
-					"Vault was not found, permission signs will not work (Permissions in general will work though!)");
-		}
 
 		getCommand("ms").setExecutor(new MagicSignsCommandExecutor(this));
 
