@@ -3,6 +3,7 @@ package de.philworld.bukkit.magicsigns.economy;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.sk89q.worldedit.blocks.ItemType;
 
@@ -132,35 +133,56 @@ public abstract class Price {
 
 		public static Item valueOf(String text) throws IllegalArgumentException {
 			String[] result = text.split(":");
+
 			ItemType itemType = ItemType.lookup(result[0]);
 			if (itemType == null)
 				throw new IllegalArgumentException("Could not find material!");
 			Material material = Material.getMaterial(itemType.getID());
-			int amount;
-			if (result.length == 1) {
-				amount = 1;
-			} else {
+
+			int data = 0;
+			if (result.length == 3) {
 				try {
-					amount = Integer.parseInt(result[1]);
+					data = Integer.parseInt(result[1]);
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException("Data value must be a number!");
+				}
+				if (data > 15 || data < 0) {
+					throw new IllegalArgumentException("Data values must be between 0 and 15!");
+				}
+			}
+
+			int amount = 1;
+			if (result.length > 1) {
+				try {
+					amount = Integer.parseInt(result[(result.length == 3) ? 2 : 1]);
 				} catch (NumberFormatException e) {
 					throw new IllegalArgumentException("The amount is not a number! Please insert a valid number.");
 				}
 			}
-			return new Item(material, itemType.getName(), amount);
+
+			return new Item(material, itemType.getName(), (byte) data, amount);
 		}
 
 		private final String materialName;
 		private final Material material;
+		private final byte data;
 		private final int amount;
 
-		public Item(Material material, String materialName, int amount) {
+		public Item(Material material, String materialName, byte data, int amount) {
 			this.material = material;
 			this.materialName = materialName;
+			this.data = data;
 			this.amount = amount;
 		}
 
+		public Item(Material material, String materialName, int amount) {
+			this(material, materialName, (byte) -1, amount);
+		}
+
 		public ItemStack getItems() {
-			return new ItemStack(material, amount);
+			ItemStack is = new ItemStack(material, amount);
+			is.setData(new MaterialData(material, data));
+			return is;
 		}
 
 		@Override
@@ -177,7 +199,7 @@ public abstract class Price {
 		@Override
 		public boolean withdrawPlayer(Player p) {
 			if (has(p)) {
-				InventoryUtil.removeItems(p.getInventory(), material, amount);
+				InventoryUtil.removeItems(p.getInventory(), material, data, amount);
 				p.updateInventory();
 				return true;
 			}

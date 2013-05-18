@@ -13,10 +13,10 @@ public class InventoryUtil {
 	 * Thanks to bergerkiller:
 	 * {@code http://forums.bukkit.org/threads/remove-items-from-an-inventory.27853/}
 	 */
-	public static void removeItems(Inventory inv, Material type, int amount) {
+	public static void removeItems(Inventory inv, Material type, byte data, int amount) {
 		for (int i = 0; i < inv.getContents().length; i++) {
 			ItemStack is = inv.getItem(i);
-			if (is != null && is.getType() == type) {
+			if (is != null && is.getType() == type && is.getData().getData() == data) {
 				int newamount = is.getAmount() - amount;
 				if (newamount > 0) {
 					is.setAmount(newamount);

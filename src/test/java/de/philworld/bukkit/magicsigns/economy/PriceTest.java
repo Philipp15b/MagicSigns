@@ -1,6 +1,9 @@
 package de.philworld.bukkit.magicsigns.economy;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -55,6 +58,12 @@ public class PriceTest {
 		stack = iprice.getItems();
 		assertEquals(Material.MILK_BUCKET, stack.getType());
 		assertEquals(0, stack.getAmount());
+
+		// price with data value
+		iprice = (Price.Item) Price.valueOf("i:log:3:5");
+		assertEquals(Material.LOG, iprice.getItems().getType());
+		assertEquals(5, iprice.getItems().getAmount());
+		assertEquals(3, iprice.getItems().getData().getData());
 	}
 
 	@Test
