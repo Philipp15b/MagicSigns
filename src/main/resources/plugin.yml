@@ -5,3 +5,4 @@ softdepend: [Vault]
 commands:
   ms:
     description: Base MagicSigns command.
+    aliases: [msigns, magicsigns]
