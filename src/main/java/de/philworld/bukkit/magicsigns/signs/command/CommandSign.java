@@ -1,5 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs.command;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +14,6 @@ import de.philworld.bukkit.magicsigns.config.Configuration;
 import de.philworld.bukkit.magicsigns.config.MacroConfiguration;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MacroUtil;
 
 /**
  * A sign that executes commands on the sign in the player's context.
@@ -37,33 +38,17 @@ public class CommandSign extends PurchasableMagicSign {
 		}
 	}
 
-	protected static LocalConfiguration config = new LocalConfiguration();
+	private static LocalConfiguration config = new LocalConfiguration();
 
 	public static Configuration getConfig() {
 		return config;
 	}
 
-	private static List<String> removeSlashes(List<String> list) throws IllegalArgumentException {
-		List<String> result = new LinkedList<String>();
-		for (String cmd : list) {
-			if (cmd.length() > 1 && cmd.charAt(0) == '/') {
-				result.add(cmd.substring(1));
-			} else {
-				throw new IllegalArgumentException("All commands must begin with a slash!");
-			}
-		}
-		return result;
-	}
-
-	protected LinkedList<String> commands = new LinkedList<String>();
+	protected List<String> commands = new LinkedList<String>();
 
 	public CommandSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
-		try {
-			commands.addAll(removeSlashes(MacroUtil.format(lines[1] + lines[2], config.getMacros())));
-		} catch (IllegalArgumentException e) {
-			throw new InvalidSignException(e.getMessage());
-		}
+		commands = parseCommands(lines[1] + lines[2]);
 	}
 
 	@Override
@@ -76,6 +61,34 @@ public class CommandSign extends PurchasableMagicSign {
 
 	protected String formatCommand(String cmd, PlayerInteractEvent event) {
 		return cmd.replace("%p", event.getPlayer().getName());
+	}
+
+	private static List<String> parseCommands(String input) throws InvalidSignException {
+		return parseCommands(Arrays.asList(input.split(" && ")));
+	}
+
+	private static List<String> parseCommands(List<String> input) throws InvalidSignException {
+		List<String> commands = new ArrayList<String>(2);
+		for (String r : input) {
+			r = r.trim();
+			char first = r.charAt(0);
+			if (first == '/') {
+				commands.add(r.substring(1));
+			} else if (first == '$') {
+				int macroEnd = r.lastIndexOf('$');
+				if (macroEnd == -1 || macroEnd == 0)
+					throw new InvalidSignException("Expected closing '$' after macro beginning with '$'!");
+				String macroName = r.substring(1, macroEnd);
+				List<String> macroValue = config.getMacros().get(macroName);
+				if (macroValue == null)
+					throw new InvalidSignException("Could not find command macro '" + macroName + "'!");
+				commands.addAll(parseCommands(macroValue));
+			} else {
+				throw new InvalidSignException(
+						"Expected command (beginning with a '/') or a macro (enclosed within '$')!");
+			}
+		}
+		return commands;
 	}
 
 }

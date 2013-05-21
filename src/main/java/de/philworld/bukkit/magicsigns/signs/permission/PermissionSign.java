@@ -1,5 +1,7 @@
 package de.philworld.bukkit.magicsigns.signs.permission;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -15,7 +17,6 @@ import de.philworld.bukkit.magicsigns.config.MacroConfiguration;
 import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.signs.PurchasableMagicSign;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
-import de.philworld.bukkit.magicsigns.util.MacroUtil;
 
 @MagicSignInfo(
 		name = "Permission",
@@ -31,7 +32,7 @@ public class PermissionSign extends PurchasableMagicSign {
 		}
 	}
 
-	protected static LocalConfiguration config = new LocalConfiguration();
+	private static LocalConfiguration config = new LocalConfiguration();
 
 	public static Configuration getConfig() {
 		return config;
@@ -41,7 +42,7 @@ public class PermissionSign extends PurchasableMagicSign {
 
 	public PermissionSign(BlockLocation location, String[] lines) throws InvalidSignException {
 		super(location, lines);
-		permissions = MacroUtil.format(lines[1] + lines[2], config.getMacros());
+		permissions = parsePermissions(lines[1] + lines[2]);
 		if (permissions.size() == 0)
 			throw new InvalidSignException("No permissions found!");
 	}
@@ -82,5 +83,29 @@ public class PermissionSign extends PurchasableMagicSign {
 
 	protected void addPermission(Player p, String perm) {
 		MagicSigns.getPermission().playerAdd((World) null, p.getName(), perm);
+	}
+
+	private static List<String> parsePermissions(String input) throws InvalidSignException {
+		return parsePermissions(Arrays.asList(input.split(" && ")));
+	}
+
+	private static List<String> parsePermissions(List<String> input) throws InvalidSignException {
+		List<String> commands = new ArrayList<String>(2);
+		for (String r : input) {
+			r = r.trim();
+			if (r.charAt(0) == '$') {
+				int macroEnd = r.lastIndexOf('$');
+				if (macroEnd == -1 || macroEnd == 0)
+					throw new InvalidSignException("Expected closing '$' after macro beginning with '$'!");
+				String macroName = r.substring(1, macroEnd);
+				List<String> macroValue = config.getMacros().get(macroName);
+				if (macroValue == null)
+					throw new InvalidSignException("Could not find permission macro '" + macroName + "'!");
+				commands.addAll(parsePermissions(macroValue));
+			} else {
+				commands.add(r);
+			}
+		}
+		return commands;
 	}
 }
