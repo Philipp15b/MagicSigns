@@ -1,6 +1,5 @@
 package de.philworld.bukkit.magicsigns.config;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -113,9 +112,7 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 	/**
 	 * Get the Magic Sign behind this proxy. The sign must be already loaded!
 	 */
-	public MagicSign getMagicSign() throws InvalidConfigException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException,
-			ClassNotFoundException {
+	public MagicSign getMagicSign() throws InvalidConfigException, IllegalArgumentException, SecurityException {
 		Location loc = location.toLocation();
 		Block block = loc.getBlock();
 
@@ -132,9 +129,17 @@ public class MagicSignSerializationProxy implements ConfigurationSerializable {
 				lines = this.lines;
 			}
 
-			@SuppressWarnings("unchecked")
-			SignType signType = new SignType((Class<? extends MagicSign>) Class.forName(type));
-			MagicSign magicSign = signType.newInstance(location, lines);
+			MagicSign magicSign;
+			try {
+				@SuppressWarnings("unchecked")
+				SignType signType = new SignType((Class<? extends MagicSign>) Class.forName(type));
+				magicSign = signType.newInstance(location, lines);
+			} catch (Exception e) {
+				throw new InvalidConfigException("Could not load sign from config at X("
+						+ block.getLocation().getBlockX() + ") Y(" + block.getLocation().getBlockY() + ") Z("
+						+ block.getLocation().getBlockZ() + ") in world '" + block.getLocation().getWorld().getName()
+						+ "' ! Ignoring the sign!", e);
+			}
 
 			if (lock != null)
 				magicSign.setLock(lock, false);
