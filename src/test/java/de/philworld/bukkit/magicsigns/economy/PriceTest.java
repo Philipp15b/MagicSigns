@@ -81,6 +81,27 @@ public class PriceTest {
 		} catch (IllegalArgumentException e) {
 			assertEquals("Could not find material!", e.getMessage());
 		}
+
+		try {
+			Price.valueOf("i:log:16:64");
+			fail("Invalid item price should throw exception!");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Data values must be between 0 and 15!", e.getMessage());
+		}
+
+		try {
+			Price.valueOf("i:log:-1:64");
+			fail("Invalid item price should throw exception!");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Data values must be between 0 and 15!", e.getMessage());
+		}
+
+		try {
+			Price.valueOf("i:log:abc:64");
+			fail("Invalid item price should throw exception!");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Data value must be a number!", e.getMessage());
+		}
 	}
 
 	@Test
