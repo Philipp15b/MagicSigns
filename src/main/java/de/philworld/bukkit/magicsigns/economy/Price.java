@@ -94,7 +94,7 @@ public abstract class Price {
 
 		@Override
 		public boolean isFree() {
-			return price == 0;
+			return MagicSigns.getEconomy() == null || price == 0;
 		}
 
 		@Override
