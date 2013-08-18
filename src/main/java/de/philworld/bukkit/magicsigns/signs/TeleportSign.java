@@ -1,9 +1,10 @@
 package de.philworld.bukkit.magicsigns.signs;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import com.google.common.collect.ImmutableMap;
 
 import de.philworld.bukkit.magicsigns.InvalidSignException;
 import de.philworld.bukkit.magicsigns.MSMsg;
@@ -27,19 +28,11 @@ import de.philworld.bukkit.magicsigns.util.RotatedBlockLocation;
 		usePerm = "magicsigns.teleport.use")
 public class TeleportSign extends PurchasableMagicSign {
 
-	@SuppressWarnings("serial") private static final Map<String, Integer> YAW_SHORTHANDS = new HashMap<String, Integer>(
-			8) {
-		{
-			put("N", 180);
-			put("NE", 225);
-			put("E", 270);
-			put("SE", 315);
-			put("S", 0);
-			put("SW", 45);
-			put("W", 90);
-			put("NW", 135);
-		}
-	};
+	private static final Map<String, Integer> YAW_SHORTHANDS;
+	static {
+		YAW_SHORTHANDS = new ImmutableMap.Builder<String, Integer>().put("N", 180).put("NE", 225).put("E", 270)
+				.put("SE", 315).put("S", 0).put("SW", 45).put("W", 90).put("NW", 135).build();
+	}
 
 	final RotatedBlockLocation destination;
 
