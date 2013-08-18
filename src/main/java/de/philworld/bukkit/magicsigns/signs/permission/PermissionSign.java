@@ -48,25 +48,22 @@ public class PermissionSign extends PurchasableMagicSign {
 	}
 
 	@Override
-	public boolean withdrawPlayer(Player p) throws PermissionException {
+	public void beforeRightClick(PlayerInteractEvent event) throws PermissionException {
 		if (MagicSigns.getPermission() == null)
 			throw new PermissionException("Permission support is disabled!");
 		boolean hasAll = true;
 		for (String perm : permissions) {
-			if (!MagicSigns.getPermission().has(p, perm)) {
+			if (!MagicSigns.getPermission().has(event.getPlayer(), perm)) {
 				hasAll = false;
 				break;
 			}
 		}
 		if (hasAll)
 			throw new PermissionException("You already have these permissions!");
-		return super.withdrawPlayer(p);
 	}
 
 	@Override
 	public void onRightClick(PlayerInteractEvent event) {
-		// Permission support is already checked in withdrawPlayer() which is
-		// always called before this.
 		for (String perm : permissions) {
 			MagicSigns.getPermission().playerAdd(event.getPlayer(), perm);
 		}

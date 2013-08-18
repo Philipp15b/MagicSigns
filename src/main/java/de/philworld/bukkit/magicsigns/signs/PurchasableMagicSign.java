@@ -33,11 +33,6 @@ public abstract class PurchasableMagicSign extends MagicSign {
 		}
 	}
 
-	/**
-	 * Gets the price for this sign.
-	 * 
-	 * @return The price.
-	 */
 	public Price getPrice() {
 		return price;
 	}
@@ -55,6 +50,7 @@ public abstract class PurchasableMagicSign extends MagicSign {
 	 *            The player to withdraw the money from.
 	 * @return True if the transaction suceeded or if no economy plugin was
 	 *         found, else false.
+	 * @throws PermissionException
 	 */
 	public boolean withdrawPlayer(Player p) throws PermissionException {
 		if (price == null)

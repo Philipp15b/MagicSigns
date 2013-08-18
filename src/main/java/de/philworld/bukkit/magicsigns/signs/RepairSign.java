@@ -1,7 +1,6 @@
 package de.philworld.bukkit.magicsigns.signs;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,22 +26,21 @@ public class RepairSign extends PurchasableMagicSign {
 	}
 
 	@Override
-	public boolean withdrawPlayer(Player p) throws PermissionException {
+	public void beforeRightClick(PlayerInteractEvent event) throws PermissionException {
 		if (!all) {
-			ItemStack holding = p.getItemInHand();
+			ItemStack holding = event.getPlayer().getItemInHand();
 			if (holding == null || !ItemUtil.isRepairable(holding)) {
 				throw new PermissionException(ChatColor.RED + "Please hold a repairable item in your hand to repair!");
 			}
 		} else {
 			boolean found = false;
-			for (ItemStack is : p.getInventory()) {
+			for (ItemStack is : event.getPlayer().getInventory()) {
 				if (found = ItemUtil.isRepairable(is))
 					break;
 			}
 			if (!found)
 				throw new PermissionException(ChatColor.RED + "You don't have any repairable items!");
 		}
-		return super.withdrawPlayer(p);
 	}
 
 	@Override

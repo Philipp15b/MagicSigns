@@ -18,6 +18,7 @@ import de.philworld.bukkit.magicsigns.config.MagicSignSerializationProxy;
 import de.philworld.bukkit.magicsigns.config.annotation.AnnotationConfiguration;
 import de.philworld.bukkit.magicsigns.locks.Lock;
 import de.philworld.bukkit.magicsigns.locks.PlayerLock;
+import de.philworld.bukkit.magicsigns.permissions.PermissionException;
 import de.philworld.bukkit.magicsigns.util.BlockLocation;
 
 /**
@@ -145,11 +146,19 @@ public abstract class MagicSign {
 	}
 
 	/**
+	 * Called before every call to
+	 * {@link PurchasableMagicSign#withdrawPlayer(Player)} and
+	 * {@link #onRightClick(PlayerInteractEvent)} so that transactions may be
+	 * prevented by throwing a {@link PermissionException}.
+	 */
+	@SuppressWarnings("unused")
+	public void beforeRightClick(PlayerInteractEvent event) throws PermissionException {
+	}
+
+	/**
 	 * Called on every right click on the sign.
 	 */
-	public void onRightClick(PlayerInteractEvent event) {
-		return;
-	}
+	public abstract void onRightClick(PlayerInteractEvent event);
 
 	/**
 	 * Removes all registered player locks.

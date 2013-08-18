@@ -141,6 +141,8 @@ public class MagicSignsListener implements Listener {
 				}
 			}
 
+			sign.beforeRightClick(event);
+
 			if (sign instanceof PurchasableMagicSign) {
 				PurchasableMagicSign pSign = (PurchasableMagicSign) sign;
 				if (!pSign.isFree()) {
