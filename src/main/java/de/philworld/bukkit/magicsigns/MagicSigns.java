@@ -36,6 +36,8 @@ import de.philworld.bukkit.magicsigns.signs.SurvivalModeSign;
 import de.philworld.bukkit.magicsigns.signs.TeleportSign;
 import de.philworld.bukkit.magicsigns.signs.command.CommandSign;
 import de.philworld.bukkit.magicsigns.signs.command.ConsoleCommandSign;
+import de.philworld.bukkit.magicsigns.signs.enchant.EnchantSign;
+import de.philworld.bukkit.magicsigns.signs.enchant.UnsafeEnchantSign;
 import de.philworld.bukkit.magicsigns.signs.permission.LocalPermissionSign;
 import de.philworld.bukkit.magicsigns.signs.permission.PermissionSign;
 import de.philworld.bukkit.magicsigns.signs.permission.WorldPermissionSign;
@@ -54,6 +56,8 @@ public class MagicSigns extends JavaPlugin {
 	static {
 		includedSignTypes.add(CommandSign.class);
 		includedSignTypes.add(ConsoleCommandSign.class);
+		includedSignTypes.add(EnchantSign.class);
+		includedSignTypes.add(UnsafeEnchantSign.class);
 		includedSignTypes.add(SpeedSign.class);
 		includedSignTypes.add(HealSign.class);
 		includedSignTypes.add(HealthSign.class);
