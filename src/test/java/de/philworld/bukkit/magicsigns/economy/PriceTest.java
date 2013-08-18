@@ -4,12 +4,29 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
+
+import de.philworld.bukkit.magicsigns.MagicSigns;
+import net.milkbowl.vault.economy.Economy;
 
 public class PriceTest {
+
+	@BeforeClass
+	public static void beforeClass() {
+		Whitebox.setInternalState(MagicSigns.class, Economy.class, mock(Economy.class));
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Whitebox.setInternalState(MagicSigns.class, Economy.class, (Object) null);
+	}
 
 	@Test
 	public void testVaultEconomyPrice() {
