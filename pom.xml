@@ -16,6 +16,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<bukkit.version>1.6.2-R0.1</bukkit.version>
 	</properties>
 
 	<repositories>
@@ -53,17 +54,25 @@
 			<artifactId>metrics-lite</artifactId>
 			<version>R6</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldedit</artifactId>
 			<version>5.5.5</version>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.4.7-R1.0</version>
+			<version>${bukkit.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>10.0.1</version>
+			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 
