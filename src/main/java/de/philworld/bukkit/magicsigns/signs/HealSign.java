@@ -39,7 +39,7 @@ public class HealSign extends PurchasableMagicSign {
 	public void onRightClick(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 
-		int newHealth = p.getHealth() + healAmount;
+		double newHealth = p.getHealth() + healAmount;
 
 		if (newHealth > p.getMaxHealth()) {
 			event.getPlayer().setHealth(p.getMaxHealth());
